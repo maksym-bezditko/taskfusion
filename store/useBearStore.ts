@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist, devtools, PersistOptions } from "zustand/middleware";
+import { persist, devtools, createJSONStorage } from "zustand/middleware";
 
 export interface BearState {
   bears: number;
@@ -15,7 +15,8 @@ export const useBearStore = create(
       }),
       {
         name: "food-storage",
-      } as PersistOptions<BearState>
+        storage: createJSONStorage(() => sessionStorage),
+      }
     )
   )
 );

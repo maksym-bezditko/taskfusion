@@ -1,10 +1,9 @@
 "use client";
 
-import useClientStore from "@/hooks/useClientStore";
 import { useBearStore } from "@/store/useBearStore";
 
 export default function Home() {
-  const { addABear, bears } = useClientStore(useBearStore, (state) => state);
+  const { addABear, bears } = useBearStore((state) => state);
 
   return (
     <div>
