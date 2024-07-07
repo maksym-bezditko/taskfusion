@@ -1,0 +1,13 @@
+@import '@/styles/main.scss';
+
+.container {
+	width: 100svw;
+	height: 100svh;
+	overflow: hidden;
+}
+
+.menu {
+	max-width: 23.5rem;
+	background-color: $light-grey;
+	border: 1px solid $black;
+}
