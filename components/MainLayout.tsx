@@ -1,5 +1,10 @@
+import { Header } from "./Header";
 import styles from "./MainLayout.module.scss";
 import { MenuNavigation } from "./MenuNavigation";
+import { Bell } from "./svg/Bell";
+import { DefaultAvatar } from "./svg/DefaultAvatar";
+import { DownArrow } from "./svg/DownArrow";
+import { Letter } from "./svg/Letter";
 import { Logo } from "./svg/Logo";
 
 export const MainLayout = ({ children }: { children: React.ReactNode }) => {
@@ -13,13 +18,11 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
         <MenuNavigation />
       </aside>
 
-      <main className={styles.main}>
-        <header className={styles.header}>
-          <p>Header</p>
-        </header>
+      <div className={styles.main}>
+       <Header />
 
-        {children}
-      </main>
+        <main className={styles.content}>{children}</main>
+      </div>
     </div>
   );
 };
