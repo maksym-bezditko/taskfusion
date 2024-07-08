@@ -100,15 +100,13 @@ menu,
 nav,
 section {
 	display: block;
+	list-style: none;
+	margin: 0;
+  padding: 0;
 }
 
 body {
 	line-height: 1;
-}
-
-ol,
-ul {
-	list-style: none;
 }
 
 blockquote,
