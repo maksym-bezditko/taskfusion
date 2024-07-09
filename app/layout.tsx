@@ -1,10 +1,11 @@
 import "@/styles/normalize.scss";
+import "@/styles/globals.scss";
 
-import { MainLayout } from "@/components/MainLayout";
+import { MainLayout } from "@/components/layouts/MainLayout/MainLayout";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Rubik } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Rubik({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Taskfusion",
