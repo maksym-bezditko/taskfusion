@@ -1,7 +1,8 @@
-import { Header } from "./Header";
+import { Header } from "../../global/Header/Header";
 import styles from "./MainLayout.module.scss";
-import { MenuNavigation } from "./MenuNavigation";
-import { Logo } from "./svg/Logo";
+import { MenuNavigation } from "../../global/MenuNavigation/MenuNavigation";
+import { Path } from "../../global/Path/Path";
+import { Logo } from "../../svg/Logo";
 
 export const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -15,9 +16,13 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
       </aside>
 
       <div className={styles.main}>
-       <Header />
+        <Header />
 
-        <main className={styles.content}>{children}</main>
+        <main className={styles.content}>
+          <Path />
+
+          {children}
+        </main>
       </div>
     </div>
   );

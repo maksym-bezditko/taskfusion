@@ -1,7 +1,7 @@
 import styles from "./Sidebar.module.scss";
 
-import { MenuNavigation } from "./MenuNavigation";
-import { Logo } from "./svg/Logo";
+import { MenuNavigation } from "../MenuNavigation/MenuNavigation";
+import { Logo } from "../../svg/Logo";
 
 export const Sidebar = () => {
   return (

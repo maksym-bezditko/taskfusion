@@ -3,10 +3,10 @@
 import { useState } from "react";
 import styles from "./Header.module.scss";
 
-import { Bell } from "./svg/Bell";
-import { DefaultAvatar } from "./svg/DefaultAvatar";
-import { DownArrow } from "./svg/DownArrow";
-import { Letter } from "./svg/Letter";
+import { Bell } from "../../svg/Bell";
+import { DefaultAvatar } from "../../svg/DefaultAvatar";
+import { DownArrow } from "../../svg/DownArrow";
+import { Letter } from "../../svg/Letter";
 import { IoSearchOutline } from "react-icons/io5";
 
 export const Header = () => {

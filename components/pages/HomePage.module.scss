@@ -1,0 +1,11 @@
+@import '@/styles/_main.scss';
+
+.detailsWrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-column-gap: 1.5rem;
+
+	& > * {
+		margin-top: 2rem;
+	}
+}
