@@ -7,6 +7,7 @@ import { Bell } from "./svg/Bell";
 import { DefaultAvatar } from "./svg/DefaultAvatar";
 import { DownArrow } from "./svg/DownArrow";
 import { Letter } from "./svg/Letter";
+import { IoSearchOutline } from "react-icons/io5";
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
@@ -16,6 +17,8 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.searchContainer}>
+        <IoSearchOutline className={styles.searchIcon} />
+
         <input className={styles.search} placeholder="Search" />
       </div>
 
