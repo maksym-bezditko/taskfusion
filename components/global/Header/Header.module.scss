@@ -2,9 +2,14 @@
 
 .header {
 	width: 100%;
+	position: fixed;
+	z-index: 100;
+	top: 0;
+	left: right;
 	height: 6rem;
 	padding: 1.5rem;
 	box-shadow: 1px 1px 11px #9494944d;
+	background-color: $white;
 
 	display: flex;
 	justify-content: space-between;
