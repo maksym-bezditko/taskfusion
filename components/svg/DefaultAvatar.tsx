@@ -19,7 +19,7 @@ export const DefaultAvatar = () => (
     <path
       d="M20.6667 31.6667C20.6667 31.6667 23.4167 35.3333 28 35.3333C32.5833 35.3333 35.3333 31.6667 35.3333 31.6667"
       stroke="white"
-      stroke-Width="2"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
