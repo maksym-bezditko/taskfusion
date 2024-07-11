@@ -4,9 +4,10 @@ import { Sunrise } from "@/components/svg/Sunrise";
 import { People } from "@/components/svg/People";
 import { Export } from "@/components/svg/Export";
 import classNames from "classnames";
+import { UploadCircle } from "@/components/svg/UploadCircle";
 
 type Props = {
-  iconName: "sunset" | "sunrise" | "people" | "export";
+  iconName: "sunset" | "sunrise" | "people" | "export" | "upload";
   text: string;
   isClickable?: boolean;
 };
@@ -24,6 +25,9 @@ const mapNameToIcon = (name: Props["iconName"]) => {
 
     case "export":
       return <Export />;
+
+    case "upload":
+      return <UploadCircle />;
   }
 };
 
