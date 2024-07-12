@@ -1,11 +1,11 @@
 import classNames from "classnames";
-import styles from "./Status.module.scss";
+import styles from "./ProjectStatus.module.scss";
 
 type Props = {
   status: "Active" | "Closed";
 };
 
-export const Status = (props: Props) => {
+export const ProjectStatus = (props: Props) => {
   const { status } = props;
 
   return (
