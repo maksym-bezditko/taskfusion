@@ -143,3 +143,17 @@ select {
 	-moz-appearance: none;
 	appearance: none;
 }
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active,
+a:focus {
+	text-decoration: none;
+	color: inherit;
+}
