@@ -1,46 +1,47 @@
 "use client";
 
-import { useState } from "react";
 import styles from "./MenuNavigation.module.scss";
 import classNames from "classnames";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export const MenuNavigation = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const pathname = usePathname();
 
   return (
     <nav className={styles.nav}>
-      <li
+      <Link
         className={classNames(styles.listItem, {
-          [styles.active]: activeIndex === 0,
+          [styles.active]: pathname === "/",
         })}
-        onClick={() => setActiveIndex(0)}
+        href="/"
       >
         Clients
-      </li>
-      <li
+      </Link>
+      <Link
         className={classNames(styles.listItem, {
-          [styles.active]: activeIndex === 1,
+          [styles.active]: pathname === "/tasks",
         })}
-        onClick={() => setActiveIndex(1)}
+        href="/tasks"
       >
         Task manager
-      </li>
-      <li
+      </Link>
+      <Link
         className={classNames(styles.listItem, {
-          [styles.active]: activeIndex === 2,
+          [styles.active]: pathname === "/inbox",
         })}
-        onClick={() => setActiveIndex(2)}
+        href=""
       >
         Inbox
-      </li>
-      <li
+      </Link>
+      <Link
         className={classNames(styles.listItem, {
-          [styles.active]: activeIndex === 3,
+          [styles.active]: pathname === "/contacts",
         })}
-        onClick={() => setActiveIndex(3)}
+        href=""
       >
         Contacts
-      </li>
+      </Link>
     </nav>
   );
 };
