@@ -1,12 +1,12 @@
 import styles from "./HomePage.module.scss";
 
-import { Details } from "../global/Details/Details";
-import { Status } from "../global/Status/Status";
-import { ListView } from "../global/ListView/ListView";
-import { TextWithIcon } from "../global/TextWithIcon/TextWithIcon";
-import { Props as ListItemProps } from "../global/ListItem/ListItem";
-import { Download } from "../svg/Download";
-import { Upload } from "../svg/Upload";
+import { Details } from "../../global/Details/Details";
+import { ProjectStatus } from "../../global/ProjectStatus/ProjectStatus";
+import { ListView } from "../../global/ListView/ListView";
+import { TextWithIcon } from "../../global/TextWithIcon/TextWithIcon";
+import { Props as ListItemProps } from "../../global/ListItem/ListItem";
+import { Download } from "../../svg/Download";
+import { Upload } from "../../svg/Upload";
 
 const DETAILS = [
   {
@@ -23,7 +23,7 @@ const DETAILS = [
   },
   {
     title: "Phone",
-    value: <Status status="Closed" />,
+    value: <ProjectStatus status="Closed" />,
   },
 ];
 
@@ -156,9 +156,7 @@ export const HomePage = () => {
 
           <ListView
             title="Documents"
-            rightElement={
-              <Upload />
-            }
+            rightElement={<Upload />}
             listItems={DOCUMENTS}
           />
         </div>
