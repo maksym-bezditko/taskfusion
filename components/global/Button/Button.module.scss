@@ -1,0 +1,19 @@
+@import '@/styles/_main.scss';
+
+.button {
+	border-radius: 9px;
+	padding: 0.625rem 1.5rem;
+	font-size: 1rem;
+}
+
+.orange {
+	background-color: $orange;
+}
+
+.red {
+	background-color: $red;
+}
+
+.green {
+	background-color: $green;
+}
