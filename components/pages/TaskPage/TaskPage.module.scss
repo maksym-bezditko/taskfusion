@@ -2,10 +2,22 @@
 
 .contentWrapper {
 	display: grid;
-	grid-template-columns: 2fr 5fr 3fr;
+	grid-template-columns: 4fr 7fr 4fr;
 	column-gap: 1.5rem;
 
 	&>* {
 		margin-top: 2rem;
+	}
+}
+
+.commentSection {
+	&>*:not(:last-child) {
+		margin-bottom: 1rem;
+	}
+}
+
+.taskDetailsSection {
+	&>*:not(:last-child) {
+		margin-bottom: 1rem;
 	}
 }
