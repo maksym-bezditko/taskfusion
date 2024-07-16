@@ -4,6 +4,12 @@ import { Props as ColumnItemProps } from "@/components/global/ColumnItem/ColumnI
 import { Avatar } from "@/components/global/Avatar/Avatar";
 import { Details } from "@/components/global/Details/Details";
 import { PriorityBadge } from "@/components/global/PriorityBadge/PriorityBadge";
+import { Comment } from "@/components/global/Comment/Comment";
+import { CommentInput } from "@/components/global/CommentInput/CommentInput";
+import { Button } from "@/components/global/Button/Button";
+import { Check } from "@/components/svg/Check";
+import { Freeze } from "@/components/svg/Freeze";
+import { Participant } from "@/components/svg/Participant";
 
 type Props = {
   taskId: string;
@@ -22,7 +28,6 @@ const ACTIONS: ColumnItemProps[] = [
         value: "12/04/2021",
       },
     ],
-    status: "Medium",
     text: "Приступил(а) к выполнению",
     author: <Avatar name="Adyl" />,
   },
@@ -38,7 +43,6 @@ const ACTIONS: ColumnItemProps[] = [
         value: "12/04/2021",
       },
     ],
-    status: "Low",
     text: "Приступил(а) к выполнению",
     author: <Avatar name="Adyl" />,
   },
@@ -54,7 +58,6 @@ const ACTIONS: ColumnItemProps[] = [
         value: "12/04/2021",
       },
     ],
-    status: "High",
     text: "Создал(а) задачу",
     author: <Avatar name="Adyl" />,
   },
@@ -98,10 +101,52 @@ export const TaskPage = (props: Props) => {
 
         <div className={styles.commentSection}>
           <Details details={DETAILS_STRING} />
+
+          <CommentInput />
+
+          <Comment />
         </div>
 
         <div className={styles.taskDetailsSection}>
           <Details details={TASK_DETAILS} />
+
+          <Button
+            text="Change the priority"
+            isModalButton
+            width="100%"
+            isFontBold={false}
+          />
+
+          <Button
+            text="Change the task type"
+            isModalButton
+            width="100%"
+            isFontBold={false}
+          />
+
+          <Button
+            text="Become a participant"
+            bgColor="green"
+            textColor="white"
+            width="100%"
+            icon={<Participant />}
+          />
+
+          <Button
+            text="Freeze the task"
+            bgColor="blue"
+            textColor="black"
+            width="100%"
+            icon={<Freeze />}
+          />
+
+          <Button
+            text="Close task"
+            bgColor="red"
+            textColor="white"
+            width="100%"
+            icon={<Check />}
+          />
         </div>
       </div>
     </div>
