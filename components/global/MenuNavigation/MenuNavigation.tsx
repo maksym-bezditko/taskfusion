@@ -28,7 +28,7 @@ export const MenuNavigation = () => {
       </Link>
       <Link
         className={classNames(styles.listItem, {
-          [styles.active]: pathname === "/task/1",
+          [styles.active]: pathname.startsWith("/task/"),
         })}
         href="/task/1"
       >
@@ -36,19 +36,11 @@ export const MenuNavigation = () => {
       </Link>
       <Link
         className={classNames(styles.listItem, {
-          [styles.active]: pathname === "/inbox",
+          [styles.active]: pathname === "/profile",
         })}
-        href=""
+        href="/profile"
       >
-        Inbox
-      </Link>
-      <Link
-        className={classNames(styles.listItem, {
-          [styles.active]: pathname === "/contacts",
-        })}
-        href=""
-      >
-        Contacts
+        Profile
       </Link>
     </nav>
   );
