@@ -1,5 +1,5 @@
 import { TasksPage } from "@/components/pages/TasksPage/TasksPage";
 
-export default function Tasks() {
+export default function Page() {
   return <TasksPage />;
 }
