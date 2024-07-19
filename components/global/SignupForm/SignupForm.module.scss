@@ -1,0 +1,28 @@
+@import '@/styles/_main.scss';
+
+.form {
+	display: flex;
+	flex-direction: column;
+	row-gap: 1rem;
+	width: 30rem;
+}
+
+.validationText {
+	color: $red;
+}
+
+.buttonWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	row-gap: 1.5rem;
+
+	margin-top: 2rem;
+}
+
+.forgotPassword {
+	text-align: center;
+	cursor: pointer;
+	color: $column-item-row-grey;
+}
