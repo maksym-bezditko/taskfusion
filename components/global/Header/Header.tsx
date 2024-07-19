@@ -8,19 +8,25 @@ import { DefaultAvatar } from "../../svg/DefaultAvatar";
 import { DownArrow } from "../../svg/DownArrow";
 import { Letter } from "../../svg/Letter";
 import { IoSearchOutline } from "react-icons/io5";
+import { usePathname } from "next/navigation";
+import { Input } from "../Input/Input";
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
   const [isLetterActive] = useState(false);
   const [isBellActive] = useState(false);
 
+  const pathname = usePathname();
+
+  const shouldShowHeader = !pathname.includes("auth");
+
+  if (!shouldShowHeader) {
+    return null;
+  }
+
   return (
     <header className={styles.header}>
-      <div className={styles.searchContainer}>
-        <IoSearchOutline className={styles.searchIcon} />
-
-        <input className={styles.search} placeholder="Search" />
-      </div>
+      <Input isSearch placeholder="Search" />
 
       <div className={styles.notificationIndicators}>
         <Bell isActive={isBellActive} />

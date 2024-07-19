@@ -8,6 +8,12 @@ import { usePathname } from "next/navigation";
 export const MenuNavigation = () => {
   const pathname = usePathname();
 
+  const shouldShowPath = !pathname.includes("auth");
+
+  if (!shouldShowPath) {
+    return null;
+  }
+
   return (
     <nav className={styles.nav}>
       <Link
