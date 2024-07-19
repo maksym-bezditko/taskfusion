@@ -12,11 +12,11 @@ export const metadata: Metadata = {
   description: "Manage your tasks with ease.",
 };
 
-export default function RootLayout({
+const Layout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -24,4 +24,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default Layout;
