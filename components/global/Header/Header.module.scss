@@ -17,27 +17,6 @@
 	column-gap: 4.5rem;
 }
 
-.searchContainer {
-	flex-grow: 1;
-	position: relative;
-}
-
-.search {
-	width: 100%;
-	padding: 0.5rem 1.5rem 0.5rem 2.5rem;
-	border: 2px solid $search-grey;
-	border-radius: 0.5rem;
-	border-radius: 100px;
-}
-
-.searchIcon {
-	position: absolute;
-	left: 1rem;
-	top: 50%;
-	transform: translateY(-50%);
-	opacity: 0.5;
-}
-
 .notificationIndicators {
 	display: flex;
 	justify-content: space-between;
