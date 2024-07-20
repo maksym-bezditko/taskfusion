@@ -6,6 +6,7 @@ import styles from "./SignupForm.module.scss";
 import { Input } from "../Input/Input";
 import { Button } from "../Button/Button";
 import { SignupFormValues, signupSchema } from "./signupSchema";
+import { ImageInput } from "../ImageInput/ImageInput";
 
 export const SignupForm = () => {
   const {
@@ -21,42 +22,49 @@ export const SignupForm = () => {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <Input placeholder="Email" {...register("email")} />
+    <div className={styles.container}>
+      <ImageInput />
 
-      {errors.email && (
-        <p className={styles.validationText}>{errors.email.message}</p>
-      )}
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <Input placeholder="Email" {...register("email")} />
 
-      <Input placeholder="Name" {...register("name")} />
+        {errors.email && (
+          <p className={styles.validationText}>{errors.email.message}</p>
+        )}
 
-      {errors.name && (
-        <p className={styles.validationText}>{errors.name.message}</p>
-      )}
+        <Input placeholder="Name" {...register("name")} />
 
-      <Input placeholder="Position" {...register("position")} />
+        {errors.name && (
+          <p className={styles.validationText}>{errors.name.message}</p>
+        )}
 
-      {errors.position && (
-        <p className={styles.validationText}>{errors.position.message}</p>
-      )}
+        <Input placeholder="Position" {...register("position")} />
 
-      <Input placeholder="Telegram ID (optional)" {...register("telegramId")} />
+        {errors.position && (
+          <p className={styles.validationText}>{errors.position.message}</p>
+        )}
 
-      {errors.telegramId && (
-        <p className={styles.validationText}>{errors.telegramId.message}</p>
-      )}
-
-      <div className={styles.buttonWrapper}>
-        <Button
-          text="Register"
-          bgColor="orange"
-          isFontBold
-          textColor="white"
-          width="12.75rem"
+        <Input
+          placeholder="Telegram ID (optional)"
+          {...register("telegramId")}
         />
 
-        <p className={styles.forgotPassword}>Want to log in?</p>
-      </div>
-    </form>
+        {errors.telegramId && (
+          <p className={styles.validationText}>{errors.telegramId.message}</p>
+        )}
+
+        <div className={styles.buttonWrapper}>
+          <Button
+            text="Register"
+            bgColor="orange"
+            isFontBold
+            textColor="white"
+            width="12.75rem"
+          />
+
+          <p className={styles.forgotPassword}>Want to log in?</p>
+        </div>
+      </form>
+    </div>
   );
 };

@@ -1,5 +1,11 @@
 @import '@/styles/_main.scss';
 
+.container {
+	display: flex;
+	flex-direction: column;
+	row-gap: 1rem;
+}
+
 .form {
 	display: flex;
 	flex-direction: column;
