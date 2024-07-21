@@ -1,4 +1,4 @@
-import { TaskPage } from "@/components/pages/TaskPage/TaskPage";
+import { TaskPage } from '@/pages/TaskPage';
 
 export default function Page(props: { params: { id: string } }) {
   const { id } = props.params;

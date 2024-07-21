@@ -1,4 +1,6 @@
-import { AuthLayout } from "@/components/layouts/AuthLayout/AuthLayout";
+import React from 'react';
+
+import { AuthLayout } from '@/layouts/AuthLayout';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return <AuthLayout>{children}</AuthLayout>;

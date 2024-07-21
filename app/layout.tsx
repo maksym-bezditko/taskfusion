@@ -1,15 +1,14 @@
-import "@/styles/normalize.scss";
-import "@/styles/globals.scss";
+import type { Metadata } from 'next';
+import { Rubik } from 'next/font/google';
+import React from 'react';
 
-import { MainLayout } from "@/components/layouts/MainLayout/MainLayout";
-import type { Metadata } from "next";
-import { Rubik } from "next/font/google";
+import { MainLayout } from '@/layouts/MainLayout';
 
-const inter = Rubik({ subsets: ["latin"] });
+const inter = Rubik({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Taskfusion",
-  description: "Manage your tasks with ease.",
+  title: 'Taskfusion',
+  description: 'Manage your tasks with ease.',
 };
 
 const Layout = async ({
