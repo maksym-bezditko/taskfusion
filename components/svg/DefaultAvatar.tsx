@@ -1,11 +1,5 @@
 export const DefaultAvatar = () => (
-  <svg
-    width="56"
-    height="56"
-    viewBox="0 0 56 56"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="56" height="56" rx="28" fill="#FD633D" />
 
     <path
@@ -24,20 +18,8 @@ export const DefaultAvatar = () => (
       strokeLinejoin="round"
     />
 
-    <path
-      d="M22.5 22.5H22.5191"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path d="M22.5 22.5H22.5191" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 
-    <path
-      d="M33.5 22.5H33.5191"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path d="M33.5 22.5H33.5191" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );

@@ -1,0 +1,29 @@
+.container {
+  width: 100svw;
+  height: 100svh;
+  overflow-y: hidden;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  row-gap: 7rem;
+  max-width: 18rem;
+  height: 100svh;
+  background-color: $light-grey;
+  flex-grow: 1;
+  padding: 8rem 4rem;
+}
+
+.main {
+  flex-grow: 1;
+  overflow: scroll;
+  position: relative;
+}
+
+.content {
+  padding: 2rem 3.5rem;
+}
