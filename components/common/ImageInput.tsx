@@ -1,16 +1,20 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
-import { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 import ImagePlaceholder from '@/components/assets/ImagePlaceholder.png';
 
 import { Button } from './Button';
 import styles from './ImageInput.module.scss';
 
-export const ImageInput = () => {
-  const [file, setFile] = useState<File | null>(null);
+type Props = {
+  file: File | null;
+  setFile: (file: File | null) => void;
+};
+
+export const ImageInput = (props: Props) => {
+  const { file, setFile } = props;
 
   const ref = useRef<HTMLInputElement>(null);
 
@@ -38,16 +42,18 @@ export const ImageInput = () => {
 
   return (
     <div className={styles.container}>
-      <Image
-        src={file ? URL.createObjectURL(file) : ImagePlaceholder.src}
-        alt="Avatar"
-        className={styles.image}
-        width={120}
-        height={120}
-      />
+      <div className={styles.imageWrapper}>
+        <Image
+          src={file ? URL.createObjectURL(file) : ImagePlaceholder.src}
+          alt="Avatar"
+          className={styles.image}
+          width={120}
+          height={120}
+        />
+      </div>
 
       <div className={styles.selectorWrapper}>
-        <p className={styles.text}>Please upload square image, size less than 1MB</p>
+        <p className={styles.text}>Please upload a square image, size less than 1MB</p>
 
         <div className={styles.buttonWrapper}>
           <Button
