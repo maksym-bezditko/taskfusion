@@ -1,7 +1,7 @@
 import React from 'react';
 
-import '@/styles/globals.scss';
 import '@/styles/normalize.scss';
+import '@/styles/globals.scss';
 
 import { Header } from '@/components/common/Header';
 import { MenuNavigation } from '@/components/common/MenuNavigation';

@@ -6,7 +6,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from './Button';
 import { Input } from './Input';
 import styles from './LoginForm.module.scss';
-import { LoginFormValues, loginSchema } from './loginSchema';
+import { LoginFormValues, loginSchema } from '../schemas/loginSchema';
 
 export const LoginForm = () => {
   const {
