@@ -6,16 +6,31 @@ import styles from './Input.module.scss';
 
 type Props = {
   isSearch?: boolean;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+  multiline?: boolean;
+} & React.InputHTMLAttributes<HTMLInputElement> &
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-export const Input = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
-  const { isSearch = false, ...rest } = props;
+export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>((props: Props, ref) => {
+  const { isSearch = false, multiline = false, ...rest } = props;
 
   return (
     <div className={styles.searchContainer}>
       {isSearch && <IoSearchOutline className={styles.searchIcon} />}
-
-      <input className={styles.search} style={{ paddingLeft: isSearch ? '2.5rem' : '1.5rem' }} ref={ref} {...rest} />
+      {multiline ? (
+        <textarea
+          className={styles.textarea}
+          style={{ paddingLeft: isSearch ? '2.5rem' : '1.5rem' }}
+          ref={ref as React.Ref<HTMLTextAreaElement>}
+          {...rest}
+        />
+      ) : (
+        <input
+          className={styles.search}
+          style={{ paddingLeft: isSearch ? '2.5rem' : '1.5rem' }}
+          ref={ref as React.Ref<HTMLInputElement>}
+          {...rest}
+        />
+      )}
     </div>
   );
 });
