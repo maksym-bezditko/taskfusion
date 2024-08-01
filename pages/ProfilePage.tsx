@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import Image from 'next/image';
 
 import DefaultAvatar from '@/components/assets/Avatar.png';
@@ -6,6 +8,7 @@ import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Details } from '@/components/common/Details';
 import { Props as ListItemProps } from '@/components/common/ListItem';
 import { ListView } from '@/components/common/ListView';
+import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { Plus } from '@/components/svg/Plus';
 
@@ -132,6 +135,10 @@ export const ProfilePage = () => {
             <Column title="Closed" columns={[]} right={<Plus />} />
           </div>
         </div>
+      </div>
+
+      <div className={styles.logoutButtonWrapper}>
+        <LogoutButtonWrapper />
       </div>
     </div>
   );

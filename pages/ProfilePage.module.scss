@@ -3,7 +3,7 @@
   grid-template-columns: 2fr 5fr;
   grid-gap: 2rem;
 
-  & > * {
+  &>* {
     margin-top: 2rem;
   }
 }
@@ -30,4 +30,11 @@
   padding: 1.5rem;
   background-color: $detail-grey;
   border-radius: 17px;
+}
+
+.logoutButtonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
 }
