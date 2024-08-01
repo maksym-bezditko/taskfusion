@@ -1,23 +1,38 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
+
+import { LoginFormValues, loginSchema } from '../schemas/loginSchema';
 
 import { Button } from './Button';
 import { Input } from './Input';
 import styles from './LoginForm.module.scss';
-import { LoginFormValues, loginSchema } from '../schemas/loginSchema';
 
 export const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginFormValues> = () => {};
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<LoginFormValues> = async (values: LoginFormValues) => {
+    try {
+      await axios.post('/api/login', values);
+
+      router.replace('/');
+      router.refresh();
+    } catch (error) {
+      setError('root', { message: 'Invalid credentials' });
+    }
+  };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -28,6 +43,8 @@ export const LoginForm = () => {
       <Input type="password" placeholder="Password" {...register('password')} />
 
       {errors.password && <p className={styles.validationText}>{errors.password.message}</p>}
+
+      {errors.root && <p className={styles.validationText}>{errors.root.message}</p>}
 
       <div className={styles.buttonWrapper}>
         <Button text="Login" bgColor="orange" isFontBold textColor="white" width="12.75rem" />

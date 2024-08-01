@@ -6,11 +6,18 @@ export const signupSchema = z
   .object({
     email: z.string().email('Invalid email address').min(1, 'Email is required'),
     name: z.string().min(1, 'Name is required'),
-    positionDescription: z.string().min(1, 'Position description is required'),
+    description: z.string().min(1, 'Description is required'),
     position: z.enum([UserType.CLIENT, UserType.DEVELOPER, UserType.PM], {
       message: 'Position is required',
     }),
-    telegramId: z.string().startsWith('@').optional(),
+    telegramId: z.string().refine(
+      (v) => {
+        const n = Number(v);
+
+        return !isNaN(n) && v?.length > 0;
+      },
+      { message: 'Invalid number' },
+    ),
     password: z.string().min(6, 'Password must be at least 6 characters long'),
     confirmPassword: z.string().min(6, 'Password must be at least 6 characters long'),
   })
