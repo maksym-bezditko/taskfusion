@@ -1,10 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+import { SignupResponse } from '@/app/api/signup/route';
 import { UserType } from '@/types';
 
 import { SignupFormValues, signupSchema } from '../schemas/signupSchema';
@@ -25,14 +28,26 @@ export const SignupForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
   });
 
   const [file, setFile] = useState<File | null>(null);
 
-  const onSubmit: SubmitHandler<SignupFormValues> = (values: SignupFormValues) => {
-    console.log(file, values);
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<SignupFormValues> = async (values: SignupFormValues) => {
+    try {
+      const { data } = await axios.post<SignupResponse>('/api/signup', values);
+
+      if (data.success) {
+        router.replace('/');
+        router.refresh();
+      }
+    } catch (error) {
+      setError('root', { message: 'User with this email already exists' });
+    }
   };
 
   return (
@@ -44,10 +59,6 @@ export const SignupForm = () => {
 
         {errors.position && <p className={styles.validationText}>{errors.position.message}</p>}
 
-        <Input placeholder="Position Description" multiline {...register('positionDescription')} />
-
-        {errors.positionDescription && <p className={styles.validationText}>{errors.positionDescription.message}</p>}
-
         <Input placeholder="Email" {...register('email')} />
 
         {errors.email && <p className={styles.validationText}>{errors.email.message}</p>}
@@ -56,7 +67,11 @@ export const SignupForm = () => {
 
         {errors.name && <p className={styles.validationText}>{errors.name.message}</p>}
 
-        <Input placeholder="Telegram ID (optional)" {...register('telegramId')} />
+        <Input placeholder="Description" multiline {...register('description')} />
+
+        {errors.description && <p className={styles.validationText}>{errors.description.message}</p>}
+
+        <Input placeholder="Telegram ID (optional)" type="number" {...register('telegramId')} />
 
         {errors.telegramId && <p className={styles.validationText}>{errors.telegramId.message}</p>}
 
@@ -67,6 +82,8 @@ export const SignupForm = () => {
         <Input placeholder="Confirm Password" type="password" {...register('confirmPassword')} />
 
         {errors.confirmPassword && <p className={styles.validationText}>{errors.confirmPassword.message}</p>}
+
+        {errors.root?.message && <p className={styles.validationText}>{errors.root.message}</p>}
 
         <div className={styles.buttonWrapper}>
           <Button text="Register" bgColor="orange" isFontBold textColor="white" width="12.75rem" />
