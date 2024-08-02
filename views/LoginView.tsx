@@ -1,6 +1,6 @@
 import { LoginForm } from '@/components/common/LoginForm';
 
-import styles from './LoginPage.module.scss';
+import styles from './LoginView.module.scss';
 
 export const LoginPage = () => {
   return (

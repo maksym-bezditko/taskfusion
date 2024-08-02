@@ -1,4 +1,4 @@
-import { LoginPage } from '@/pages/LoginPage';
+import { LoginPage } from '@/views/LoginView';
 
 export default function Page() {
   return <LoginPage />;
