@@ -1,24 +1,21 @@
 import { NextResponse, NextRequest } from 'next/server';
 
-import { isJwtValid } from './utils/serverActions';
+import { getIsLoggedIn } from './utils/serverActions';
 
-const PROTECTED_ROUTES = ['/profile'];
+const LOGGED_IN_ONLY_ROUTES = ['/profile'];
+const LOGGED_OUT_ONLY_ROUTES = ['/auth/login', '/auth/signup'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (PROTECTED_ROUTES.includes(pathname)) {
-    const token = request.cookies.get('access_token');
+  const isLoggedIn = await getIsLoggedIn();
 
-    if (!token?.value) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
-    }
+  if (LOGGED_IN_ONLY_ROUTES.includes(pathname) && !isLoggedIn) {
+    return NextResponse.redirect(new URL('/auth/login', request.url));
+  }
 
-    const isTokenValid = await isJwtValid(token.value);
-
-    if (!isTokenValid) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
-    }
+  if (LOGGED_OUT_ONLY_ROUTES.includes(pathname) && isLoggedIn) {
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();
