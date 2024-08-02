@@ -1,9 +1,9 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { SignupFormValues } from '@/components/schemas/signupSchema';
 import { JwtTokensResponse, UserType } from '@/types';
 import { axiosClient } from '@/utils/axiosClient';
+import { setTokens } from '@/utils/serverActions';
 
 type SignupRequest = SignupFormValues;
 
@@ -12,8 +12,6 @@ export type SignupResponse = {
   message: string;
   error?: unknown;
 };
-
-const DEFAULT_AGE = 60 * 60 * 24 * 30;
 
 export async function POST(req: Request) {
   try {
@@ -44,8 +42,7 @@ export async function POST(req: Request) {
       return NextResponse.json<SignupResponse>({ success: false, message: 'An error occurred' }, { status: 500 });
     }
 
-    cookies().set('access_token', response.data.accessToken, { maxAge: DEFAULT_AGE, httpOnly: false, secure: true });
-    cookies().set('refresh_token', response.data.refreshToken, { maxAge: DEFAULT_AGE, httpOnly: true, secure: true });
+    await setTokens(response.data.accessToken, response.data.refreshToken);
 
     return NextResponse.json<SignupResponse>(
       {
