@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { ColumnItem, Props as ColumnItemProps } from '@/components/common/ColumnItem';
 
 import styles from './Column.module.scss';
+import { NoData } from './NoData';
 
 type Props = {
   title: string;
@@ -21,12 +22,14 @@ export const Column = (props: Props) => {
         {right}
       </div>
 
-      {columns && (
+      {columns?.length ? (
         <div className={styles.contentWrapper}>
           {columns.map((column) => (
             <ColumnItem key={column.title} {...column} />
           ))}
         </div>
+      ) : (
+        <NoData />
       )}
     </div>
   );
