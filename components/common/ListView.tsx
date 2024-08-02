@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { ListItem, Props as ListItemProps } from '@/components/common/ListItem';
 
 import styles from './ListView.module.scss';
+import { NoData } from './NoData';
 
 type Props = {
   title: string;
@@ -22,9 +23,7 @@ export const ListView = (props: Props) => {
       </div>
 
       <div className={styles.listItems}>
-        {listItems.map((listItem) => (
-          <ListItem key={listItem.title} {...listItem} />
-        ))}
+        {listItems.length ? listItems.map((listItem) => <ListItem key={listItem.title} {...listItem} />) : <NoData />}
       </div>
     </div>
   );

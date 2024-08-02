@@ -7,7 +7,7 @@ import styles from './Path.module.scss';
 export const Path = () => {
   const pathname = usePathname();
 
-  const shouldShowPath = !pathname.includes('auth');
+  const shouldShowPath = !pathname?.includes('auth');
 
   if (!shouldShowPath) {
     return null;
