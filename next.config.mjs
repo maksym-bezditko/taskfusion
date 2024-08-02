@@ -1,7 +1,7 @@
 const nextConfig = {
   reactStrictMode: true,
   sassOptions: {
-    includePaths: ['@/components', '@/pages', '@/layouts'],
+    includePaths: ['@/components', '@/views', '@/layouts'],
     prependData: `@import '@/styles/_main.scss';`,
   },
 };

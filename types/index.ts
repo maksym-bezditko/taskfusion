@@ -12,3 +12,12 @@ export type JwtTokensResponse = {
 export type UserIdResponse = {
   userId: string;
 };
+
+export type ProfileResponse = {
+  id: number;
+  email: string;
+  name: string;
+  userType: UserType;
+  telegramId?: string;
+  description: string;
+};

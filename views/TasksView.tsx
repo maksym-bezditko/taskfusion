@@ -3,7 +3,7 @@ import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Details } from '@/components/common/Details';
 import { Plus } from '@/components/svg/Plus';
 
-import styles from './TasksPage.module.scss';
+import styles from './TasksView.module.scss';
 
 const TODO_COLUMNS: ColumnItemProps[] = [
   {

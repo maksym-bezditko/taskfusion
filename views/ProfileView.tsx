@@ -1,6 +1,5 @@
-export const revalidate = 0;
-
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 import DefaultAvatar from '@/components/assets/Avatar.png';
 import { Column } from '@/components/common/Column';
@@ -11,43 +10,31 @@ import { ListView } from '@/components/common/ListView';
 import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { Plus } from '@/components/svg/Plus';
+import { ProfileResponse } from '@/types';
+import { axiosClient } from '@/utils/axiosClient';
 
-import styles from './ProfilePage.module.scss';
-
-const DETAILS = [
-  {
-    title: 'Position',
-    value: 'UX UI Designer',
-  },
-  {
-    title: 'Email',
-    value: 'azharisrailova@gmail.com',
-  },
-  {
-    title: 'Telegram ID',
-    value: '720443189',
-  },
-];
+import styles from './ProfileView.module.scss';
 
 const PERFORMANCE_DETAILS = [
   {
     title: 'Hours worked this month',
-    value: '35',
+    value: '0',
   },
   {
     title: 'Number of tasks in progress',
-    value: '12',
+    value: '0',
   },
   {
     title: 'Number of closed tasks',
-    value: '5',
+    value: '0',
   },
   {
     title: 'Number of frozen tasks',
-    value: '1',
+    value: '0',
   },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PROJECTS: ListItemProps[] = [
   {
     title: 'ОсОО “Energi.kg”',
@@ -75,6 +62,7 @@ const PROJECTS: ListItemProps[] = [
   },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PROGRESS_COLUMNS: ColumnItemProps[] = [
   {
     title: 'Notifications',
@@ -106,10 +94,41 @@ const PROGRESS_COLUMNS: ColumnItemProps[] = [
   },
 ];
 
-export const ProfilePage = () => {
+async function getUserProfile() {
+  try {
+    const user = await axiosClient.get<ProfileResponse>('/users/profile');
+
+    return user;
+  } catch (error) {
+    return null;
+  }
+}
+
+export const ProfilePage = async () => {
+  const user = await getUserProfile();
+
+  if (!user) {
+    notFound();
+  }
+
+  const DETAILS = [
+    {
+      title: 'Position',
+      value: user.data.userType,
+    },
+    {
+      title: 'Email',
+      value: user.data.email,
+    },
+    {
+      title: 'Telegram ID',
+      value: '720443189',
+    },
+  ];
+
   return (
     <div>
-      <h1>Azhar Izmailov</h1>
+      <h1>{user.data.name}</h1>
 
       <div className={styles.contentWrapper}>
         <div className={styles.personalDetailsWrapper}>
@@ -126,11 +145,11 @@ export const ProfilePage = () => {
           <ListView
             title="Projects"
             rightElement={<TextWithIcon iconName="export" text="Export" isClickable />}
-            listItems={PROJECTS}
+            listItems={[]}
           />
 
           <div className={styles.tasksWrapper}>
-            <Column title="In progress" columns={PROGRESS_COLUMNS} right={<Plus />} />
+            <Column title="In progress" columns={[]} right={<Plus />} />
 
             <Column title="Closed" columns={[]} right={<Plus />} />
           </div>

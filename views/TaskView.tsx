@@ -10,7 +10,7 @@ import { Check } from '@/components/svg/Check';
 import { Freeze } from '@/components/svg/Freeze';
 import { Participant } from '@/components/svg/Participant';
 
-import styles from './TaskPage.module.scss';
+import styles from './TaskView.module.scss';
 
 type Props = {
   taskId: string;

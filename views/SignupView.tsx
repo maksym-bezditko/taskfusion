@@ -1,6 +1,6 @@
 import { SignupForm } from '@/components/common/SignupForm';
 
-import styles from './SignupPage.module.scss';
+import styles from './SignupView.module.scss';
 
 export const SignupPage = () => {
   return (

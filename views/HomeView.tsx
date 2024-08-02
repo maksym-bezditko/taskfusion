@@ -6,7 +6,7 @@ import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { Download } from '@/components/svg/Download';
 import { Upload } from '@/components/svg/Upload';
 
-import styles from './HomePage.module.scss';
+import styles from './HomeView.module.scss';
 
 const DETAILS = [
   {
