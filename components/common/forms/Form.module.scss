@@ -9,6 +9,8 @@
   flex-direction: column;
   row-gap: 1rem;
   width: 30rem;
+
+  margin: 0 auto;
 }
 
 .validationText {
@@ -29,4 +31,8 @@
   text-align: center;
   cursor: pointer;
   color: $column-item-row-grey;
+}
+
+.validationText {
+  color: $red;
 }

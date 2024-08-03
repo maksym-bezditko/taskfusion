@@ -28,7 +28,7 @@ export const ColumnItem = (props: Props) => {
         {status && <PriorityBadge priority={status} />}
       </div>
 
-      <div className={styles.contentWrapper}>
+      <div className="contentWrapper">
         {rows.map((row) => (
           <div key={row.name} className={styles.row}>
             <p className={styles.name}>{row.name}:</p>

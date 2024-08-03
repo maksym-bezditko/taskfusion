@@ -1,15 +1,16 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { LoginFormValues, loginSchema } from '../schemas/loginSchema';
+import { nextApiClient } from '@/utils/nextApiClient';
 
-import { Button } from './Button';
-import { Input } from './Input';
-import styles from './LoginForm.module.scss';
+import { LoginFormValues, loginSchema } from '../../schemas/loginSchema';
+import { Button } from '../Button';
+import { Input } from '../Input';
+
+import styles from './Form.module.scss';
 
 export const LoginForm = () => {
   const {
@@ -25,7 +26,7 @@ export const LoginForm = () => {
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (values: LoginFormValues) => {
     try {
-      await axios.post('/api/login', values);
+      await nextApiClient.post('/login', values);
 
       router.replace('/');
       router.refresh();

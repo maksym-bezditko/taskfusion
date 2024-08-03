@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -9,14 +8,15 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { SignupResponse } from '@/app/api/signup/route';
 import { UserType } from '@/types';
+import { nextApiClient } from '@/utils/nextApiClient';
 
-import { SignupFormValues, signupSchema } from '../schemas/signupSchema';
+import { SignupFormValues, signupSchema } from '../../schemas/signupSchema';
+import { Button } from '../Button';
+import { ImageInput } from '../ImageInput';
+import { Input } from '../Input';
+import { Select } from '../Select';
 
-import { Button } from './Button';
-import { ImageInput } from './ImageInput';
-import { Input } from './Input';
-import { Select } from './Select';
-import styles from './SignupForm.module.scss';
+import styles from './Form.module.scss';
 
 const userOptions = Object.values(UserType).map((value) => ({
   value,
@@ -39,7 +39,7 @@ export const SignupForm = () => {
 
   const onSubmit: SubmitHandler<SignupFormValues> = async (values: SignupFormValues) => {
     try {
-      const { data } = await axios.post<SignupResponse>('/api/signup', values);
+      const { data } = await nextApiClient.post<SignupResponse>('/signup', values);
 
       if (data.success) {
         router.replace('/');
