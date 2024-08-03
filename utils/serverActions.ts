@@ -3,6 +3,8 @@
 import * as jose from 'jose';
 import { cookies } from 'next/headers';
 
+import { JwtPayload } from '@/types';
+
 import { DEFAULT_AGE } from './constrants';
 
 const jwtConfig = {
@@ -30,9 +32,25 @@ export const isRefreshTokenValid = async (token: string) => {
   }
 };
 
+export const getRefreshTokenPayload = async () => {
+  try {
+    const refreshToken = await getCookies('refresh_token');
+
+    if (!refreshToken) {
+      return null;
+    }
+
+    return jose.jwtVerify<JwtPayload>(refreshToken, jwtConfig.rtSecret);
+  } catch (error) {
+    return null;
+  }
+};
+
 export const setTokens = async (accessToken: string, refreshToken: string) => {
-  cookies().set('access_token', accessToken, { maxAge: DEFAULT_AGE, httpOnly: true, secure: true });
-  cookies().set('refresh_token', refreshToken, { maxAge: DEFAULT_AGE, httpOnly: true, secure: true });
+  const cookieStorage = cookies();
+
+  cookieStorage.set('access_token', accessToken, { maxAge: DEFAULT_AGE });
+  cookieStorage.set('refresh_token', refreshToken, { maxAge: DEFAULT_AGE });
 };
 
 export const getCookies = async (name: string) => {
