@@ -134,7 +134,7 @@ export const HomePage = () => {
     <div>
       <h1>ОсОО “Energi.kg”</h1>
 
-      <div className={styles.contentWrapper}>
+      <div className="contentWrapper">
         <div className={styles.detailsWrapper}>
           <Details details={DETAILS} isTwoColumns />
 

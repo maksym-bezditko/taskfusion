@@ -10,8 +10,7 @@ import { ListView } from '@/components/common/ListView';
 import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { Plus } from '@/components/svg/Plus';
-import { ProfileResponse } from '@/types';
-import { axiosClient } from '@/utils/axiosClient';
+import { api } from '@/utils/api';
 
 import styles from './ProfileView.module.scss';
 
@@ -94,18 +93,8 @@ const PROGRESS_COLUMNS: ColumnItemProps[] = [
   },
 ];
 
-async function getUserProfile() {
-  try {
-    const user = await axiosClient.get<ProfileResponse>('/users/profile');
-
-    return user;
-  } catch (error) {
-    return null;
-  }
-}
-
 export const ProfilePage = async () => {
-  const user = await getUserProfile();
+  const user = await api.getUserProfile();
 
   if (!user) {
     notFound();
