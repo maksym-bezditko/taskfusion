@@ -1,7 +1,8 @@
 'use client';
 
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
+
+import { nextApiClient } from '@/utils/nextApiClient';
 
 import { Button } from './Button';
 
@@ -9,7 +10,7 @@ export const LogoutButtonWrapper = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await axios.post('/api/logout');
+    await nextApiClient.post('/logout');
 
     router.replace('/');
     router.refresh();

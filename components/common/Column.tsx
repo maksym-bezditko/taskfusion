@@ -23,7 +23,7 @@ export const Column = (props: Props) => {
       </div>
 
       {columns?.length ? (
-        <div className={styles.contentWrapper}>
+        <div className="contentWrapper">
           {columns.map((column) => (
             <ColumnItem key={column.title} {...column} />
           ))}
