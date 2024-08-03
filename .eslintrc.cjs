@@ -13,12 +13,7 @@ module.exports = {
     node: true,
     es2021: true,
   },
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'eslint:recommended',
-    'next',
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'prettier', 'eslint:recommended', 'next'],
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
     // common rules
@@ -27,7 +22,7 @@ module.exports = {
     eqeqeq: 'error',
     'no-else-return': 'error',
     'no-multi-spaces': 'error',
-    'no-console': 'warn',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
     'array-bracket-spacing': ['error', 'never'],
     'block-spacing': ['error', 'always'],
     'brace-style': ['error', '1tbs', { allowSingleLine: true }],
@@ -92,14 +87,7 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          'parent',
-          'sibling',
-          'index',
-        ],
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
         pathGroups: [
           {
             pattern: '*',
