@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers';
+
 import { Column } from '@/components/common/Column';
 import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Details } from '@/components/common/Details';
@@ -135,7 +137,7 @@ export const TasksPage = () => {
     <div>
       <h1>Project name</h1>
 
-      <div className={styles.contentWrapper}>
+      <div className="contentWrapper">
         <div className={styles.detailsWrapper}>
           <Details details={DETAILS} />
 
