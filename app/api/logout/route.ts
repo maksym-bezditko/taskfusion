@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { UserIdResponse } from '@/types';
-import { axiosClient } from '@/utils/axiosClient';
+import { api } from '@/utils/api';
 import { getCookies, removeTokens } from '@/utils/serverActions';
 
 export type LogoutResponse = {
@@ -17,7 +16,7 @@ export async function POST() {
       return NextResponse.json<LogoutResponse>({ success: true, message: 'No token found' }, { status: 200 });
     }
 
-    await axiosClient.post<UserIdResponse>('/auth/logout', {}, { headers: { Authorization: `Bearer ${token}` } });
+    await api.removeRefreshToken(token);
 
     await removeTokens();
 
