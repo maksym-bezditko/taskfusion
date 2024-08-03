@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { AuthLayout } from '@/layouts/AuthLayout';
+import { FormLayout } from '@/layouts/FormLayout';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <AuthLayout>{children}</AuthLayout>;
+  return <FormLayout>{children}</FormLayout>;
 };
 
 export default Layout;
