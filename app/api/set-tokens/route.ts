@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { DEFAULT_AGE } from '@/utils/constrants';
@@ -16,15 +17,17 @@ export async function POST(req: Request) {
   try {
     const { accessToken, refreshToken }: SetTokensRequest = await req.json();
 
-    const accessTokenCookie = `access_token=${accessToken}; Path=/; Max-Age=${DEFAULT_AGE}; HttpOnly; Secure; SameSite=Strict`;
-    const refreshTokenCookie = `refresh_token=${refreshToken}; Path=/; Max-Age=${DEFAULT_AGE}; HttpOnly; Secure; SameSite=Strict`;
-
-    return new Response('Tokens set', {
-      status: 200,
-      headers: {
-        'Set-Cookie': [accessTokenCookie, refreshTokenCookie].join(', '),
-      },
+    cookies().set('access_token', accessToken, {
+      maxAge: DEFAULT_AGE,
+      httpOnly: true,
     });
+
+    cookies().set('refresh_token', refreshToken, {
+      maxAge: DEFAULT_AGE,
+      httpOnly: true,
+    });
+
+    return NextResponse.json<Response>({ success: false, message: 'An error occurred' }, { status: 500 });
   } catch (error) {
     return NextResponse.json<Response>({ success: false, message: 'An error occurred' }, { status: 500 });
   }
