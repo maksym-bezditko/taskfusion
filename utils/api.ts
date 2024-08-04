@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { LoginRequest } from '@/app/api/login/route';
 import { SignupRequest } from '@/app/api/signup/route';
-import { CreateProjectFormValues } from '@/components/schemas/createProjectSchema';
+import { CreateProjectFormValues } from '@/utils/schemas/createProjectSchema';
 import { JwtTokensResponse, ProfileResponse, UserIdResponse, UserType } from '@/types';
 
 import { externalApiClient } from './externalApiClient';

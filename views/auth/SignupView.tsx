@@ -1,4 +1,4 @@
-import { SignupForm } from '@/components/common/forms/SignupForm';
+import { SignupForm } from '@/components/forms/SignupForm';
 
 import styles from './SignupView.module.scss';
 

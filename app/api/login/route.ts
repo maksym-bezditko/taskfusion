@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { LoginFormValues } from '@/components/schemas/loginSchema';
+import { LoginFormValues } from '@/utils/schemas/loginSchema';
 import { api } from '@/utils/api';
 import { setTokens } from '@/utils/serverActions';
 
