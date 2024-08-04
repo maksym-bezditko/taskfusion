@@ -1,4 +1,4 @@
-import { TasksPage } from '@/views/TasksView';
+import { TasksPage } from '@/views/tasks/TasksView';
 
 export default function Page() {
   return <TasksPage />;
