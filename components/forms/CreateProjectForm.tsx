@@ -6,11 +6,11 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { UserType } from '@/types';
 import { api } from '@/utils/api';
+import { CreateProjectFormValues, createProjectSchema } from '@/utils/schemas/createProjectSchema';
 
-import { CreateProjectFormValues, createProjectSchema } from '../../schemas/createProjectSchema';
-import { Button } from '../Button';
-import { DatePicker } from '../DatePicker';
-import { Input } from '../Input';
+import { Button } from '../common/Button';
+import { DatePicker } from '../common/DatePicker';
+import { Input } from '../common/Input';
 
 import styles from './Form.module.scss';
 

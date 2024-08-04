@@ -1,4 +1,4 @@
-import { CreateProjectForm } from '@/components/common/forms/CreateProjectForm';
+import { CreateProjectForm } from '@/components/forms/CreateProjectForm';
 
 import styles from './CreateProjectView.module.scss';
 

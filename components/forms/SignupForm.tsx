@@ -9,12 +9,12 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { SignupResponse } from '@/app/api/signup/route';
 import { UserType } from '@/types';
 import { nextApiClient } from '@/utils/nextApiClient';
+import { SignupFormValues, signupSchema } from '@/utils/schemas/signupSchema';
 
-import { SignupFormValues, signupSchema } from '../../schemas/signupSchema';
-import { Button } from '../Button';
-import { ImageInput } from '../ImageInput';
-import { Input } from '../Input';
-import { Select } from '../Select';
+import { Button } from '../common/Button';
+import { ImageInput } from '../common/ImageInput';
+import { Input } from '../common/Input';
+import { Select } from '../common/Select';
 
 import styles from './Form.module.scss';
 

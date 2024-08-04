@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { nextApiClient } from '@/utils/nextApiClient';
+import { LoginFormValues, loginSchema } from '@/utils/schemas/loginSchema';
 
-import { LoginFormValues, loginSchema } from '../../schemas/loginSchema';
-import { Button } from '../Button';
-import { Input } from '../Input';
+import { Button } from '../common/Button';
+import { Input } from '../common/Input';
 
 import styles from './Form.module.scss';
 
