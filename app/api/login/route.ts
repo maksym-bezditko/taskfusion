@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { LoginFormValues } from '@/utils/schemas/loginSchema';
 import { api } from '@/utils/api';
+import { LoginFormValues } from '@/utils/schemas/loginSchema';
 import { setTokens } from '@/utils/serverActions';
 
 export type LoginRequest = LoginFormValues;
