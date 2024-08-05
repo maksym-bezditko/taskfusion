@@ -47,10 +47,8 @@ export const getRefreshTokenPayload = async () => {
 };
 
 export const setTokens = async (accessToken: string, refreshToken: string) => {
-  const cookieStorage = cookies();
-
-  cookieStorage.set('access_token', accessToken, { maxAge: DEFAULT_AGE });
-  cookieStorage.set('refresh_token', refreshToken, { maxAge: DEFAULT_AGE });
+  cookies().set('access_token', accessToken, { maxAge: DEFAULT_AGE, httpOnly: true, sameSite: 'strict' });
+  cookies().set('refresh_token', refreshToken, { maxAge: DEFAULT_AGE, httpOnly: true, sameSite: 'strict' });
 };
 
 export const getCookies = async (name: string) => {
