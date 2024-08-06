@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { redirect } from 'next/navigation';
 
-import { api } from './api';
+import { refreshTokens } from './api/mutations';
 import { getCookies } from './serverActions';
 
 export const externalApiClient = axios.create({
@@ -39,7 +39,7 @@ externalApiClient.interceptors.response.use(
           return Promise.reject(error);
         }
 
-        const { data } = await api.refreshTokens(oldRefreshToken);
+        const { data } = await refreshTokens(oldRefreshToken);
 
         const { accessToken, refreshToken } = data;
 
