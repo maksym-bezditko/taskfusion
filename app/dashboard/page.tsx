@@ -1,25 +1,31 @@
-import { notFound } from 'next/navigation';
+'use client';
+
+import useSWR from 'swr';
 
 import { UserType } from '@/types';
-import { api } from '@/utils/api';
+import { getUserProfile } from '@/utils/api/queries';
 import { ClientDashboardView } from '@/views/dashboards/ClientDashboardView';
 import { DeveloperDashboardView } from '@/views/dashboards/DeveloperDashboardView';
 import { PmDashboardView } from '@/views/dashboards/PmDashboardView';
 
-export default async function Page() {
-  const user = await api.getUserProfile();
+export default function Page() {
+  const { data, error, isLoading } = useSWR(getUserProfile.queryKey, getUserProfile.fetcher);
 
-  if (!user) {
-    notFound();
+  if (isLoading) {
+    return 'loading';
   }
 
-  if (user.data.userType === UserType.CLIENT) {
-    return <ClientDashboardView profile={user.data} />;
+  if (error || !data) {
+    return 'error';
   }
 
-  if (user.data.userType === UserType.DEVELOPER) {
-    return <DeveloperDashboardView profile={user.data} />;
+  if (data.userType === UserType.CLIENT) {
+    return <ClientDashboardView profile={data} />;
   }
 
-  return <PmDashboardView profile={user.data} />;
+  if (data.userType === UserType.DEVELOPER) {
+    return <DeveloperDashboardView profile={data} />;
+  }
+
+  return <PmDashboardView profile={data} />;
 }
