@@ -2,20 +2,12 @@ import axios from 'axios';
 
 import { LoginRequest } from '@/app/api/login/route';
 import { SignupRequest } from '@/app/api/signup/route';
+import { JwtTokensResponse, UserIdResponse, UserType } from '@/types';
 import { CreateProjectFormValues } from '@/utils/schemas/createProjectSchema';
-import { JwtTokensResponse, ProfileResponse, UserIdResponse, UserType } from '@/types';
 
-import { externalApiClient } from './externalApiClient';
+import { externalApiClient } from '../externalApiClient';
 
-const getUserProfile = async () => {
-  try {
-    return externalApiClient.get<ProfileResponse>('/users/profile');
-  } catch (error) {
-    return null;
-  }
-};
-
-const createUser = async (data: SignupRequest) => {
+export const createUser = async (data: SignupRequest) => {
   const { email, name, password, description, position, telegramId } = data;
 
   const endpointUrl = (() => {
@@ -40,7 +32,7 @@ const createUser = async (data: SignupRequest) => {
   });
 };
 
-const removeRefreshToken = async (accessToken: string) => {
+export const removeRefreshToken = async (accessToken: string) => {
   return externalApiClient.post<UserIdResponse>(
     '/auth/logout',
     {},
@@ -48,13 +40,13 @@ const removeRefreshToken = async (accessToken: string) => {
   );
 };
 
-const login = async (data: LoginRequest) => {
+export const login = async (data: LoginRequest) => {
   const { email, password } = data;
 
   return externalApiClient.post<JwtTokensResponse>('/auth/login', { email, password });
 };
 
-const refreshTokens = async (refreshToken: string) => {
+export const refreshTokens = async (refreshToken: string) => {
   return axios.post<JwtTokensResponse>(
     '/auth/refresh-tokens',
     {},
@@ -65,7 +57,7 @@ const refreshTokens = async (refreshToken: string) => {
   );
 };
 
-const createProject = async (data: CreateProjectFormValues & { clientId: number }) => {
+export const createProject = async (data: CreateProjectFormValues & { clientId: number }) => {
   const { title, description, deadline, clientId } = data;
 
   return externalApiClient.post<UserIdResponse>('/projects/create-project', {
@@ -74,13 +66,4 @@ const createProject = async (data: CreateProjectFormValues & { clientId: number 
     deadline,
     clientId,
   });
-};
-
-export const api = {
-  login,
-  createUser,
-  getUserProfile,
-  removeRefreshToken,
-  createProject,
-  refreshTokens,
 };
