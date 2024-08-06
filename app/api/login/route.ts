@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { api } from '@/utils/api';
+import { login } from '@/utils/api/mutations';
 import { LoginFormValues } from '@/utils/schemas/loginSchema';
 import { setTokens } from '@/utils/serverActions';
 
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   try {
     const { email, password }: LoginRequest = await req.json();
 
-    const response = await api.login({ email, password });
+    const response = await login({ email, password });
 
     if (!response.data || !response.data.accessToken || !response.data.refreshToken) {
       return NextResponse.json<SignupResponse>({ success: false, message: 'An error occurred' }, { status: 500 });

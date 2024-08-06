@@ -3,9 +3,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import useSWR from 'swr';
 
 import { UserType } from '@/types';
-import { api } from '@/utils/api';
+import { createProject } from '@/utils/api/mutations';
+import { getUserProfile } from '@/utils/api/queries';
 import { CreateProjectFormValues, createProjectSchema } from '@/utils/schemas/createProjectSchema';
 
 import { Button } from '../common/Button';
@@ -24,21 +26,20 @@ export const CreateProjectForm = () => {
   });
 
   const router = useRouter();
+  const { data: user } = useSWR(getUserProfile.queryKey, getUserProfile.fetcher);
 
   const onSubmit: SubmitHandler<CreateProjectFormValues> = async (values) => {
-    const user = await api.getUserProfile();
-
     if (!user) {
       throw new Error('User not found');
     }
 
-    if (user.data.userType !== UserType.CLIENT) {
+    if (user.userType !== UserType.CLIENT) {
       throw new Error('User is not a client to create a project');
     }
 
-    await api.createProject({
+    await createProject({
       ...values,
-      clientId: user.data.client.id,
+      clientId: user.client.id,
     });
 
     router.push('/dashboard');

@@ -1,5 +1,7 @@
+'use client';
+
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import useSWR from 'swr';
 
 import DefaultAvatar from '@/components/assets/Avatar.png';
 import { Column } from '@/components/common/Column';
@@ -10,7 +12,7 @@ import { ListView } from '@/components/common/ListView';
 import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { Plus } from '@/components/svg/Plus';
-import { api } from '@/utils/api';
+import { getUserProfile } from '@/utils/api/queries';
 
 import styles from './ProfileView.module.scss';
 
@@ -93,21 +95,27 @@ const PROGRESS_COLUMNS: ColumnItemProps[] = [
   },
 ];
 
-export const ProfilePage = async () => {
-  const user = await api.getUserProfile();
+export const ProfilePage = () => {
+  const { data, error, isLoading } = useSWR(getUserProfile.queryKey, getUserProfile.fetcher);
 
-  if (!user) {
-    notFound();
+  if (isLoading) {
+    return 'loading';
+  }
+
+  if (error || !data) {
+    console.error(error);
+
+    return 'error';
   }
 
   const DETAILS = [
     {
       title: 'Position',
-      value: user.data.userType,
+      value: data.userType,
     },
     {
       title: 'Email',
-      value: user.data.email,
+      value: data.email,
     },
     {
       title: 'Telegram ID',
@@ -117,7 +125,7 @@ export const ProfilePage = async () => {
 
   return (
     <div>
-      <h1>{user.data.name}</h1>
+      <h1>{data.name}</h1>
 
       <div className={styles.contentWrapper}>
         <div className={styles.personalDetailsWrapper}>
