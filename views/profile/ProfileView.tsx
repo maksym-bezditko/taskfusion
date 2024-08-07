@@ -1,7 +1,7 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import useSWR from 'swr';
 
 import DefaultAvatar from '@/components/assets/Avatar.png';
 import { Column } from '@/components/common/Column';
@@ -9,9 +9,11 @@ import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Details } from '@/components/common/Details';
 import { Props as ListItemProps } from '@/components/common/ListItem';
 import { ListView } from '@/components/common/ListView';
+import { Loader } from '@/components/common/Loader';
 import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { Plus } from '@/components/svg/Plus';
+import { QueryKeys } from '@/types/enums';
 import { getUserProfile } from '@/utils/api/queries';
 
 import styles from './ProfileView.module.scss';
@@ -96,10 +98,10 @@ const PROGRESS_COLUMNS: ColumnItemProps[] = [
 ];
 
 export const ProfilePage = () => {
-  const { data, error, isLoading } = useSWR(getUserProfile.queryKey, getUserProfile.fetcher);
+  const { data, isLoading, error } = useQuery({ queryKey: [QueryKeys.USER_PROFILE], queryFn: getUserProfile });
 
   if (isLoading) {
-    return 'loading';
+    return <Loader />;
   }
 
   if (error || !data) {
