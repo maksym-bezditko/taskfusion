@@ -1,11 +1,11 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import useSWR from 'swr';
 
-import { UserType } from '@/types';
+import { QueryKeys } from '@/types/enums';
 import { createProject } from '@/utils/api/mutations';
 import { getUserProfile } from '@/utils/api/queries';
 import { CreateProjectFormValues, createProjectSchema } from '@/utils/schemas/createProjectSchema';
@@ -21,28 +21,35 @@ export const CreateProjectForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<CreateProjectFormValues>({
     resolver: zodResolver(createProjectSchema),
   });
 
   const router = useRouter();
-  const { data: user } = useSWR(getUserProfile.queryKey, getUserProfile.fetcher);
+  const { data } = useQuery({ queryKey: [QueryKeys.USER_PROFILE], queryFn: getUserProfile });
+  const { mutate: createProjectMutation } = useMutation({
+    mutationFn: (values: CreateProjectFormValues) => {
+      if (!data?.client.id) {
+        throw new Error('You are not a client');
+      }
+
+      return createProject({
+        ...values,
+        clientId: data.client.id,
+      });
+    },
+    mutationKey: [QueryKeys.PROJECTS],
+    onSuccess: () => {
+      router.push('/dashboard');
+    },
+    onError: (error) => {
+      setError('root', { message: error.message });
+    },
+  });
 
   const onSubmit: SubmitHandler<CreateProjectFormValues> = async (values) => {
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    if (user.userType !== UserType.CLIENT) {
-      throw new Error('User is not a client to create a project');
-    }
-
-    await createProject({
-      ...values,
-      clientId: user.client.id,
-    });
-
-    router.push('/dashboard');
+    return createProjectMutation(values);
   };
 
   return (
@@ -62,9 +69,7 @@ export const CreateProjectForm = () => {
       {errors.root && <p className={styles.validationText}>{errors.root.message}</p>}
 
       <div className={styles.buttonWrapper}>
-        <Button text="Login" bgColor="orange" isFontBold textColor="white" width="12.75rem" />
-
-        <p className={styles.forgotPassword}>Forgot password?</p>
+        <Button text="Create" bgColor="orange" isFontBold textColor="white" width="12.75rem" />
       </div>
     </form>
   );

@@ -1,18 +1,19 @@
 'use client';
 
-import useSWR from 'swr';
+import { useQuery } from '@tanstack/react-query';
 
-import { UserType } from '@/types';
+import { Loader } from '@/components/common/Loader';
+import { QueryKeys, UserType } from '@/types/enums';
 import { getUserProfile } from '@/utils/api/queries';
 import { ClientDashboardView } from '@/views/dashboards/ClientDashboardView';
 import { DeveloperDashboardView } from '@/views/dashboards/DeveloperDashboardView';
 import { PmDashboardView } from '@/views/dashboards/PmDashboardView';
 
 export default function Page() {
-  const { data, error, isLoading } = useSWR(getUserProfile.queryKey, getUserProfile.fetcher);
+  const { data, error, isLoading } = useQuery({ queryKey: [QueryKeys.USER_PROFILE], queryFn: getUserProfile });
 
   if (isLoading) {
-    return 'loading';
+    return <Loader />;
   }
 
   if (error || !data) {
@@ -20,7 +21,7 @@ export default function Page() {
   }
 
   if (data.userType === UserType.CLIENT) {
-    return <ClientDashboardView profile={data} />;
+    return <ClientDashboardView />;
   }
 
   if (data.userType === UserType.DEVELOPER) {
