@@ -97,7 +97,7 @@ export const TaskPage = (props: Props) => {
     <div>
       <h1>TaskPage {taskId}</h1>
 
-      <div className="contentWrapper">
+      <div className={styles.contentWrapper}>
         <Column title="Actions" columns={ACTIONS} />
 
         <div className={styles.commentSection}>

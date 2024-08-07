@@ -1,8 +1,4 @@
-export enum UserType {
-  CLIENT = 'Client',
-  DEVELOPER = 'Developer',
-  PM = 'Project Manager',
-}
+import { UserType } from './enums';
 
 export type JwtTokensResponse = {
   accessToken: string;
@@ -46,6 +42,21 @@ export type ProfileResponse = {
       client: PmResponse;
     }
 );
+
+export type Project = {
+  id: number;
+  title: string;
+  description: string;
+  deadline: Date;
+  pmId: number | null;
+  clientId: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type ProjectsResponse = Project[];
+
+export type ProjectResponse = Project;
 
 export type JwtPayload = {
   id: number;
