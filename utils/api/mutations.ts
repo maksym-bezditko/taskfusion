@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import { LoginRequest } from '@/app/api/login/route';
 import { SignupRequest } from '@/app/api/signup/route';
-import { JwtTokensResponse, UserIdResponse, UserType } from '@/types';
+import { JwtTokensResponse, UserIdResponse } from '@/types';
+import { UserType } from '@/types/enums';
 import { CreateProjectFormValues } from '@/utils/schemas/createProjectSchema';
 
 import { externalApiClient } from '../externalApiClient';
@@ -65,5 +66,6 @@ export const createProject = async (data: CreateProjectFormValues & { clientId: 
     description,
     deadline,
     clientId,
+    pmId: null,
   });
 };
