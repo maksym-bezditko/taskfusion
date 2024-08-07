@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 
 import styles from './ListItem.module.scss';
@@ -8,12 +9,13 @@ export type Props = {
   data: ReactNode[];
   right?: ReactNode;
   type?: 'column' | 'row';
+  href?: string;
 };
 
 export const ListItem = (props: Props) => {
-  const { title, data, type = 'column' } = props;
+  const { title, data, type = 'column', href } = props;
 
-  return (
+  const link = (
     <div className={styles.wrapper}>
       <div className={classNames(type === 'row' ? styles.rowWrapper : styles.columnWrapper)}>
         <p className={styles.title}>{title}</p>
@@ -24,4 +26,10 @@ export const ListItem = (props: Props) => {
       {type === 'row' && props.right}
     </div>
   );
+
+  if (href) {
+    return <Link href={href}>{link}</Link>;
+  }
+
+  return link;
 };

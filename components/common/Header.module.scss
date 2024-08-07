@@ -32,3 +32,10 @@
 .downArrow {
   cursor: pointer;
 }
+
+.profileContainerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1rem;
+}
