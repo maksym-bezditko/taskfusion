@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { api } from '@/utils/api';
+import { removeRefreshToken } from '@/utils/api/mutations';
 import { getCookies, removeTokens } from '@/utils/serverActions';
 
 export type LogoutResponse = {
@@ -16,7 +16,7 @@ export async function POST() {
       return NextResponse.json<LogoutResponse>({ success: true, message: 'No token found' }, { status: 200 });
     }
 
-    await api.removeRefreshToken(token);
+    await removeRefreshToken(token);
 
     await removeTokens();
 

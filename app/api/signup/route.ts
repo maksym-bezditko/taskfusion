@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
+import { createUser } from '@/utils/api/mutations';
 import { SignupFormValues } from '@/utils/schemas/signupSchema';
-import { api } from '@/utils/api';
 import { setTokens } from '@/utils/serverActions';
 
 export type SignupRequest = SignupFormValues;
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   try {
     const requestData: SignupRequest = await req.json();
 
-    const response = await api.createUser(requestData);
+    const response = await createUser(requestData);
 
     if (!response.data || !response.data.accessToken || !response.data.refreshToken) {
       return NextResponse.json<SignupResponse>({ success: false, message: 'An error occurred' }, { status: 500 });

@@ -25,14 +25,16 @@ export const MenuNavigation = () => {
       >
         Clients
       </Link>
+
       <Link
         className={classNames(styles.listItem, {
-          [styles.active]: pathname === '/tasks',
+          [styles.active]: pathname === '/dashboard',
         })}
-        href="/tasks"
+        href="/dashboard"
       >
-        Task manager
+        Dashboard
       </Link>
+
       <Link
         className={classNames(styles.listItem, {
           [styles.active]: pathname?.startsWith('/task/'),
@@ -41,6 +43,7 @@ export const MenuNavigation = () => {
       >
         Task
       </Link>
+
       <Link
         className={classNames(styles.listItem, {
           [styles.active]: pathname === '/profile',

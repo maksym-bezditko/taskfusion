@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 import { setTokens } from '@/utils/serverActions';
-import { cookies } from 'next/headers';
 
 export type SetTokensRequest = {
   accessToken: string;
