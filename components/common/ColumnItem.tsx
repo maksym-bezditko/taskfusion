@@ -1,6 +1,8 @@
+import Link from 'next/link';
 import { ReactNode } from 'react';
 
-import { PriorityBadge, Props as PriorityBadgeProps } from '@/components/common/PriorityBadge';
+import { PriorityBadge } from '@/components/common/PriorityBadge';
+import { TaskPriority } from '@/types/enums';
 
 import styles from './ColumnItem.module.scss';
 
@@ -12,23 +14,24 @@ export type ColumnItemRow = {
 export type Props = {
   title: string;
   rows: ColumnItemRow[];
-  status?: PriorityBadgeProps['priority'];
+  priority?: TaskPriority;
   text?: string;
   author?: ReactNode;
+  href?: string;
 };
 
 export const ColumnItem = (props: Props) => {
-  const { title, rows, status, text, author } = props;
+  const { title, rows, priority, text, author, href } = props;
 
-  return (
+  const item = (
     <div className={styles.wrapper}>
       <div className={styles.headerWrapper}>
         <p className={styles.title}>{title}</p>
 
-        {status && <PriorityBadge priority={status} />}
+        {priority && <PriorityBadge priority={priority} />}
       </div>
 
-      <div className="contentWrapper">
+      <div className={styles.contentWrapper}>
         {rows.map((row) => (
           <div key={row.name} className={styles.row}>
             <p className={styles.name}>{row.name}:</p>
@@ -42,4 +45,10 @@ export const ColumnItem = (props: Props) => {
       {author}
     </div>
   );
+
+  if (href) {
+    return <Link href={href}>{item}</Link>;
+  }
+
+  return item;
 };
