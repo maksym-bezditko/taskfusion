@@ -9,4 +9,18 @@ export enum QueryKeys {
   PROJECTS = 'PROJECTS',
   PROJECT = 'PROJECT',
   TASKS = 'TASKS',
+  TASK = 'TASK',
+}
+
+export enum TaskStatus {
+  TO_DO = 'To do',
+  IN_PROGRESS = 'In progress',
+  CLOSED = 'Closed',
+  FROZEN = 'Frozen',
+}
+
+export enum TaskPriority {
+  LOW = 'Low',
+  MEDIUM = 'Medium',
+  HIGH = 'High',
 }

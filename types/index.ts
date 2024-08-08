@@ -1,4 +1,4 @@
-import { UserType } from './enums';
+import { TaskPriority, TaskStatus, UserType } from './enums';
 
 export type JwtTokensResponse = {
   accessToken: string;
@@ -43,6 +43,12 @@ export type ProfileResponse = {
     }
 );
 
+export type JwtPayload = {
+  id: number;
+  email: string;
+  userType: UserType;
+};
+
 export type Project = {
   id: number;
   title: string;
@@ -58,8 +64,19 @@ export type ProjectsResponse = Project[];
 
 export type ProjectResponse = Project;
 
-export type JwtPayload = {
+export type Task = {
   id: number;
-  email: string;
-  userType: UserType;
+  title: string;
+  description: string;
+  taskPriority: TaskPriority;
+  taskStatus: TaskStatus;
+  projectId: number;
+  developerId: number;
+  deadline: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
+
+export type TasksResponse = Task[];
+
+export type TaskResponse = Task;
