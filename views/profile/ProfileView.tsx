@@ -5,9 +5,7 @@ import Image from 'next/image';
 
 import DefaultAvatar from '@/components/assets/Avatar.png';
 import { Column } from '@/components/common/Column';
-import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Details } from '@/components/common/Details';
-import { Props as ListItemProps } from '@/components/common/ListItem';
 import { ListView } from '@/components/common/ListView';
 import { Loader } from '@/components/common/Loader';
 import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
@@ -34,66 +32,6 @@ const PERFORMANCE_DETAILS = [
   {
     title: 'Number of frozen tasks',
     value: '0',
-  },
-];
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const PROJECTS: ListItemProps[] = [
-  {
-    title: 'ОсОО “Energi.kg”',
-    data: [
-      <TextWithIcon key={1} iconName="sunrise" text="12/04/2021" />,
-      <TextWithIcon key={2} iconName="sunset" text="12/04/2021" />,
-      <TextWithIcon key={3} iconName="people" text="Adyl, Azhar, Arthur" />,
-    ],
-  },
-  {
-    title: 'TextLab',
-    data: [
-      <TextWithIcon key={1} iconName="sunrise" text="12/04/2021" />,
-      <TextWithIcon key={2} iconName="sunset" text="12/04/2021" />,
-      <TextWithIcon key={3} iconName="people" text="Adyl, Azhar, Arthur" />,
-    ],
-  },
-  {
-    title: 'ComLab',
-    data: [
-      <TextWithIcon key={1} iconName="sunrise" text="12/04/2021" />,
-      <TextWithIcon key={2} iconName="sunset" text="12/04/2021" />,
-      <TextWithIcon key={3} iconName="people" text="Adyl, Azhar, Arthur" />,
-    ],
-  },
-];
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const PROGRESS_COLUMNS: ColumnItemProps[] = [
-  {
-    title: 'Notifications',
-    rows: [
-      {
-        name: 'Participant',
-        value: 'Artur',
-      },
-      {
-        name: 'Date added',
-        value: '12/04/2021',
-      },
-    ],
-    status: 'Low',
-  },
-  {
-    title: 'Task types',
-    rows: [
-      {
-        name: 'Participant',
-        value: 'Adyl',
-      },
-      {
-        name: 'Date added',
-        value: '12/04/2021',
-      },
-    ],
-    status: 'Low',
   },
 ];
 

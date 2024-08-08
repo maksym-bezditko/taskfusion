@@ -2,113 +2,21 @@
 
 import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
+import { useMemo } from 'react';
 
 import { Column } from '@/components/common/Column';
-// import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Details } from '@/components/common/Details';
 import { Loader } from '@/components/common/Loader';
 import { Plus } from '@/components/svg/Plus';
-import { QueryKeys } from '@/types/enums';
-import { getProjectById } from '@/utils/api/queries';
+import { QueryKeys, TaskStatus } from '@/types/enums';
+import { getProjectById, getTasksByStatus } from '@/utils/api/queries';
+import { mapTasksToColumns } from '@/utils/helpers';
 
 import styles from './ProjectView.module.scss';
 
 type Props = {
   projectId: string;
 };
-
-// const TODO_COLUMNS: ColumnItemProps[] = [
-//   {
-//     title: 'CRM system design',
-//     rows: [
-//       {
-//         name: 'Participant',
-//         value: 'Azhar',
-//       },
-//       {
-//         name: 'Date added',
-//         value: '12/04/2021',
-//       },
-//     ],
-//     status: 'Medium',
-//   },
-//   {
-//     title: 'Statistics',
-//     rows: [
-//       {
-//         name: 'Participant',
-//         value: 'Azhar',
-//       },
-//       {
-//         name: 'Date added',
-//         value: '12/04/2021',
-//       },
-//     ],
-//     status: 'Low',
-//   },
-//   {
-//     title: 'Priorities',
-//     rows: [
-//       {
-//         name: 'Participant',
-//         value: 'Adyl, Azhar',
-//       },
-//       {
-//         name: 'Date added',
-//         value: '12/04/2021',
-//       },
-//     ],
-//     status: 'High',
-//   },
-// ];
-
-// const PROGRESS_COLUMNS: ColumnItemProps[] = [
-//   {
-//     title: 'Notifications',
-//     rows: [
-//       {
-//         name: 'Participant',
-//         value: 'Artur',
-//       },
-//       {
-//         name: 'Date added',
-//         value: '12/04/2021',
-//       },
-//     ],
-//     status: 'Low',
-//   },
-//   {
-//     title: 'Task types',
-//     rows: [
-//       {
-//         name: 'Participant',
-//         value: 'Adyl',
-//       },
-//       {
-//         name: 'Date added',
-//         value: '12/04/2021',
-//       },
-//     ],
-//     status: 'Low',
-//   },
-// ];
-
-// const FROZEN_COLUMNS: ColumnItemProps[] = [
-//   {
-//     title: 'Todoshnik',
-//     rows: [
-//       {
-//         name: 'Participant',
-//         value: 'Azhar',
-//       },
-//       {
-//         name: 'Date added',
-//         value: '12/04/2021',
-//       },
-//     ],
-//     status: 'Low',
-//   },
-// ];
 
 export const ProjectView = (props: Props) => {
   const { projectId } = props;
@@ -117,6 +25,35 @@ export const ProjectView = (props: Props) => {
     queryKey: [QueryKeys.PROJECT + projectId],
     queryFn: () => getProjectById(projectId),
   });
+
+  const { data: todoTasks } = useQuery({
+    queryKey: [`${QueryKeys.TASKS}_${TaskStatus.TO_DO}`],
+    queryFn: () => getTasksByStatus(+projectId, TaskStatus.TO_DO),
+  });
+
+  const { data: progressTasks } = useQuery({
+    queryKey: [`${QueryKeys.TASKS}_${TaskStatus.IN_PROGRESS}`],
+    queryFn: () => getTasksByStatus(+projectId, TaskStatus.IN_PROGRESS),
+  });
+
+  const { data: closedTasks } = useQuery({
+    queryKey: [`${QueryKeys.TASKS}_${TaskStatus.CLOSED}`],
+    queryFn: () => getTasksByStatus(+projectId, TaskStatus.CLOSED),
+  });
+
+  const { data: frozenTasks } = useQuery({
+    queryKey: [`${QueryKeys.TASKS}_${TaskStatus.FROZEN}`],
+    queryFn: () => getTasksByStatus(+projectId, TaskStatus.FROZEN),
+  });
+
+  const { todoTasksColumn, progressTasksColumn, frozenTasksColumn, closedTasksColumn } = useMemo(() => {
+    return {
+      todoTasksColumn: mapTasksToColumns(todoTasks),
+      progressTasksColumn: mapTasksToColumns(progressTasks),
+      frozenTasksColumn: mapTasksToColumns(frozenTasks),
+      closedTasksColumn: mapTasksToColumns(closedTasks),
+    };
+  }, [todoTasks, progressTasks, closedTasks, frozenTasks]);
 
   if (isLoading || isError || !data) {
     return <Loader />;
@@ -168,13 +105,13 @@ export const ProjectView = (props: Props) => {
         </div>
 
         <div className={styles.wrapper}>
-          <Column title="To do" columns={[]} right={<Plus />} />
+          <Column title="To do" columns={todoTasksColumn} right={<Plus />} />
 
-          <Column title="In progress" columns={[]} right={<Plus />} />
+          <Column title="In progress" columns={progressTasksColumn} right={<Plus />} />
 
-          <Column title="Closed" columns={[]} right={<Plus />} />
+          <Column title="Closed" columns={closedTasksColumn} right={<Plus />} />
 
-          <Column title="Frozen" columns={[]} right={<Plus />} />
+          <Column title="Frozen" columns={frozenTasksColumn} right={<Plus />} />
         </div>
       </div>
     </div>
