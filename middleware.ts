@@ -5,56 +5,64 @@ import { getIsLoggedIn, getRefreshTokenPayload } from './utils/serverActions';
 
 const LOGGED_IN_ONLY_ROUTES = ['/profile', '/dashboard'];
 const LOGGED_OUT_ONLY_ROUTES = ['/auth/login', '/auth/signup'];
-const CLIENT_ONLY_ROUTES = ['/projects/create'];
+const CLIENT_ONLY_ROUTES = ['/dashboard/projects/create', '/dashboard/projects/'];
 const DEVELOPER_ONLY_ROUTES: string[] = [];
 const PM_ONLY_ROUTES: string[] = [];
+
+const matchesRoute = (url: string, routes: string[]) => {
+  return routes.some((route) => {
+    const regex = new RegExp(`^${route}(\\d+)?$`);
+
+    return regex.test(url);
+  });
+};
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isLoggedIn = await getIsLoggedIn();
 
-  if (LOGGED_IN_ONLY_ROUTES.includes(pathname) && !isLoggedIn) {
+  if (matchesRoute(pathname, LOGGED_IN_ONLY_ROUTES) && !isLoggedIn) {
     return NextResponse.redirect(new URL('/auth/login', request.url));
   }
 
-  if (LOGGED_OUT_ONLY_ROUTES.includes(pathname) && isLoggedIn) {
+  if (matchesRoute(pathname, LOGGED_OUT_ONLY_ROUTES) && isLoggedIn) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  if (CLIENT_ONLY_ROUTES.includes(pathname)) {
+  if (matchesRoute(pathname, CLIENT_ONLY_ROUTES)) {
     if (!isLoggedIn) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/auth/login', request.url));
     }
 
     const jwtPayload = await getRefreshTokenPayload();
 
     if (jwtPayload?.payload.userType !== UserType.CLIENT) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/auth/login', request.url));
     }
   }
 
-  if (DEVELOPER_ONLY_ROUTES.includes(pathname)) {
+  if (matchesRoute(pathname, DEVELOPER_ONLY_ROUTES)) {
     if (!isLoggedIn) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/auth/login', request.url));
     }
 
     const jwtPayload = await getRefreshTokenPayload();
 
     if (jwtPayload?.payload.userType !== UserType.DEVELOPER) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/auth/login', request.url));
     }
   }
 
-  if (PM_ONLY_ROUTES.includes(pathname)) {
+  if (matchesRoute(pathname, PM_ONLY_ROUTES)) {
     if (!isLoggedIn) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/auth/login', request.url));
     }
 
     const jwtPayload = await getRefreshTokenPayload();
 
     if (jwtPayload?.payload.userType !== UserType.PM) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/auth/login', request.url));
     }
   }
 
