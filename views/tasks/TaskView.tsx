@@ -1,3 +1,7 @@
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
+
 import { Avatar } from '@/components/common/Avatar';
 import { Button } from '@/components/common/Button';
 import { Column } from '@/components/common/Column';
@@ -5,10 +9,13 @@ import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Comment } from '@/components/common/Comment';
 import { CommentInput } from '@/components/common/CommentInput';
 import { Details } from '@/components/common/Details';
-import { PriorityBadge } from '@/components/common/PriorityBadge';
+import { Loader } from '@/components/common/Loader';
 import { Check } from '@/components/svg/Check';
 import { Freeze } from '@/components/svg/Freeze';
 import { Participant } from '@/components/svg/Participant';
+import { QueryKeys } from '@/types/enums';
+import { getTaskById } from '@/utils/api/queries';
+import { mapTaskToDetails } from '@/utils/helpers';
 
 import styles from './TaskView.module.scss';
 
@@ -18,37 +25,7 @@ type Props = {
 
 const ACTIONS: ColumnItemProps[] = [
   {
-    title: 'CRM system design',
-    rows: [
-      {
-        name: 'Participant',
-        value: 'Azhar',
-      },
-      {
-        name: 'Date added',
-        value: '12/04/2021',
-      },
-    ],
-    text: 'Приступил(а) к выполнению',
-    author: <Avatar name="Adyl" />,
-  },
-  {
-    title: 'Statistics',
-    rows: [
-      {
-        name: 'Participant',
-        value: 'Azhar',
-      },
-      {
-        name: 'Date added',
-        value: '12/04/2021',
-      },
-    ],
-    text: 'Приступил(а) к выполнению',
-    author: <Avatar name="Adyl" />,
-  },
-  {
-    title: 'Priorities',
+    title: 'Participant',
     rows: [
       {
         name: 'Participant',
@@ -59,49 +36,32 @@ const ACTIONS: ColumnItemProps[] = [
         value: '12/04/2021',
       },
     ],
-    text: 'Создал(а) задачу',
+    text: 'Created by Adyl, Azhar',
     author: <Avatar name="Adyl" />,
-  },
-];
-
-const DETAILS_STRING =
-  'Добавить статистику по задачам, часам. Сделать сбор статистики за текущий месяц и создание уведомления в последний день месяца.';
-
-const TASK_DETAILS = [
-  {
-    title: 'Priority',
-    value: <PriorityBadge priority="Low" />,
-  },
-  {
-    title: 'Status',
-    value: 'Frozen',
-  },
-  {
-    title: 'Date added',
-    value: '12/04/2021',
-  },
-  {
-    title: 'Deadline',
-    value: '21/04/2021',
-  },
-  {
-    title: 'Participants',
-    value: 'Adyl, Azhar, Arthur',
   },
 ];
 
 export const TaskPage = (props: Props) => {
   const { taskId } = props;
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [`${QueryKeys.TASK}_${taskId}`],
+    queryFn: () => getTaskById(+taskId),
+  });
+
+  if (isLoading || !data || isError) {
+    return <Loader />;
+  }
+
   return (
     <div>
-      <h1>TaskPage {taskId}</h1>
+      <h1>{data.title}</h1>
 
       <div className={styles.contentWrapper}>
         <Column title="Actions" columns={ACTIONS} />
 
         <div className={styles.commentSection}>
-          <Details details={DETAILS_STRING} />
+          <Details details={data.description} />
 
           <CommentInput />
 
@@ -109,7 +69,7 @@ export const TaskPage = (props: Props) => {
         </div>
 
         <div className={styles.taskDetailsSection}>
-          <Details details={TASK_DETAILS} />
+          <Details details={mapTaskToDetails(data)} />
 
           <Button text="Change the priority" isModalButton width="100%" isFontBold={false} />
 
