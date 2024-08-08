@@ -24,7 +24,7 @@ export const ClientDashboardView = () => {
       <div className={styles.titleWrapper}>
         <h1>Client Dashboard</h1>
 
-        <Link href="/projects/create">
+        <Link href="dashboard/projects/create">
           <Button text="Create new project" bgColor="orange" textColor="white" icon={<BiPlus />} />
         </Link>
       </div>
@@ -45,7 +45,7 @@ export const ClientDashboardView = () => {
               <TextWithIcon key={3} iconName="people" text="Adyl, Azhar, Arthur" />,
             ],
             right: project.id,
-            href: `/projects/${project.id}`,
+            href: `dashboard/projects/${project.id}`,
           }))}
         />
 
