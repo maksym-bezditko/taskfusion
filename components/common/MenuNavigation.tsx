@@ -28,20 +28,11 @@ export const MenuNavigation = () => {
 
       <Link
         className={classNames(styles.listItem, {
-          [styles.active]: pathname === '/dashboard',
+          [styles.active]: pathname.includes('dashboard'),
         })}
         href="/dashboard"
       >
         Dashboard
-      </Link>
-
-      <Link
-        className={classNames(styles.listItem, {
-          [styles.active]: pathname?.startsWith('/task/'),
-        })}
-        href="/task/1"
-      >
-        Task
       </Link>
 
       <Link

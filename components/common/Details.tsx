@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 import styles from './Details.module.scss';
 
-type Detail = {
+export type Detail = {
   title: string;
   value: ReactNode;
 };

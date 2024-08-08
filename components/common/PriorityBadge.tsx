@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 
+import { TaskPriority } from '@/types/enums';
+
 import styles from './PriorityBadge.module.scss';
 
 export type Props = {
-  priority: 'High' | 'Medium' | 'Low';
+  priority: TaskPriority;
 };
 
 export const PriorityBadge = (props: Props) => {
@@ -12,9 +14,9 @@ export const PriorityBadge = (props: Props) => {
   return (
     <div
       className={classNames(styles.wrapper, {
-        [styles.green]: priority === 'Low',
-        [styles.orange]: priority === 'Medium',
-        [styles.red]: priority === 'High',
+        [styles.green]: priority === TaskPriority.LOW,
+        [styles.orange]: priority === TaskPriority.MEDIUM,
+        [styles.red]: priority === TaskPriority.HIGH,
       })}
     >
       {priority}
