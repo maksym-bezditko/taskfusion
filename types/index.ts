@@ -80,3 +80,26 @@ export type Task = {
 export type TasksResponse = Task[];
 
 export type TaskResponse = Task;
+
+export type PasswordlessUser = {
+  id: number;
+  email: string;
+  name: string;
+  description: string;
+  telegramId: string;
+  userType: UserType;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type Action = {
+  id: number;
+  title: string;
+  taskId: number;
+  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  user: PasswordlessUser;
+};
+
+export type ActionsResponse = Action[];

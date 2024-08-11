@@ -10,6 +10,7 @@ export enum QueryKeys {
   PROJECT = 'PROJECT',
   TASKS = 'TASKS',
   TASK = 'TASK',
+  ACTIONS = 'ACTIONS',
 }
 
 export enum TaskStatus {
