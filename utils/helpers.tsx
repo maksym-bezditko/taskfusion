@@ -1,9 +1,10 @@
 import moment from 'moment';
 
+import { Avatar } from '@/components/common/Avatar';
 import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Detail } from '@/components/common/Details';
 import { PriorityBadge } from '@/components/common/PriorityBadge';
-import { Task } from '@/types';
+import { Action, Task } from '@/types';
 
 export const mapTasksToColumns = (tasks: Task[] = []): ColumnItemProps[] => {
   return tasks.map((task) => ({
@@ -46,4 +47,19 @@ export const mapTaskToDetails = (task: Task): Detail[] => {
       value: 'Azhar, Bilal',
     },
   ];
+};
+
+export const mapActionsToColumns = (actions?: Action[]): ColumnItemProps[] => {
+  return (
+    actions?.map((action) => ({
+      title: action.title,
+      rows: [
+        {
+          name: 'Date added',
+          value: moment(action.createdAt).format('DD/MM/YYYY'),
+        },
+      ],
+      author: <Avatar name={action.user.name} />,
+    })) || []
+  );
 };

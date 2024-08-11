@@ -1,4 +1,11 @@
-import { ProfileResponse, ProjectResponse, ProjectsResponse, TaskResponse, TasksResponse } from '@/types';
+import {
+  ActionsResponse,
+  ProfileResponse,
+  ProjectResponse,
+  ProjectsResponse,
+  TaskResponse,
+  TasksResponse,
+} from '@/types';
 import { TaskStatus } from '@/types/enums';
 
 import { externalApiClient } from '../externalApiClient';
@@ -29,6 +36,12 @@ export const getTasksByStatus = async (projectId: number, taskStatus: TaskStatus
 
 export const getTaskById = async (taskId: number): Promise<TaskResponse> => {
   const response = await externalApiClient.get<TaskResponse>('/tasks/' + taskId);
+
+  return response.data;
+};
+
+export const getActionsByTaskId = async (taskId: number): Promise<ActionsResponse> => {
+  const response = await externalApiClient.get<ActionsResponse>('/actions/get-actions-by-task-id/' + taskId);
 
   return response.data;
 };

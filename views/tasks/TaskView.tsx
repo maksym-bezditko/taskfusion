@@ -2,10 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { Avatar } from '@/components/common/Avatar';
 import { Button } from '@/components/common/Button';
 import { Column } from '@/components/common/Column';
-import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Comment } from '@/components/common/Comment';
 import { CommentInput } from '@/components/common/CommentInput';
 import { Details } from '@/components/common/Details';
@@ -14,8 +12,8 @@ import { Check } from '@/components/svg/Check';
 import { Freeze } from '@/components/svg/Freeze';
 import { Participant } from '@/components/svg/Participant';
 import { QueryKeys } from '@/types/enums';
-import { getTaskById } from '@/utils/api/queries';
-import { mapTaskToDetails } from '@/utils/helpers';
+import { getActionsByTaskId, getTaskById } from '@/utils/api/queries';
+import { mapActionsToColumns, mapTaskToDetails } from '@/utils/helpers';
 
 import styles from './TaskView.module.scss';
 
@@ -23,30 +21,17 @@ type Props = {
   taskId: string;
 };
 
-const ACTIONS: ColumnItemProps[] = [
-  {
-    title: 'Participant',
-    rows: [
-      {
-        name: 'Participant',
-        value: 'Adyl, Azhar',
-      },
-      {
-        name: 'Date added',
-        value: '12/04/2021',
-      },
-    ],
-    text: 'Created by Adyl, Azhar',
-    author: <Avatar name="Adyl" />,
-  },
-];
-
 export const TaskPage = (props: Props) => {
   const { taskId } = props;
 
   const { data, isLoading, isError } = useQuery({
     queryKey: [`${QueryKeys.TASK}_${taskId}`],
     queryFn: () => getTaskById(+taskId),
+  });
+
+  const { data: actions, isLoading: isLoadingActions } = useQuery({
+    queryKey: [`${QueryKeys.ACTIONS}_${taskId}`],
+    queryFn: () => getActionsByTaskId(+taskId),
   });
 
   if (isLoading || !data || isError) {
@@ -58,7 +43,7 @@ export const TaskPage = (props: Props) => {
       <h1>{data.title}</h1>
 
       <div className={styles.contentWrapper}>
-        <Column title="Actions" columns={ACTIONS} />
+        <Column title="Actions" columns={mapActionsToColumns(actions)} isLoading={isLoadingActions} />
 
         <div className={styles.commentSection}>
           <Details details={data.description} />
