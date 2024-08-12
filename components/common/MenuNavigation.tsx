@@ -19,15 +19,6 @@ export const MenuNavigation = () => {
     <nav className={styles.nav}>
       <Link
         className={classNames(styles.listItem, {
-          [styles.active]: pathname === '/',
-        })}
-        href="/"
-      >
-        Clients
-      </Link>
-
-      <Link
-        className={classNames(styles.listItem, {
           [styles.active]: pathname.includes('dashboard'),
         })}
         href="/dashboard"
