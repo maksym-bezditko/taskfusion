@@ -1,18 +1,25 @@
+import moment from 'moment';
 import { Avatar } from './Avatar';
 import styles from './Comment.module.scss';
 
-const DETAILS_STRING = '1. Добавлены шаблонные теги для подсчёта часов, потраченных на закрытые задачи.';
+type Props = {
+  name: string;
+  text: string;
+  date: Date;
+};
 
-export const Comment = () => {
+export const Comment = (props: Props) => {
+  const { name, text, date } = props;
+
   return (
     <div className={styles.commentWrapper}>
       <div className={styles.commentDetails}>
-        <Avatar name="Adyl" />
+        <Avatar name={name} />
 
-        <p className={styles.date}>12/04/2021, 6:37 p.m</p>
+        <p className={styles.date}>{moment(date).format('MM/DD/YYYY, h:mm a')}</p>
       </div>
 
-      <p className={styles.text}>{DETAILS_STRING}</p>
+      <p className={styles.text}>{text}</p>
     </div>
   );
 };

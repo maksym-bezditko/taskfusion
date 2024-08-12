@@ -11,6 +11,7 @@ export enum QueryKeys {
   TASKS = 'TASKS',
   TASK = 'TASK',
   ACTIONS = 'ACTIONS',
+  COMMENTS = 'COMMENTS',
 }
 
 export enum TaskStatus {

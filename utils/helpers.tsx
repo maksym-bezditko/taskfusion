@@ -17,7 +17,7 @@ export const mapTasksToColumns = (tasks: Task[] = []): ColumnItemProps[] => {
       },
       {
         name: 'Date added',
-        value: moment(task.createdAt).format('DD/MM/YYYY'),
+        value: moment(task.createdAt).format('MM/DD/YYYY, h:mm a'),
       },
     ],
     priority: task.taskPriority,
@@ -37,11 +37,11 @@ export const mapTaskToDetails = (task: Task): Detail[] => {
     },
     {
       title: 'Date added',
-      value: moment(task.createdAt).format('DD/MM/YYYY'),
+      value: moment(task.createdAt).format('MM/DD/YYYY, h:mm a'),
     },
     {
       title: 'Deadline',
-      value: moment(task.deadline).format('DD/MM/YYYY'),
+      value: moment(task.deadline).format('MM/DD/YYYY, h:mm a'),
     },
     {
       title: 'Participants',
@@ -58,7 +58,7 @@ export const mapActionsToColumns = (actions?: Action[]): ColumnItemProps[] => {
       rows: [
         {
           name: 'Date added',
-          value: moment(action.createdAt).format('DD/MM/YYYY'),
+          value: moment(action.createdAt).format('MM/DD/YYYY, h:mm a'),
         },
       ],
       author: <Avatar name={action.user.name} />,

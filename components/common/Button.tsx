@@ -15,6 +15,7 @@ type Props = {
   width?: string;
   isFontBold?: boolean;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
 export const Button = (props: Props) => {
@@ -27,6 +28,7 @@ export const Button = (props: Props) => {
     textColor = 'black',
     isFontBold = true,
     onClick = () => {},
+    disabled = false,
   } = props;
 
   return (
@@ -36,9 +38,11 @@ export const Button = (props: Props) => {
         styles[bgColor],
         styles['textColor_' + textColor],
         isFontBold && styles.fontBold,
+        disabled && styles.disabled
       )}
       style={{ width }}
       onClick={onClick}
+      disabled={disabled}
     >
       {icon} <span>{text}</span>
       {isModalButton && <IoIosArrowDown />}

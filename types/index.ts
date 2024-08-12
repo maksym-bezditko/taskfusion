@@ -103,3 +103,16 @@ export type Action = {
 };
 
 export type ActionsResponse = Action[];
+
+export type Comment = {
+  id: number;
+  taskId: number;
+  text: string;
+  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CommentResponse = Comment & { user: PasswordlessUser };
+
+export type CommentsResponse = CommentResponse[];

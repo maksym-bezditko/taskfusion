@@ -1,5 +1,6 @@
 import {
   ActionsResponse,
+  CommentsResponse,
   ProfileResponse,
   ProjectResponse,
   ProjectsResponse,
@@ -42,6 +43,12 @@ export const getTaskById = async (taskId: number): Promise<TaskResponse> => {
 
 export const getActionsByTaskId = async (taskId: number): Promise<ActionsResponse> => {
   const response = await externalApiClient.get<ActionsResponse>('/actions/get-actions-by-task-id/' + taskId);
+
+  return response.data;
+};
+
+export const getCommentsByTaskId = async (taskId: number): Promise<CommentsResponse> => {
+  const response = await externalApiClient.get<CommentsResponse>('/comments/get-comments-by-task-id/' + taskId);
 
   return response.data;
 };
