@@ -8,6 +8,7 @@ import { Action, Task } from '@/types';
 
 export const mapTasksToColumns = (tasks: Task[] = []): ColumnItemProps[] => {
   return tasks.map((task) => ({
+    id: task.id,
     title: task.title,
     rows: [
       {
@@ -52,6 +53,7 @@ export const mapTaskToDetails = (task: Task): Detail[] => {
 export const mapActionsToColumns = (actions?: Action[]): ColumnItemProps[] => {
   return (
     actions?.map((action) => ({
+      id: action.id,
       title: action.title,
       rows: [
         {

@@ -9,12 +9,12 @@ type Props = {
 } & React.SelectHTMLAttributes<HTMLSelectElement>;
 
 export const Select = forwardRef<HTMLSelectElement, Props>((props: Props, ref) => {
-  const { options, placeholder = 'Select an option', ...rest } = props;
+  const { options, placeholder = 'Select an option', defaultValue = '', ...rest } = props;
 
   return (
     <div className={styles.selectContainer}>
       <select className={styles.select} ref={ref} {...rest}>
-        <option defaultValue="" disabled>
+        <option defaultValue={defaultValue} disabled>
           {placeholder}
         </option>
 

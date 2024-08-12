@@ -28,7 +28,7 @@ export const Column = (props: Props) => {
     return (
       <div className={styles.contentWrapper}>
         {columns.map((column) => (
-          <ColumnItem key={column.title} {...column} />
+          <ColumnItem key={column.id} {...column} />
         ))}
       </div>
     );
