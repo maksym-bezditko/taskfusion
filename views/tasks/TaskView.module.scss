@@ -3,19 +3,19 @@
   grid-template-columns: 4fr 7fr 4fr;
   column-gap: 1.5rem;
 
-  & > * {
+  &>* {
     margin-top: 2rem;
   }
 }
 
 .commentSection {
-  & > *:not(:last-child) {
+  &>* {
     margin-bottom: 1rem;
   }
 }
 
 .taskDetailsSection {
-  & > *:not(:last-child) {
+  &>*:not(:last-child) {
     margin-bottom: 1rem;
   }
 }

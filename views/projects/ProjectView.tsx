@@ -66,11 +66,11 @@ export const ProjectView = (props: Props) => {
   const DETAILS = [
     {
       title: 'Date added',
-      value: moment(data.createdAt).format('DD/MM/YYYY'),
+      value: moment(data.createdAt).format('MM/DD/YYYY, h:mm a'),
     },
     {
       title: 'Deadline',
-      value: moment(data.deadline).format('DD/MM/YYYY'),
+      value: moment(data.deadline).format('MM/DD/YYYY, h:mm a'),
     },
     {
       title: 'Participants',

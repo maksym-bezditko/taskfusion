@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 import { JwtPayload } from '@/types';
 
-import { DEFAULT_AGE } from './constrants';
+import { DEFAULT_AGE } from './constants';
 
 const jwtConfig = {
   atSecret: new TextEncoder().encode(process.env.AT_SECRET),

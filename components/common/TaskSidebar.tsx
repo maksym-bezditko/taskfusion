@@ -59,7 +59,6 @@ const TaskSidebar = (props: Props) => {
     onError: (error) => {
       setError('root', { message: error.message });
     },
-    mutationKey: [`${QueryKeys.TASKS}_${type}`],
   });
 
   const onSubmit: SubmitHandler<CreateTaskFormValues> = (data) => {

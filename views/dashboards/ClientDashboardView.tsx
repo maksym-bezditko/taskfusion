@@ -36,11 +36,11 @@ export const ClientDashboardView = () => {
           listItems={data.map((project) => ({
             title: project.title,
             data: [
-              <TextWithIcon key={1} iconName="sunrise" text={moment(project.deadline).format('DD/MM/YYYY')} />,
+              <TextWithIcon key={1} iconName="sunrise" text={moment(project.deadline).format('MM/DD/YYYY, h:mm a')} />,
               <TextWithIcon
                 key={2}
                 iconName="sunset"
-                text={moment.utc(project.deadline).local().format('DD/MM/YYYY')}
+                text={moment.utc(project.deadline).local().format('MM/DD/YYYY, h:mm a')}
               />,
               <TextWithIcon key={3} iconName="people" text="Adyl, Azhar, Arthur" />,
             ],

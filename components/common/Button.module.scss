@@ -47,3 +47,9 @@
 .textColor_black {
   color: $black;
 }
+
+.disabled {
+  cursor: not-allowed;
+  background-color: $list-item-grey;
+  color: $black;
+}

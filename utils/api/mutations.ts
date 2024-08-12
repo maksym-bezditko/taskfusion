@@ -2,11 +2,12 @@ import axios from 'axios';
 
 import { LoginRequest } from '@/app/api/login/route';
 import { SignupRequest } from '@/app/api/signup/route';
-import { JwtTokensResponse, TaskResponse, UserIdResponse } from '@/types';
+import { JwtTokensResponse, UserIdResponse } from '@/types';
 import { UserType } from '@/types/enums';
 import { CreateProjectFormValues } from '@/utils/schemas/createProjectSchema';
 
 import { externalApiClient } from '../externalApiClient';
+import { CreateCommentFormValues } from '../schemas/createCommentSchema';
 import { CreateTaskFormValues } from '../schemas/createTaskSchema';
 
 export const createUser = async (data: SignupRequest) => {
@@ -62,7 +63,7 @@ export const refreshTokens = async (refreshToken: string) => {
 export const createProject = async (data: CreateProjectFormValues & { clientId: number }) => {
   const { title, description, deadline, clientId } = data;
 
-  return externalApiClient.post<UserIdResponse>('/projects/create-project', {
+  return externalApiClient.post('/projects/create-project', {
     title,
     description,
     deadline,
@@ -74,12 +75,21 @@ export const createProject = async (data: CreateProjectFormValues & { clientId: 
 export const createTask = async (data: CreateTaskFormValues & { projectId: number }) => {
   const { title, description, deadline, projectId, taskPriority, taskStatus } = data;
 
-  return externalApiClient.post<TaskResponse>('/tasks/create-task', {
+  return externalApiClient.post('/tasks/create-task', {
     title,
     description,
     deadline,
     projectId,
     taskPriority,
     taskStatus,
+  });
+};
+
+export const createComment = async (data: CreateCommentFormValues & { taskId: number }) => {
+  const { comment, taskId } = data;
+
+  return externalApiClient.post('/comments/create-comment', {
+    text: comment,
+    taskId,
   });
 };

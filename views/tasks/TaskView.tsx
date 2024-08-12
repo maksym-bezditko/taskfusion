@@ -12,10 +12,12 @@ import { Check } from '@/components/svg/Check';
 import { Freeze } from '@/components/svg/Freeze';
 import { Participant } from '@/components/svg/Participant';
 import { QueryKeys } from '@/types/enums';
-import { getActionsByTaskId, getTaskById } from '@/utils/api/queries';
+import { getActionsByTaskId, getCommentsByTaskId, getTaskById } from '@/utils/api/queries';
 import { mapActionsToColumns, mapTaskToDetails } from '@/utils/helpers';
 
 import styles from './TaskView.module.scss';
+import { useCallback, useMemo } from 'react';
+import { NoData } from '@/components/common/NoData';
 
 type Props = {
   taskId: string;
@@ -34,6 +36,25 @@ export const TaskPage = (props: Props) => {
     queryFn: () => getActionsByTaskId(+taskId),
   });
 
+  const { data: comments, isLoading: isCommentsLoading } = useQuery({
+    queryKey: [`${QueryKeys.COMMENTS}_${taskId}`],
+    queryFn: () => getCommentsByTaskId(+taskId),
+  });
+
+  const commentsContent = useCallback(() => {
+    if (isCommentsLoading) {
+      return <Loader isSmall />;
+    }
+
+    if (!comments?.length) {
+      return <NoData />;
+    }
+
+    return comments.map((comment) => (
+      <Comment key={comment.id} name={comment.user.name} text={comment.text} date={comment.createdAt} />
+    ));
+  }, [comments]);
+
   if (isLoading || !data || isError) {
     return <Loader />;
   }
@@ -48,9 +69,9 @@ export const TaskPage = (props: Props) => {
         <div className={styles.commentSection}>
           <Details details={data.description} />
 
-          <CommentInput />
+          <CommentInput taskId={taskId} />
 
-          <Comment />
+          {commentsContent()}
         </div>
 
         <div className={styles.taskDetailsSection}>
