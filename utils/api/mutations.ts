@@ -2,11 +2,12 @@ import axios from 'axios';
 
 import { LoginRequest } from '@/app/api/login/route';
 import { SignupRequest } from '@/app/api/signup/route';
-import { JwtTokensResponse, UserIdResponse } from '@/types';
+import { JwtTokensResponse, TaskResponse, UserIdResponse } from '@/types';
 import { UserType } from '@/types/enums';
 import { CreateProjectFormValues } from '@/utils/schemas/createProjectSchema';
 
 import { externalApiClient } from '../externalApiClient';
+import { CreateTaskFormValues } from '../schemas/createTaskSchema';
 
 export const createUser = async (data: SignupRequest) => {
   const { email, name, password, description, position, telegramId } = data;
@@ -67,5 +68,18 @@ export const createProject = async (data: CreateProjectFormValues & { clientId: 
     deadline,
     clientId,
     pmId: null,
+  });
+};
+
+export const createTask = async (data: CreateTaskFormValues & { projectId: number }) => {
+  const { title, description, deadline, projectId, taskPriority, taskStatus } = data;
+
+  return externalApiClient.post<TaskResponse>('/tasks/create-task', {
+    title,
+    description,
+    deadline,
+    projectId,
+    taskPriority,
+    taskStatus,
   });
 };

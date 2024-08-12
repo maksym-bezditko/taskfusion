@@ -31,22 +31,22 @@ export const ProjectView = (props: Props) => {
   });
 
   const { data: todoTasks } = useQuery({
-    queryKey: [`${QueryKeys.TASKS}_${TaskStatus.TO_DO}`],
+    queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.TO_DO}`],
     queryFn: () => getTasksByStatus(+projectId, TaskStatus.TO_DO),
   });
 
   const { data: progressTasks } = useQuery({
-    queryKey: [`${QueryKeys.TASKS}_${TaskStatus.IN_PROGRESS}`],
+    queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.IN_PROGRESS}`],
     queryFn: () => getTasksByStatus(+projectId, TaskStatus.IN_PROGRESS),
   });
 
   const { data: closedTasks } = useQuery({
-    queryKey: [`${QueryKeys.TASKS}_${TaskStatus.CLOSED}`],
+    queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.CLOSED}`],
     queryFn: () => getTasksByStatus(+projectId, TaskStatus.CLOSED),
   });
 
   const { data: frozenTasks } = useQuery({
-    queryKey: [`${QueryKeys.TASKS}_${TaskStatus.FROZEN}`],
+    queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.FROZEN}`],
     queryFn: () => getTasksByStatus(+projectId, TaskStatus.FROZEN),
   });
 
@@ -159,7 +159,7 @@ export const ProjectView = (props: Props) => {
         </div>
       </div>
 
-      <TaskSidebar />
+      <TaskSidebar projectId={+projectId} />
     </div>
   );
 };
