@@ -7,7 +7,9 @@ import { useMemo } from 'react';
 import { Column } from '@/components/common/Column';
 import { Details } from '@/components/common/Details';
 import { Loader } from '@/components/common/Loader';
+import TaskSidebar from '@/components/common/TaskSidebar';
 import { Plus } from '@/components/svg/Plus';
+import useTaskSidebar from '@/store/useTaskSidebar';
 import { QueryKeys, TaskStatus } from '@/types/enums';
 import { getProjectById, getTasksByStatus } from '@/utils/api/queries';
 import { mapTasksToColumns } from '@/utils/helpers';
@@ -20,6 +22,8 @@ type Props = {
 
 export const ProjectView = (props: Props) => {
   const { projectId } = props;
+
+  const { setType } = useTaskSidebar();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: [QueryKeys.PROJECT + projectId],
@@ -105,15 +109,57 @@ export const ProjectView = (props: Props) => {
         </div>
 
         <div className={styles.wrapper}>
-          <Column title="To do" columns={todoTasksColumn} right={<Plus />} />
+          <Column
+            title="To do"
+            columns={todoTasksColumn}
+            right={
+              <Plus
+                onClick={() => {
+                  setType(TaskStatus.TO_DO);
+                }}
+              />
+            }
+          />
 
-          <Column title="In progress" columns={progressTasksColumn} right={<Plus />} />
+          <Column
+            title="In progress"
+            columns={progressTasksColumn}
+            right={
+              <Plus
+                onClick={() => {
+                  setType(TaskStatus.IN_PROGRESS);
+                }}
+              />
+            }
+          />
 
-          <Column title="Closed" columns={closedTasksColumn} right={<Plus />} />
+          <Column
+            title="Closed"
+            columns={closedTasksColumn}
+            right={
+              <Plus
+                onClick={() => {
+                  setType(TaskStatus.CLOSED);
+                }}
+              />
+            }
+          />
 
-          <Column title="Frozen" columns={frozenTasksColumn} right={<Plus />} />
+          <Column
+            title="Frozen"
+            columns={frozenTasksColumn}
+            right={
+              <Plus
+                onClick={() => {
+                  setType(TaskStatus.FROZEN);
+                }}
+              />
+            }
+          />
         </div>
       </div>
+
+      <TaskSidebar />
     </div>
   );
 };
