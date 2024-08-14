@@ -1,4 +1,5 @@
 import moment from 'moment';
+
 import { Avatar } from './Avatar';
 import styles from './Comment.module.scss';
 

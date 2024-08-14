@@ -3,7 +3,7 @@ import axios from 'axios';
 import { LoginRequest } from '@/app/api/login/route';
 import { SignupRequest } from '@/app/api/signup/route';
 import { JwtTokensResponse, UserIdResponse } from '@/types';
-import { UserType } from '@/types/enums';
+import { TaskStatus, UserType } from '@/types/enums';
 import { CreateProjectFormValues } from '@/utils/schemas/createProjectSchema';
 
 import { externalApiClient } from '../externalApiClient';
@@ -92,4 +92,8 @@ export const createComment = async (data: CreateCommentFormValues & { taskId: nu
     text: comment,
     taskId,
   });
+};
+
+export const changeTaskStatus = async (data: { taskId: number; taskStatus: TaskStatus }) => {
+  return externalApiClient.post('/tasks/change-task-status', data);
 };

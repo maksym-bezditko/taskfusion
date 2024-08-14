@@ -22,3 +22,7 @@
   flex-direction: column;
   row-gap: 1rem;
 }
+
+.draggedOver {
+  background-color: $list-item-grey;
+}
