@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import React from 'react';
 import { ReactNode } from 'react';
 
 import { PriorityBadge } from '@/components/common/PriorityBadge';
@@ -22,13 +23,16 @@ export type Props = {
 };
 
 export const ColumnItem = (props: Props) => {
-  const { title, rows, priority, text, author, href } = props;
+  const { id, title, rows, priority, text, author, href } = props;
+
+  const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    event.dataTransfer.setData('taskId', id.toString());
+  };
 
   const item = (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} draggable onDragStart={handleDragStart}>
       <div className={styles.headerWrapper}>
         <p className={styles.title}>{title}</p>
-
         {priority && <PriorityBadge priority={priority} />}
       </div>
 
@@ -42,7 +46,6 @@ export const ColumnItem = (props: Props) => {
       </div>
 
       <p className={styles.text}>{text}</p>
-
       {author}
     </div>
   );

@@ -110,7 +110,8 @@ export const ProjectView = (props: Props) => {
 
         <div className={styles.wrapper}>
           <Column
-            title="To do"
+            title={TaskStatus.TO_DO}
+            projectId={+projectId}
             columns={todoTasksColumn}
             right={
               <Plus
@@ -122,7 +123,8 @@ export const ProjectView = (props: Props) => {
           />
 
           <Column
-            title="In progress"
+            title={TaskStatus.IN_PROGRESS}
+            projectId={+projectId}
             columns={progressTasksColumn}
             right={
               <Plus
@@ -134,7 +136,8 @@ export const ProjectView = (props: Props) => {
           />
 
           <Column
-            title="Closed"
+            title={TaskStatus.CLOSED}
+            projectId={+projectId}
             columns={closedTasksColumn}
             right={
               <Plus
@@ -146,7 +149,8 @@ export const ProjectView = (props: Props) => {
           />
 
           <Column
-            title="Frozen"
+            title={TaskStatus.FROZEN}
+            projectId={+projectId}
             columns={frozenTasksColumn}
             right={
               <Plus
