@@ -1,24 +1,23 @@
 'use client';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import { QueryKeys } from '@/types/enums';
 import { nextApiClient } from '@/utils/nextApiClient';
+import { queryClient } from '@/utils/queryClient';
 
 import { Button } from './Button';
 
 export const LogoutButtonWrapper = () => {
   const router = useRouter();
-  const client = useQueryClient();
 
   const handleLogout = async () => {
     await nextApiClient.post('/logout');
 
-    client.removeQueries({
+    queryClient.removeQueries({
       queryKey: [QueryKeys.USER_PROFILE],
     });
-    router.replace('/');
+    router.replace('/dashboard');
     router.refresh();
   };
 

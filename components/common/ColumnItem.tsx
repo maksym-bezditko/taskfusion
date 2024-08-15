@@ -20,17 +20,18 @@ export type Props = {
   text?: string;
   author?: ReactNode;
   href?: string;
+  isDraggable?: boolean;
 };
 
 export const ColumnItem = (props: Props) => {
-  const { id, title, rows, priority, text, author, href } = props;
+  const { id, title, rows, priority, text, author, href, isDraggable } = props;
 
   const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData('taskId', id.toString());
   };
 
   const item = (
-    <div className={styles.wrapper} draggable onDragStart={handleDragStart}>
+    <div className={styles.wrapper} draggable={isDraggable} onDragStart={handleDragStart}>
       <div className={styles.headerWrapper}>
         <p className={styles.title}>{title}</p>
         {priority && <PriorityBadge priority={priority} />}

@@ -14,15 +14,16 @@ import { Loader } from './Loader';
 import { NoData } from './NoData';
 
 type Props = {
-  title: TaskStatus;
+  title: string;
   projectId: number;
   columns?: ColumnItemProps[];
   right?: ReactNode;
   isLoading?: boolean;
+  isDraggable?: boolean;
 };
 
 export const Column = (props: Props) => {
-  const { title, projectId, columns, right, isLoading } = props;
+  const { title, projectId, columns, right, isLoading, isDraggable } = props;
 
   const { mutateAsync } = useMutation({
     mutationFn: changeTaskStatus,
@@ -35,23 +36,28 @@ export const Column = (props: Props) => {
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
+    event.stopPropagation();
   };
 
   const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
+    event.stopPropagation();
 
     const taskId = event.dataTransfer.getData('taskId');
 
     await mutateAsync({
       taskId: +taskId,
-      taskStatus: title,
+      taskStatus: title as TaskStatus,
     });
 
     queryClient.invalidateQueries({
       predicate: (query) => {
         const [key] = query.queryKey as [string];
 
-        return key.startsWith(`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}`);
+        return (
+          key.startsWith(`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}`) ||
+          key === `${QueryKeys.ACTIONS}_${taskId}`
+        );
       },
     });
   };
@@ -68,7 +74,7 @@ export const Column = (props: Props) => {
     return (
       <div className={styles.contentWrapper}>
         {columns.map((column) => (
-          <ColumnItem key={column.id} {...column} />
+          <ColumnItem key={column.id} {...column} isDraggable={isDraggable} />
         ))}
       </div>
     );

@@ -1,16 +1,17 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+import { QueryKeys } from '@/types/enums';
+import { createComment } from '@/utils/api/mutations';
+import { queryClient } from '@/utils/queryClient';
 import { CreateCommentFormValues, createCommentSchema } from '@/utils/schemas/createCommentSchema';
 
 import { Button } from './Button';
 import styles from './CommentInput.module.scss';
 import { Input } from './Input';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createComment } from '@/utils/api/mutations';
-import { QueryKeys } from '@/types/enums';
 
 type Props = {
   taskId: string;
@@ -23,13 +24,10 @@ export const CommentInput = (props: Props) => {
     register,
     handleSubmit,
     setError,
-    getValues,
     formState: { errors },
   } = useForm<CreateCommentFormValues>({
     resolver: zodResolver(createCommentSchema),
   });
-
-  const queryClient = useQueryClient();
 
   const { mutate: createCommentMutation } = useMutation({
     mutationFn: (values: CreateCommentFormValues) => {

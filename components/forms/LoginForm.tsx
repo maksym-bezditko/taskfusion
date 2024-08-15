@@ -1,12 +1,12 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { QueryKeys } from '@/types/enums';
 import { nextApiClient } from '@/utils/nextApiClient';
+import { queryClient } from '@/utils/queryClient';
 import { LoginFormValues, loginSchema } from '@/utils/schemas/loginSchema';
 
 import { Button } from '../common/Button';
@@ -25,16 +25,15 @@ export const LoginForm = () => {
   });
 
   const router = useRouter();
-  const client = useQueryClient();
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (values: LoginFormValues) => {
     try {
       await nextApiClient.post('/login', values);
 
-      client.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QueryKeys.USER_PROFILE],
       });
-      router.replace('/');
+      router.replace('/dashboard');
       router.refresh();
     } catch (error) {
       setError('root', { message: 'Invalid credentials' });
