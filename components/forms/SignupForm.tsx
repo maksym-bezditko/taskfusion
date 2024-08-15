@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -10,6 +9,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { SignupResponse } from '@/app/api/signup/route';
 import { QueryKeys, UserType } from '@/types/enums';
 import { nextApiClient } from '@/utils/nextApiClient';
+import { queryClient } from '@/utils/queryClient';
 import { SignupFormValues, signupSchema } from '@/utils/schemas/signupSchema';
 
 import { Button } from '../common/Button';
@@ -37,18 +37,17 @@ export const SignupForm = () => {
   const [file, setFile] = useState<File | null>(null);
 
   const router = useRouter();
-  const client = useQueryClient();
 
   const onSubmit: SubmitHandler<SignupFormValues> = async (values: SignupFormValues) => {
     try {
       const { data } = await nextApiClient.post<SignupResponse>('/signup', values);
 
       if (data.success) {
-        client.invalidateQueries({
+        queryClient.invalidateQueries({
           queryKey: [QueryKeys.USER_PROFILE],
         });
 
-        router.replace('/');
+        router.replace('/dashboard');
         router.refresh();
       }
     } catch (error) {

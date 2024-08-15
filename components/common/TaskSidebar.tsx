@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -9,6 +9,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import useTaskSidebar from '@/store/useTaskSidebar';
 import { QueryKeys, TaskPriority, TaskStatus } from '@/types/enums';
 import { createTask } from '@/utils/api/mutations';
+import { queryClient } from '@/utils/queryClient';
 import { CreateTaskFormValues, createTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 import { Button } from '../common/Button';
@@ -36,8 +37,6 @@ const TaskSidebar = (props: Props) => {
     resolver: zodResolver(createTaskSchema),
   });
 
-  const queryClient = useQueryClient();
-
   const { mutate: createTaskMutation } = useMutation({
     mutationFn: (values: CreateTaskFormValues) => {
       if (!projectId) {
@@ -49,9 +48,9 @@ const TaskSidebar = (props: Props) => {
         projectId,
       });
     },
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       await queryClient.invalidateQueries({
-        queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${type}`],
+        queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${data.data.taskStatus}`],
       });
 
       setType(null);

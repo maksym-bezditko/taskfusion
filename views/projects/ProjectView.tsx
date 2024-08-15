@@ -120,6 +120,7 @@ export const ProjectView = (props: Props) => {
                 }}
               />
             }
+            isDraggable
           />
 
           <Column
@@ -133,6 +134,7 @@ export const ProjectView = (props: Props) => {
                 }}
               />
             }
+            isDraggable
           />
 
           <Column
@@ -146,6 +148,7 @@ export const ProjectView = (props: Props) => {
                 }}
               />
             }
+            isDraggable
           />
 
           <Column
@@ -159,6 +162,7 @@ export const ProjectView = (props: Props) => {
                 }}
               />
             }
+            isDraggable
           />
         </div>
       </div>

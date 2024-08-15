@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { LoginRequest } from '@/app/api/login/route';
 import { SignupRequest } from '@/app/api/signup/route';
-import { JwtTokensResponse, UserIdResponse } from '@/types';
+import { JwtTokensResponse, TaskResponse, UserIdResponse } from '@/types';
 import { TaskStatus, UserType } from '@/types/enums';
 import { CreateProjectFormValues } from '@/utils/schemas/createProjectSchema';
 
@@ -75,7 +75,7 @@ export const createProject = async (data: CreateProjectFormValues & { clientId: 
 export const createTask = async (data: CreateTaskFormValues & { projectId: number }) => {
   const { title, description, deadline, projectId, taskPriority, taskStatus } = data;
 
-  return externalApiClient.post('/tasks/create-task', {
+  return externalApiClient.post<TaskResponse>('/tasks/create-task', {
     title,
     description,
     deadline,
