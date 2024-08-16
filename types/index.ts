@@ -73,6 +73,7 @@ export type Task = {
   projectId: number;
   developerId: number;
   deadline: Date;
+  users: PasswordlessUser[];
   createdAt: Date;
   updatedAt: Date;
 };

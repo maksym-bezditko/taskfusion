@@ -12,8 +12,8 @@ export const mapTasksToColumns = (tasks: Task[] = []): ColumnItemProps[] => {
     title: task.title,
     rows: [
       {
-        name: 'Participant',
-        value: 'Azhar',
+        name: 'Participants',
+        value: task.users.length ? task.users.map((user) => user.name).join(', ') : 'No participants',
       },
       {
         name: 'Date added',
@@ -45,7 +45,7 @@ export const mapTaskToDetails = (task: Task): Detail[] => {
     },
     {
       title: 'Participants',
-      value: 'Azhar, Bilal',
+      value: task.users.length ? task.users.map((user) => user.name).join(', ') : 'No participants',
     },
   ];
 };
