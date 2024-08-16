@@ -74,7 +74,7 @@ export const ProjectView = (props: Props) => {
     },
     {
       title: 'Participants',
-      value: 'Adyl, Azhar, Arthur',
+      value: 'Azhar, Bilal',
     },
   ];
 
