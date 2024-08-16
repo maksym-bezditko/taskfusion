@@ -1,7 +1,7 @@
 import { TaskPage } from '@/views/tasks/TaskView';
 
 export default function Page(props: { params: { taskId: string; projectId: string } }) {
-  const { taskId } = props.params;
+  const { taskId, projectId } = props.params;
 
-  return <TaskPage taskId={taskId} />;
+  return <TaskPage taskId={taskId} projectId={projectId} />;
 }
