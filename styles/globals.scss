@@ -5,7 +5,7 @@ h1 {
 }
 
 .contentWrapper {
-  &>* {
+  & > * {
     margin-top: 2rem;
   }
 }
