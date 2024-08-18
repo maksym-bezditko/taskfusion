@@ -38,7 +38,7 @@ export const Button = (props: Props) => {
         styles[bgColor],
         styles['textColor_' + textColor],
         isFontBold && styles.fontBold,
-        disabled && styles.disabled
+        disabled && styles.disabled,
       )}
       style={{ width }}
       onClick={onClick}
