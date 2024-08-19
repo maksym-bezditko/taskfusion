@@ -1,7 +1,6 @@
 'use client';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 
 import { Button } from '@/components/common/Button';
@@ -15,8 +14,8 @@ import { Check } from '@/components/svg/Check';
 import { Freeze } from '@/components/svg/Freeze';
 import { Participant } from '@/components/svg/Participant';
 import { QueryKeys, TaskStatus } from '@/types/enums';
-import { changeTaskStatus } from '@/utils/api/mutations';
-import { getActionsByTaskId, getCommentsByTaskId, getTaskById } from '@/utils/api/queries';
+import { assignTaskToUser, changeTaskStatus, unassignTaskFromUser } from '@/utils/api/mutations';
+import { getActionsByTaskId, getCommentsByTaskId, getTaskById, getUserProfile } from '@/utils/api/queries';
 import { mapActionsToColumns, mapTaskToDetails } from '@/utils/helpers';
 import { queryClient } from '@/utils/queryClient';
 
@@ -32,14 +31,14 @@ export const TaskPage = (props: Props) => {
 
   const {
     data: task,
-    isLoading,
+    isLoading: isTaskLoading,
     isError,
   } = useQuery({
     queryKey: [`${QueryKeys.TASK}_${taskId}`],
     queryFn: () => getTaskById(+taskId),
   });
 
-  const router = useRouter();
+  const { data: profile } = useQuery({ queryKey: [QueryKeys.USER_PROFILE], queryFn: getUserProfile });
 
   const { data: actions, isLoading: isLoadingActions } = useQuery({
     queryKey: [`${QueryKeys.ACTIONS}_${taskId}`],
@@ -51,14 +50,36 @@ export const TaskPage = (props: Props) => {
     queryFn: () => getCommentsByTaskId(+taskId),
   });
 
-  const { mutateAsync } = useMutation({
+  const invalidateTask = () => {
+    queryClient.invalidateQueries({
+      queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}`],
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: [`${QueryKeys.TASK}_${taskId}`],
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: [`${QueryKeys.ACTIONS}_${taskId}`],
+    });
+  };
+
+  const { mutateAsync: mutateTaskStatusAsync } = useMutation({
     mutationFn: changeTaskStatus,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}`],
-      });
-    },
+    onSuccess: invalidateTask,
   });
+
+  const { mutateAsync: mutateAssignTaskAsync } = useMutation({
+    mutationFn: assignTaskToUser,
+    onSuccess: invalidateTask,
+  });
+
+  const { mutateAsync: mutateUnassignTaskAsync } = useMutation({
+    mutationFn: unassignTaskFromUser,
+    onSuccess: invalidateTask,
+  });
+
+  const amIParticipant = task?.users.some((user) => user.id === profile?.id);
 
   const commentsContent = useCallback(() => {
     if (isCommentsLoading) {
@@ -74,25 +95,43 @@ export const TaskPage = (props: Props) => {
     ));
   }, [comments, isCommentsLoading]);
 
-  const handleFreezeTask = async () => {
-    await mutateAsync({
+  const handleFreezeTask = () => {
+    mutateTaskStatusAsync({
       taskId: +taskId,
       taskStatus: TaskStatus.FROZEN,
     });
-
-    router.push(`/dashboard/projects/${projectId}`);
   };
 
-  const handleCloseTask = async () => {
-    await mutateAsync({
+  const handleBecomeParticipant = () => {
+    if (!profile) {
+      return;
+    }
+
+    mutateAssignTaskAsync({
+      taskId: +taskId,
+      userId: profile.id,
+    });
+  };
+
+  const handleLeaveTask = () => {
+    if (!profile) {
+      return;
+    }
+
+    mutateUnassignTaskAsync({
+      taskId: +taskId,
+      userId: profile.id,
+    });
+  };
+
+  const handleCloseTask = () => {
+    mutateTaskStatusAsync({
       taskId: +taskId,
       taskStatus: TaskStatus.CLOSED,
     });
-
-    router.push(`/dashboard/projects/${projectId}`);
   };
 
-  if (isLoading || !task || isError) {
+  if (isTaskLoading || !task || isError) {
     return <Loader />;
   }
 
@@ -123,8 +162,6 @@ export const TaskPage = (props: Props) => {
 
           <Button text="Change the task type" isModalButton width="100%" isFontBold={false} />
 
-          <Button text="Become a participant" bgColor="green" textColor="white" width="100%" icon={<Participant />} />
-
           {task.taskStatus !== TaskStatus.FROZEN && (
             <Button
               text="Freeze the task"
@@ -144,6 +181,28 @@ export const TaskPage = (props: Props) => {
               width="100%"
               icon={<Check />}
               onClick={handleCloseTask}
+            />
+          )}
+
+          {!amIParticipant && !isTaskLoading && (
+            <Button
+              text="Become a participant"
+              bgColor="green"
+              textColor="white"
+              width="100%"
+              icon={<Participant />}
+              onClick={handleBecomeParticipant}
+            />
+          )}
+
+          {amIParticipant && !isTaskLoading && (
+            <Button
+              text="Leave the task"
+              bgColor="gray"
+              textColor="black"
+              width="100%"
+              icon={<Participant color="black" />}
+              onClick={handleLeaveTask}
             />
           )}
         </div>
