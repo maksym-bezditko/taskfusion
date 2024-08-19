@@ -97,3 +97,11 @@ export const createComment = async (data: CreateCommentFormValues & { taskId: nu
 export const changeTaskStatus = async (data: { taskId: number; taskStatus: TaskStatus }) => {
   return externalApiClient.post('/tasks/change-task-status', data);
 };
+
+export const assignTaskToUser = async (data: { taskId: number; userId: number }) => {
+  return externalApiClient.post('/tasks/assign-task-to-user', data);
+};
+
+export const unassignTaskFromUser = async (data: { taskId: number; userId: number }) => {
+  return externalApiClient.post('/tasks/unassign-task-from-user', data);
+};
