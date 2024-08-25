@@ -5,6 +5,7 @@ export enum UserType {
 }
 
 export enum QueryKeys {
+  PROJECT_PM_USER = 'PROJECT_PM_USER',
   USER_PROFILE = 'USER_PROFILE',
   PROJECTS = 'PROJECTS',
   PROJECT = 'PROJECT',
