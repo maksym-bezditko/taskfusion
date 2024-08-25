@@ -2,8 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
+import Link from 'next/link';
 import { useMemo } from 'react';
+import { BiPlus } from 'react-icons/bi';
 
+import { Button } from '@/components/common/Button';
 import { Column } from '@/components/common/Column';
 import { Details } from '@/components/common/Details';
 import { Loader } from '@/components/common/Loader';
@@ -11,7 +14,7 @@ import TaskSidebar from '@/components/common/TaskSidebar';
 import { Plus } from '@/components/svg/Plus';
 import useTaskSidebar from '@/store/useTaskSidebar';
 import { QueryKeys, TaskStatus } from '@/types/enums';
-import { getProjectById, getTasksByStatus } from '@/utils/api/queries';
+import { getProjectById, getProjectPmUser, getTasksByStatus } from '@/utils/api/queries';
 import { mapTasksToColumns } from '@/utils/helpers';
 
 import styles from './ProjectView.module.scss';
@@ -30,22 +33,28 @@ export const ProjectView = (props: Props) => {
     queryFn: () => getProjectById(projectId),
   });
 
-  const { data: todoTasks } = useQuery({
+  const { data: projectPmUser, isLoading: isLoadingProjectPm } = useQuery({
+    queryKey: [QueryKeys.PROJECT_PM_USER + projectId],
+    queryFn: () => getProjectPmUser(+projectId),
+    retry: false,
+  });
+
+  const { data: todoTasks, isLoading: isLoadingTodo } = useQuery({
     queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.TO_DO}`],
     queryFn: () => getTasksByStatus(+projectId, TaskStatus.TO_DO),
   });
 
-  const { data: progressTasks } = useQuery({
+  const { data: progressTasks, isLoading: isLoadingProgress } = useQuery({
     queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.IN_PROGRESS}`],
     queryFn: () => getTasksByStatus(+projectId, TaskStatus.IN_PROGRESS),
   });
 
-  const { data: closedTasks } = useQuery({
+  const { data: closedTasks, isLoading: isLoadingClosed } = useQuery({
     queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.CLOSED}`],
     queryFn: () => getTasksByStatus(+projectId, TaskStatus.CLOSED),
   });
 
-  const { data: frozenTasks } = useQuery({
+  const { data: frozenTasks, isLoading: isLoadingFrozen } = useQuery({
     queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.FROZEN}`],
     queryFn: () => getTasksByStatus(+projectId, TaskStatus.FROZEN),
   });
@@ -59,7 +68,16 @@ export const ProjectView = (props: Props) => {
     };
   }, [todoTasks, progressTasks, closedTasks, frozenTasks]);
 
-  if (isLoading || isError || !data) {
+  if (
+    isLoading ||
+    isError ||
+    !data ||
+    isLoadingProjectPm ||
+    isLoadingTodo ||
+    isLoadingProgress ||
+    isLoadingClosed ||
+    isLoadingFrozen
+  ) {
     return <Loader />;
   }
 
@@ -74,7 +92,11 @@ export const ProjectView = (props: Props) => {
     },
     {
       title: 'Participants',
-      value: 'Azhar, Bilal',
+      value: 'No participants',
+    },
+    {
+      title: 'PM',
+      value: projectPmUser?.name || 'No PM',
     },
   ];
 
@@ -82,22 +104,34 @@ export const ProjectView = (props: Props) => {
 
   const TASK_DETAILS = [
     {
-      title: 'All tasks',
-      value: '0',
+      title: 'To do',
+      value: todoTasks?.length || 0,
     },
     {
-      title: 'Done',
-      value: '0',
+      title: 'In progress',
+      value: progressTasks?.length || 0,
+    },
+    {
+      title: 'Closed',
+      value: closedTasks?.length || 0,
     },
     {
       title: 'Frozen',
-      value: '0',
+      value: frozenTasks?.length || 0,
     },
   ];
 
   return (
     <div>
-      <h1>{data.title}</h1>
+      <div className={styles.titleWrapper}>
+        <h1>{data.title}</h1>
+
+        {!projectPmUser && (
+          <Link href="dashboard/projects/invite-pm">
+            <Button text="Invite PM" bgColor="orange" textColor="white" icon={<BiPlus />} />
+          </Link>
+        )}
+      </div>
 
       <div className="contentWrapper">
         <div className={styles.detailsWrapper}>

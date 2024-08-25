@@ -86,9 +86,9 @@ export const ProfilePage = () => {
           />
 
           <div className={styles.tasksWrapper}>
-            <Column title="In progress" columns={[]} right={<Plus />} />
+            <Column title="In progress" columns={[]} right={<Plus />} projectId={1} />
 
-            <Column title="Closed" columns={[]} right={<Plus />} />
+            <Column title="Closed" columns={[]} right={<Plus />} projectId={1} />
           </div>
         </div>
       </div>
