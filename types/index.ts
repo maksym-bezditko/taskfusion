@@ -1,5 +1,7 @@
 import { TaskPriority, TaskStatus, UserType } from './enums';
 
+export type Nullable<T> = T | null;
+
 export type JwtTokensResponse = {
   accessToken: string;
   refreshToken: string;
@@ -81,6 +83,8 @@ export type Task = {
 export type TasksResponse = Task[];
 
 export type TaskResponse = Task;
+
+export type ProjectPmUserResponse = PasswordlessUser;
 
 export type PasswordlessUser = {
   id: number;

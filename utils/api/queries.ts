@@ -2,6 +2,7 @@ import {
   ActionsResponse,
   CommentsResponse,
   ProfileResponse,
+  ProjectPmUserResponse,
   ProjectResponse,
   ProjectsResponse,
   TaskResponse,
@@ -31,6 +32,12 @@ export const getProjectById = async (id: string): Promise<ProjectResponse> => {
 
 export const getTasksByStatus = async (projectId: number, taskStatus: TaskStatus): Promise<TasksResponse> => {
   const response = await externalApiClient.post<TasksResponse>('/tasks/get-tasks-by-status', { projectId, taskStatus });
+
+  return response.data;
+};
+
+export const getProjectPmUser = async (projectId: number): Promise<ProjectPmUserResponse> => {
+  const response = await externalApiClient.post<ProjectPmUserResponse>('/projects/get-project-pm-user', { projectId });
 
   return response.data;
 };
