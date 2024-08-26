@@ -127,7 +127,7 @@ export const ProjectView = (props: Props) => {
         <h1>{data.title}</h1>
 
         {!projectPmUser && (
-          <Link href="dashboard/projects/invite-pm">
+          <Link href={`/dashboard/projects/${projectId}/invite-pm`}>
             <Button text="Invite PM" bgColor="orange" textColor="white" icon={<BiPlus />} />
           </Link>
         )}
