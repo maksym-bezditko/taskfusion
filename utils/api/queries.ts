@@ -59,3 +59,9 @@ export const getCommentsByTaskId = async (taskId: number): Promise<CommentsRespo
 
   return response.data;
 };
+
+export const checkPmEmail = async (email: string) => {
+  const response = await externalApiClient.post('/users/check-pm-email', { email });
+
+  return response.data;
+};
