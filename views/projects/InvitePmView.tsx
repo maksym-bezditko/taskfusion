@@ -2,14 +2,18 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { Loader } from '@/components/common/Loader';
 import { QueryKeys } from '@/types/enums';
-import { checkPmEmail, getProjectById } from '@/utils/api/queries';
+import { createPmInvite } from '@/utils/api/mutations';
+import { getProjectById } from '@/utils/api/queries';
+import { queryClient } from '@/utils/queryClient';
 import { InvitePmFormValues, invitePmSchema } from '@/utils/schemas/invitePmSchema';
 
 import styles from './InvitePmView.module.scss';
@@ -24,7 +28,7 @@ export const InvitePmView = (props: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValidating, isLoading: isLoadingForm },
     setError,
   } = useForm<InvitePmFormValues>({
     resolver: zodResolver(invitePmSchema),
@@ -32,18 +36,34 @@ export const InvitePmView = (props: Props) => {
 
   const router = useRouter();
 
+  const [isInvitationSent, setIsInvitationSent] = useState(false);
+
   const { data, isLoading } = useQuery({
     queryKey: [QueryKeys.PROJECT + projectId],
     queryFn: () => getProjectById(projectId),
   });
 
   const { mutate: validatePmEmail } = useMutation({
-    mutationFn: (values: InvitePmFormValues) => checkPmEmail(values.email),
+    mutationFn: (values: InvitePmFormValues) =>
+      createPmInvite({
+        email: values.email,
+        projectId: +projectId,
+      }),
     onSuccess: () => {
-      router.push('/dashboard');
+      setIsInvitationSent(true);
+
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.PROJECT + projectId],
+      });
+
+      setTimeout(() => {
+        router.replace(`/dashboard/projects/${projectId}`);
+      }, 3000);
     },
-    onError: (error) => {
-      setError('email', { message: error.message });
+    onError: (error: AxiosError<{ message: string }>) => {
+      setError('email', {
+        message: error.response?.data.message || 'Unexpected error occurred, please try again later',
+      });
     },
   });
 
@@ -65,7 +85,18 @@ export const InvitePmView = (props: Props) => {
         {errors.email && <p className={styles.validationText}>{errors.email.message}</p>}
 
         <div className={styles.buttonWrapper}>
-          <Button text="Invite" bgColor="orange" isFontBold textColor="white" width="12.75rem" />
+          {isInvitationSent ? (
+            <p className={styles.invitationText}>Invitation sent!</p>
+          ) : (
+            <Button
+              text="Invite"
+              bgColor="orange"
+              isFontBold
+              textColor="white"
+              width="12.75rem"
+              disabled={isValidating || isLoadingForm}
+            />
+          )}
         </div>
       </form>
     </div>

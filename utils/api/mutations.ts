@@ -105,3 +105,7 @@ export const assignTaskToUser = async (data: { taskId: number; userId: number })
 export const unassignTaskFromUser = async (data: { taskId: number; userId: number }) => {
   return externalApiClient.post('/tasks/unassign-task-from-user', data);
 };
+
+export const createPmInvite = async (data: { email: string; projectId: number }) => {
+  return externalApiClient.post('/projects/invites/invite-pm', data);
+};
