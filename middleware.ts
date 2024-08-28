@@ -3,11 +3,11 @@ import { NextResponse, NextRequest } from 'next/server';
 import { UserType } from './types/enums';
 import { getIsLoggedIn, getRefreshTokenPayload } from './utils/serverActions';
 
-const LOGGED_IN_ONLY_ROUTES = ['/profile', '/dashboard'];
+const LOGGED_IN_ONLY_ROUTES = ['/profile/', '/dashboard'];
 const LOGGED_OUT_ONLY_ROUTES = ['/auth/login', '/auth/signup'];
-const CLIENT_ONLY_ROUTES = ['/dashboard/projects/create', '/dashboard/projects/'];
+const CLIENT_ONLY_ROUTES = ['/projects/create', '/projects/'];
 const DEVELOPER_ONLY_ROUTES: string[] = [];
-const PM_ONLY_ROUTES: string[] = [];
+const PM_ONLY_ROUTES: string[] = ['/pm/project-invitation/'];
 
 const matchesRoute = (url: string, routes: string[]) => {
   return routes.some((route) => {
