@@ -1,15 +1,14 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import moment from 'moment';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { BiPlus } from 'react-icons/bi';
 
 import { Button } from '@/components/common/Button';
 import { Column } from '@/components/common/Column';
-import { Details } from '@/components/common/Details';
 import { Loader } from '@/components/common/Loader';
+import { ProjectDetails } from '@/components/common/ProjectDetails';
 import TaskSidebar from '@/components/common/TaskSidebar';
 import { Plus } from '@/components/svg/Plus';
 import useTaskSidebar from '@/store/useTaskSidebar';
@@ -81,66 +80,20 @@ export const ProjectView = (props: Props) => {
     return <Loader />;
   }
 
-  const DETAILS = [
-    {
-      title: 'Date added',
-      value: moment(data.createdAt).format('MM/DD/YYYY, h:mm a'),
-    },
-    {
-      title: 'Deadline',
-      value: moment(data.deadline).format('MM/DD/YYYY, h:mm a'),
-    },
-    {
-      title: 'Participants',
-      value: 'No participants',
-    },
-    {
-      title: 'PM',
-      value: projectPmUser?.name || 'No PM',
-    },
-  ];
-
-  const DETAIL_STRING = data.description;
-
-  const TASK_DETAILS = [
-    {
-      title: 'To do',
-      value: todoTasks?.length || 0,
-    },
-    {
-      title: 'In progress',
-      value: progressTasks?.length || 0,
-    },
-    {
-      title: 'Closed',
-      value: closedTasks?.length || 0,
-    },
-    {
-      title: 'Frozen',
-      value: frozenTasks?.length || 0,
-    },
-  ];
-
   return (
     <div>
       <div className={styles.titleWrapper}>
         <h1>{data.title}</h1>
 
         {!projectPmUser && (
-          <Link href={`/dashboard/projects/${projectId}/invite-pm`}>
+          <Link href={`/projects/${projectId}/invite-pm`}>
             <Button text="Invite PM" bgColor="orange" textColor="white" icon={<BiPlus />} />
           </Link>
         )}
       </div>
 
       <div className="contentWrapper">
-        <div className={styles.detailsWrapper}>
-          <Details details={DETAILS} />
-
-          <Details details={DETAIL_STRING} />
-
-          <Details details={TASK_DETAILS} />
-        </div>
+        <ProjectDetails projectId={projectId} />
 
         <div className={styles.wrapper}>
           <Column

@@ -57,7 +57,7 @@ export const InvitePmView = (props: Props) => {
       });
 
       setTimeout(() => {
-        router.replace(`/dashboard/projects/${projectId}`);
+        router.replace(`/projects/${projectId}`);
       }, 3000);
     },
     onError: (error: AxiosError<{ message: string }>) => {
