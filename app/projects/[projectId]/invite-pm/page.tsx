@@ -1,4 +1,4 @@
-import { InvitePmView } from '@/views/projects/InvitePmView';
+import { InvitePmView } from '@/views/invites/InvitePmView';
 
 export default async function Page(props: { params: { projectId: string } }) {
   const { projectId } = props.params;

@@ -13,6 +13,7 @@ export enum QueryKeys {
   TASK = 'TASK',
   ACTIONS = 'ACTIONS',
   COMMENTS = 'COMMENTS',
+  INVITES = 'INVITES',
 }
 
 export enum TaskStatus {
@@ -26,4 +27,10 @@ export enum TaskPriority {
   LOW = 'Low',
   MEDIUM = 'Medium',
   HIGH = 'High',
+}
+
+export enum InviteStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
 }

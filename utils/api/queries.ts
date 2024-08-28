@@ -1,6 +1,7 @@
 import {
   ActionsResponse,
   CommentsResponse,
+  InviteResponse,
   ProfileResponse,
   ProjectPmUserResponse,
   ProjectResponse,
@@ -62,6 +63,12 @@ export const getCommentsByTaskId = async (taskId: number): Promise<CommentsRespo
 
 export const checkPmEmail = async (email: string) => {
   const response = await externalApiClient.post('/users/check-pm-email', { email });
+
+  return response.data;
+};
+
+export const getInviteById = async (id: string) => {
+  const response = await externalApiClient.post<InviteResponse>('/projects/invites/get-invite-by-id', { id });
 
   return response.data;
 };
