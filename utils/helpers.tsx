@@ -21,7 +21,7 @@ export const mapTasksToColumns = (tasks: Task[] = []): ColumnItemProps[] => {
       },
     ],
     priority: task.taskPriority,
-    href: `/dashboard/projects/${task.projectId}/task/${task.id}`,
+    href: `/projects/${task.projectId}/task/${task.id}`,
   }));
 };
 

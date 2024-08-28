@@ -109,3 +109,11 @@ export const unassignTaskFromUser = async (data: { taskId: number; userId: numbe
 export const createPmInvite = async (data: { email: string; projectId: number }) => {
   return externalApiClient.post('/projects/invites/invite-pm', data);
 };
+
+export const acceptPmInvite = async (data: { inviteId: number }) => {
+  return externalApiClient.post('/projects/invites/accept-pm-invite', data);
+};
+
+export const rejectPmInvite = async (data: { inviteId: number }) => {
+  return externalApiClient.post('/projects/invites/reject-pm-invite', data);
+};

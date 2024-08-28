@@ -1,4 +1,4 @@
-import { TaskPriority, TaskStatus, UserType } from './enums';
+import { InviteStatus, TaskPriority, TaskStatus, UserType } from './enums';
 
 export type Nullable<T> = T | null;
 
@@ -121,3 +121,26 @@ export type Comment = {
 export type CommentResponse = Comment & { user: PasswordlessUser };
 
 export type CommentsResponse = CommentResponse[];
+
+export type Invite = {
+  id: number;
+  projectId: number;
+  clientUserId: number;
+  pmUserId: number;
+  expiresAt: Date;
+  inviteStatus: InviteStatus;
+  createdAt: Date;
+  updatedAt: Date;
+  project: {
+    id: number;
+    title: string;
+    description: string;
+    deadline: Date;
+    pmId: number | null;
+    clientId: number;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+};
+
+export type InviteResponse = Invite;
