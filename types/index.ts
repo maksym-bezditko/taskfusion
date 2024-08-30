@@ -84,7 +84,7 @@ export type TasksResponse = Task[];
 
 export type TaskResponse = Task;
 
-export type ProjectPmUserResponse = PasswordlessUser;
+export type ProjectPmUserResponse = Nullable<PasswordlessUser>;
 
 export type PasswordlessUser = {
   id: number;
