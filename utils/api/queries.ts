@@ -19,8 +19,14 @@ export const getUserProfile = async (): Promise<ProfileResponse> => {
   return response.data;
 };
 
-export const getProjects = async (): Promise<ProjectsResponse> => {
-  const response = await externalApiClient.get<ProjectsResponse>('/projects');
+export const getClientProjects = async (): Promise<ProjectsResponse> => {
+  const response = await externalApiClient.get<ProjectsResponse>('/projects/get-client-projects');
+
+  return response.data;
+};
+
+export const getPmProjects = async (): Promise<ProjectsResponse> => {
+  const response = await externalApiClient.get<ProjectsResponse>('/projects/get-pm-projects');
 
   return response.data;
 };
@@ -38,9 +44,15 @@ export const getTasksByStatus = async (projectId: number, taskStatus: TaskStatus
 };
 
 export const getProjectPmUser = async (projectId: number): Promise<ProjectPmUserResponse> => {
-  const response = await externalApiClient.post<ProjectPmUserResponse>('/projects/get-project-pm-user', { projectId });
+  try {
+    const response = await externalApiClient.post<ProjectPmUserResponse>('/projects/get-project-pm-user', {
+      projectId,
+    });
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    return null;
+  }
 };
 
 export const getTaskById = async (taskId: number): Promise<TaskResponse> => {
