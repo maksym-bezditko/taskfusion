@@ -3,15 +3,15 @@ import { NextResponse, NextRequest } from 'next/server';
 import { UserType } from './types/enums';
 import { getIsLoggedIn, getRefreshTokenPayload } from './utils/serverActions';
 
-const LOGGED_IN_ONLY_ROUTES = ['/profile/', '/dashboard'];
+const LOGGED_IN_ONLY_ROUTES = ['/profile/', '/dashboard', '/projects/'];
 const LOGGED_OUT_ONLY_ROUTES = ['/auth/login', '/auth/signup'];
-const CLIENT_ONLY_ROUTES = ['/projects/create', '/projects/'];
+const CLIENT_ONLY_ROUTES = ['/projects/create'];
 const DEVELOPER_ONLY_ROUTES: string[] = [];
-const PM_ONLY_ROUTES: string[] = ['/pm/project-invitation/'];
+const PM_ONLY_ROUTES: string[] = ['/pm/.*'];
 
 const matchesRoute = (url: string, routes: string[]) => {
   return routes.some((route) => {
-    const regex = new RegExp(`^${route}(\\d+)?$`);
+    const regex = new RegExp(`^${route}(.*)?$`);
 
     return regex.test(url);
   });
