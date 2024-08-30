@@ -7,13 +7,20 @@ import { Button } from '@/components/common/Button';
 import { ListView } from '@/components/common/ListView';
 import { Loader } from '@/components/common/Loader';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
+import { ProfileResponse } from '@/types';
 import { QueryKeys } from '@/types/enums';
-import { getProjects } from '@/utils/api/queries';
+import { getClientProjects } from '@/utils/api/queries';
 
 import styles from './DashboardView.module.scss';
 
-export const ClientDashboardView = () => {
-  const { data, isLoading } = useQuery({ queryKey: [QueryKeys.PROJECTS], queryFn: getProjects });
+type Props = {
+  profile: ProfileResponse;
+};
+
+export const ClientDashboardView = (props: Props) => {
+  const { profile } = props;
+
+  const { data, isLoading } = useQuery({ queryKey: [QueryKeys.PROJECTS + profile.id], queryFn: getClientProjects });
 
   if (isLoading || !data) {
     return <Loader />;
