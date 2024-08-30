@@ -39,22 +39,34 @@ export const ProjectInvitationView = (props: Props) => {
   const { mutate: acceptInviteMutation } = useMutation({
     mutationFn: acceptPmInvite,
     onSuccess: () => {
-      // router.push('/dashboard');
-
       queryClient.invalidateQueries({
-        queryKey: [QueryKeys.INVITES + inviteId],
+        queryKey: [QueryKeys.PROJECTS + userProfile?.id],
       });
+
+      setTimeout(() => {
+        router.push('/dashboard');
+
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.INVITES + inviteId],
+        });
+      }, 3000);
     },
   });
 
   const { mutate: rejectInviteMutation } = useMutation({
     mutationFn: rejectPmInvite,
     onSuccess: () => {
-      router.push('/dashboard');
-
       queryClient.invalidateQueries({
-        queryKey: [QueryKeys.INVITES + inviteId],
+        queryKey: [QueryKeys.PROJECTS + userProfile?.id],
       });
+
+      setTimeout(() => {
+        router.push('/dashboard');
+
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.INVITES + inviteId],
+        });
+      }, 3000);
     },
   });
 
