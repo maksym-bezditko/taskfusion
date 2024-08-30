@@ -21,7 +21,7 @@ export default function Page() {
   }
 
   if (data.userType === UserType.CLIENT) {
-    return <ClientDashboardView />;
+    return <ClientDashboardView profile={data} />;
   }
 
   if (data.userType === UserType.DEVELOPER) {

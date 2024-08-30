@@ -39,7 +39,7 @@ export const CreateProjectForm = () => {
         clientId: data.client.id,
       });
     },
-    mutationKey: [QueryKeys.PROJECTS],
+    mutationKey: [QueryKeys.PROJECTS + data?.id],
     onSuccess: () => {
       router.push('/dashboard');
     },
