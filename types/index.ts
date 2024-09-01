@@ -122,7 +122,7 @@ export type CommentResponse = Comment & { user: PasswordlessUser };
 
 export type CommentsResponse = CommentResponse[];
 
-export type Invite = {
+export type PmInvite = {
   id: number;
   projectId: number;
   clientUserId: number;
@@ -143,4 +143,27 @@ export type Invite = {
   };
 };
 
-export type InviteResponse = Invite;
+export type PmInviteResponse = PmInvite;
+
+export type DeveloperInvite = {
+  id: number;
+  projectId: number;
+  developerUserId: number;
+  pmUserId: number;
+  expiresAt: Date;
+  inviteStatus: InviteStatus;
+  createdAt: Date;
+  updatedAt: Date;
+  project: {
+    id: number;
+    title: string;
+    description: string;
+    deadline: Date;
+    pmId: number | null;
+    clientId: number;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+};
+
+export type DeveloperInviteResponse = DeveloperInvite;
