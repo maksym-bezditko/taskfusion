@@ -5,8 +5,8 @@ import { getIsLoggedIn, getRefreshTokenPayload } from './utils/serverActions';
 
 const LOGGED_IN_ONLY_ROUTES = ['/profile/', '/dashboard', '/projects/'];
 const LOGGED_OUT_ONLY_ROUTES = ['/auth/login', '/auth/signup'];
-const CLIENT_ONLY_ROUTES = ['/projects/create'];
-const DEVELOPER_ONLY_ROUTES: string[] = [];
+const CLIENT_ONLY_ROUTES = ['/projects/create', '/client/.*'];
+const DEVELOPER_ONLY_ROUTES: string[] = ['/developer/.*'];
 const PM_ONLY_ROUTES: string[] = ['/pm/.*'];
 
 const matchesRoute = (url: string, routes: string[]) => {
