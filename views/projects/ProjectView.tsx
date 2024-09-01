@@ -12,8 +12,8 @@ import { ProjectDetails } from '@/components/common/ProjectDetails';
 import TaskSidebar from '@/components/common/TaskSidebar';
 import { Plus } from '@/components/svg/Plus';
 import useTaskSidebar from '@/store/useTaskSidebar';
-import { QueryKeys, TaskStatus } from '@/types/enums';
-import { getProjectById, getProjectPmUser, getTasksByStatus } from '@/utils/api/queries';
+import { QueryKeys, TaskStatus, UserType } from '@/types/enums';
+import { getProjectById, getProjectPmUser, getTasksByStatus, getUserProfile } from '@/utils/api/queries';
 import { mapTasksToColumns } from '@/utils/helpers';
 
 import styles from './ProjectView.module.scss';
@@ -27,7 +27,16 @@ export const ProjectView = (props: Props) => {
 
   const { setType } = useTaskSidebar();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data: profile, isLoading: isLoadingProfile } = useQuery({
+    queryKey: [QueryKeys.USER_PROFILE],
+    queryFn: getUserProfile,
+  });
+
+  const {
+    data: project,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: [QueryKeys.PROJECT + projectId],
     queryFn: () => getProjectById(projectId),
   });
@@ -70,12 +79,13 @@ export const ProjectView = (props: Props) => {
   if (
     isLoading ||
     isError ||
-    !data ||
+    !project ||
     isLoadingProjectPm ||
     isLoadingTodo ||
     isLoadingProgress ||
     isLoadingClosed ||
-    isLoadingFrozen
+    isLoadingFrozen ||
+    isLoadingProfile
   ) {
     return <Loader />;
   }
@@ -83,11 +93,17 @@ export const ProjectView = (props: Props) => {
   return (
     <div>
       <div className={styles.titleWrapper}>
-        <h1>{data.title}</h1>
+        <h1>{project.title}</h1>
 
-        {!projectPmUser && (
+        {!projectPmUser && profile?.userType === UserType.CLIENT && (
           <Link href={`/projects/${projectId}/invite-pm`}>
             <Button text="Invite PM" bgColor="orange" textColor="white" icon={<BiPlus />} />
+          </Link>
+        )}
+
+        {profile?.userType === UserType.PM && (
+          <Link href={`/projects/${projectId}/invite-developer`}>
+            <Button text="Invite Developer" bgColor="orange" textColor="white" icon={<BiPlus />} />
           </Link>
         )}
       </div>

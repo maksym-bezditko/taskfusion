@@ -79,8 +79,14 @@ export const checkPmEmail = async (email: string) => {
   return response.data;
 };
 
+export const checkDeveloperEmail = async (email: string) => {
+  const response = await externalApiClient.post('/users/check-developer-email', { email });
+
+  return response.data;
+};
+
 export const getInviteById = async (id: string) => {
-  const response = await externalApiClient.post<InviteResponse>('/projects/invites/get-invite-by-id', { id });
+  const response = await externalApiClient.post<InviteResponse>('/projects/invites/get-pm-invite-by-id', { id });
 
   return response.data;
 };
