@@ -110,6 +110,10 @@ export const createPmInvite = async (data: { email: string; projectId: number })
   return externalApiClient.post('/projects/invites/invite-pm', data);
 };
 
+export const createDeveloperInvite = async (data: { email: string; projectId: number }) => {
+  return externalApiClient.post('/projects/invites/invite-developer', data);
+};
+
 export const acceptPmInvite = async (data: { inviteId: number }) => {
   return externalApiClient.post('/projects/invites/accept-pm-invite', data);
 };
