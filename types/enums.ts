@@ -13,7 +13,8 @@ export enum QueryKeys {
   TASK = 'TASK',
   ACTIONS = 'ACTIONS',
   COMMENTS = 'COMMENTS',
-  INVITES = 'INVITES',
+  PM_INVITES = 'PM_INVITES',
+  DEV_INVITES = 'DEV_INVITES',
 }
 
 export enum TaskStatus {

@@ -9,23 +9,23 @@ import { Loader } from '@/components/common/Loader';
 import { ProjectDetails } from '@/components/common/ProjectDetails';
 import { InviteStatus, QueryKeys } from '@/types/enums';
 import { acceptPmInvite, rejectPmInvite } from '@/utils/api/mutations';
-import { getInviteById, getUserProfile } from '@/utils/api/queries';
+import { getPmInviteById, getUserProfile } from '@/utils/api/queries';
 import { queryClient } from '@/utils/queryClient';
 
-import styles from './ProjectInvitationView.module.scss';
+import styles from './PmProjectInvitationView.module.scss';
 
 type Props = {
   inviteId: string;
 };
 
-export const ProjectInvitationView = (props: Props) => {
+export const PmProjectInvitationView = (props: Props) => {
   const { inviteId } = props;
 
   const router = useRouter();
 
   const { data: invite, isLoading: isLoadingInvite } = useQuery({
-    queryKey: [QueryKeys.INVITES + inviteId],
-    queryFn: () => getInviteById(inviteId),
+    queryKey: [QueryKeys.PM_INVITES + inviteId],
+    queryFn: () => getPmInviteById(inviteId),
     enabled: Boolean(inviteId),
   });
 
@@ -47,7 +47,7 @@ export const ProjectInvitationView = (props: Props) => {
         router.push('/dashboard');
 
         queryClient.invalidateQueries({
-          queryKey: [QueryKeys.INVITES + inviteId],
+          queryKey: [QueryKeys.PM_INVITES + inviteId],
         });
       }, 3000);
     },
@@ -64,7 +64,7 @@ export const ProjectInvitationView = (props: Props) => {
         router.push('/dashboard');
 
         queryClient.invalidateQueries({
-          queryKey: [QueryKeys.INVITES + inviteId],
+          queryKey: [QueryKeys.PM_INVITES + inviteId],
         });
       }, 3000);
     },

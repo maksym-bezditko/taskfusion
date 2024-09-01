@@ -1,7 +1,8 @@
 import {
   ActionsResponse,
   CommentsResponse,
-  InviteResponse,
+  DeveloperInviteResponse,
+  PmInviteResponse,
   ProfileResponse,
   ProjectPmUserResponse,
   ProjectResponse,
@@ -85,8 +86,19 @@ export const checkDeveloperEmail = async (email: string) => {
   return response.data;
 };
 
-export const getInviteById = async (id: string) => {
-  const response = await externalApiClient.post<InviteResponse>('/projects/invites/get-pm-invite-by-id', { id });
+export const getPmInviteById = async (id: string) => {
+  const response = await externalApiClient.post<PmInviteResponse>('/projects/invites/get-pm-invite-by-id', { id });
+
+  return response.data;
+};
+
+export const getDeveloperInviteById = async (id: string) => {
+  const response = await externalApiClient.post<DeveloperInviteResponse>(
+    '/projects/invites/get-developer-invite-by-id',
+    {
+      id,
+    },
+  );
 
   return response.data;
 };

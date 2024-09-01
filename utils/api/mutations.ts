@@ -121,3 +121,11 @@ export const acceptPmInvite = async (data: { inviteId: number }) => {
 export const rejectPmInvite = async (data: { inviteId: number }) => {
   return externalApiClient.post('/projects/invites/reject-pm-invite', data);
 };
+
+export const acceptDeveloperInvite = async (data: { inviteId: number }) => {
+  return externalApiClient.post('/projects/invites/accept-developer-invite', data);
+};
+
+export const rejectDeveloperInvite = async (data: { inviteId: number }) => {
+  return externalApiClient.post('/projects/invites/reject-developer-invite', data);
+};
