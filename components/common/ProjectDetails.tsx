@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
 
 import { QueryKeys, TaskStatus } from '@/types/enums';
-import { getProjectById, getProjectPmUser, getTasksByStatus } from '@/utils/api/queries';
+import { getProjectById, getProjectDeveloperUsers, getProjectPmUser, getTasksByStatus } from '@/utils/api/queries';
 
 import { Details } from './Details';
 import { Loader } from './Loader';
@@ -23,6 +23,12 @@ export const ProjectDetails = (props: Props) => {
   const { data: projectPmUser, isLoading: isLoadingProjectPm } = useQuery({
     queryKey: [QueryKeys.PROJECT_PM_USER + projectId],
     queryFn: () => getProjectPmUser(+projectId),
+    retry: false,
+  });
+
+  const { data: projectDeveloperUsers, isLoading: isLoadingProjectDeveloperUsers } = useQuery({
+    queryKey: [QueryKeys.PROJECT_DEVELOPER_USERS + projectId],
+    queryFn: () => getProjectDeveloperUsers(+projectId),
     retry: false,
   });
 
@@ -54,7 +60,8 @@ export const ProjectDetails = (props: Props) => {
     isLoadingTodo ||
     isLoadingProgress ||
     isLoadingClosed ||
-    isLoadingFrozen
+    isLoadingFrozen ||
+    isLoadingProjectDeveloperUsers
   ) {
     return <Loader isSmall />;
   }
@@ -70,7 +77,7 @@ export const ProjectDetails = (props: Props) => {
     },
     {
       title: 'Participants',
-      value: 'No participants',
+      value: projectDeveloperUsers?.map((user) => user.name).join(', ') || 'No participants',
     },
     {
       title: 'PM',
