@@ -3,7 +3,9 @@ import {
   CommentsResponse,
   DeveloperInviteResponse,
   PmInviteResponse,
+  PmProjectResponse,
   ProfileResponse,
+  ProjectDeveloperUsersResponse,
   ProjectPmUserResponse,
   ProjectResponse,
   ProjectsResponse,
@@ -26,8 +28,8 @@ export const getClientProjects = async (): Promise<ProjectsResponse> => {
   return response.data;
 };
 
-export const getPmProjects = async (): Promise<ProjectsResponse> => {
-  const response = await externalApiClient.get<ProjectsResponse>('/projects/get-pm-projects');
+export const getPmProjects = async (): Promise<PmProjectResponse> => {
+  const response = await externalApiClient.get<PmProjectResponse>('/projects/get-pm-projects');
 
   return response.data;
 };
@@ -54,6 +56,17 @@ export const getProjectPmUser = async (projectId: number): Promise<ProjectPmUser
   } catch (error) {
     return null;
   }
+};
+
+export const getProjectDeveloperUsers = async (projectId: number): Promise<ProjectDeveloperUsersResponse> => {
+  const response = await externalApiClient.post<ProjectDeveloperUsersResponse>(
+    '/projects/get-project-developer-users',
+    {
+      projectId,
+    },
+  );
+
+  return response.data;
 };
 
 export const getTaskById = async (taskId: number): Promise<TaskResponse> => {

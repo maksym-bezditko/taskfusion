@@ -64,6 +64,10 @@ export type Project = {
 
 export type ProjectsResponse = Project[];
 
+export type PmProjectResponse = (Project & {
+  developerUsers: (PasswordlessUser & { userType: UserType.DEVELOPER })[];
+})[];
+
 export type ProjectResponse = Project;
 
 export type Task = {
@@ -85,6 +89,8 @@ export type TasksResponse = Task[];
 export type TaskResponse = Task;
 
 export type ProjectPmUserResponse = Nullable<PasswordlessUser>;
+
+export type ProjectDeveloperUsersResponse = PasswordlessUser[];
 
 export type PasswordlessUser = {
   id: number;
