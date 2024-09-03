@@ -1,14 +1,15 @@
 import {
   ActionsResponse,
+  ClientProjectResponse,
   CommentsResponse,
   DeveloperInviteResponse,
+  DeveloperProjectResponse,
   PmInviteResponse,
   PmProjectResponse,
   ProfileResponse,
   ProjectDeveloperUsersResponse,
   ProjectPmUserResponse,
   ProjectResponse,
-  ProjectsResponse,
   TaskResponse,
   TasksResponse,
 } from '@/types';
@@ -22,8 +23,14 @@ export const getUserProfile = async (): Promise<ProfileResponse> => {
   return response.data;
 };
 
-export const getClientProjects = async (): Promise<ProjectsResponse> => {
-  const response = await externalApiClient.get<ProjectsResponse>('/projects/get-client-projects');
+export const getClientProjects = async (): Promise<ClientProjectResponse> => {
+  const response = await externalApiClient.get<ClientProjectResponse>('/projects/get-client-projects');
+
+  return response.data;
+};
+
+export const getDeveloperProjects = async (): Promise<DeveloperProjectResponse> => {
+  const response = await externalApiClient.get<DeveloperProjectResponse>('/projects/get-developer-projects');
 
   return response.data;
 };
