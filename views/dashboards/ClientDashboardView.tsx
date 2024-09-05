@@ -49,7 +49,16 @@ export const ClientDashboardView = (props: Props) => {
                 iconName="sunset"
                 text={moment.utc(project.deadline).local().format('MM/DD/YYYY, h:mm a')}
               />,
-              <TextWithIcon key={3} iconName="people" text={project.users.map((user) => user.name).join(', ')} />,
+              <TextWithIcon
+                key={3}
+                iconName="people"
+                text={
+                  project.users
+                    .map((user) => user.name)
+                    .join(', ')
+                    .trim() || 'No participants'
+                }
+              />,
             ],
             right: project.id,
             href: `projects/${project.id}`,
