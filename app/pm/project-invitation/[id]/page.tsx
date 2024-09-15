@@ -1,5 +1,5 @@
-import { ProjectInvitationView } from '@/views/invites/ProjectInvitationView';
+import { PmProjectInvitationView } from '@/views/invites/PmProjectInvitationView';
 
 export default function Page(props: { params: { id: string } }) {
-  return <ProjectInvitationView inviteId={props.params.id} />;
+  return <PmProjectInvitationView inviteId={props.params.id} />;
 }
