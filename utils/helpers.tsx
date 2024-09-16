@@ -3,8 +3,10 @@ import moment from 'moment';
 import { Avatar } from '@/components/common/Avatar';
 import { Props as ColumnItemProps } from '@/components/common/ColumnItem';
 import { Detail } from '@/components/common/Details';
+import { Props as ListItemProps } from '@/components/common/ListItem';
 import { PriorityBadge } from '@/components/common/PriorityBadge';
-import { Action, Task } from '@/types';
+import { TextWithIcon } from '@/components/common/TextWithIcon';
+import { Action, ClientProjectResponse, DeveloperProjectResponse, PmProjectResponse, Task } from '@/types';
 
 export const mapTasksToColumns = (tasks: Task[] = []): ColumnItemProps[] => {
   return tasks.map((task) => ({
@@ -64,4 +66,63 @@ export const mapActionsToColumns = (actions?: Action[]): ColumnItemProps[] => {
       author: <Avatar name={action.user.name} />,
     })) || []
   );
+};
+
+export const mapDeveloperProjectsToListItems = (projects: DeveloperProjectResponse): ListItemProps[] => {
+  return projects.map((project) => ({
+    title: project.title,
+    data: [
+      <TextWithIcon key={1} iconName="sunrise" text={moment(project.deadline).format('MM/DD/YYYY, h:mm a')} />,
+      <TextWithIcon
+        key={2}
+        iconName="sunset"
+        text={moment.utc(project.deadline).local().format('MM/DD/YYYY, h:mm a')}
+      />,
+      <TextWithIcon key={3} iconName="people" text={project.pmUser.name} />,
+    ],
+    right: project.id,
+    href: `projects/${project.id}`,
+  }));
+};
+
+export const mapPmProjectsToListItems = (projects: PmProjectResponse): ListItemProps[] => {
+  return projects.map((project) => ({
+    title: project.title,
+    data: [
+      <TextWithIcon key={1} iconName="sunrise" text={moment(project.deadline).format('MM/DD/YYYY, h:mm a')} />,
+      <TextWithIcon
+        key={2}
+        iconName="sunset"
+        text={moment.utc(project.deadline).local().format('MM/DD/YYYY, h:mm a')}
+      />,
+      <TextWithIcon
+        key={3}
+        iconName="people"
+        text={project.developerUsers ? project.developerUsers.map((user) => user.name).join(', ') : 'No participants'}
+      />,
+    ],
+    right: project.id,
+    href: `projects/${project.id}`,
+  }));
+};
+
+export const mapClientProjectsToListItems = (projects: ClientProjectResponse): ListItemProps[] => {
+  return projects.map((project) => ({
+    title: project.title,
+    data: [
+      <TextWithIcon key={1} iconName="sunrise" text={moment(project.deadline).format('MM/DD/YYYY, h:mm a')} />,
+      <TextWithIcon
+        key={2}
+        iconName="sunset"
+        text={moment.utc(project.deadline).local().format('MM/DD/YYYY, h:mm a')}
+      />,
+      <TextWithIcon
+        key={3}
+        iconName="people"
+        text={project.users.length ? project.users.map((user) => user.name).join(', ') : 'No participants'}
+      />,
+    ],
+    right: project.id,
+    href: `projects/${project.id}`,
+  }));
 };
