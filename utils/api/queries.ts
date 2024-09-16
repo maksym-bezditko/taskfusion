@@ -112,13 +112,21 @@ export const getPmInviteById = async (id: string) => {
   return response.data;
 };
 
-export const getDeveloperInviteById = async (id: string) => {
+export const getDeveloperInviteById = async (id: number) => {
   const response = await externalApiClient.post<DeveloperInviteResponse>(
     '/projects/invites/get-developer-invite-by-id',
     {
       id,
     },
   );
+
+  return response.data;
+};
+
+export const getUserTasksByStatus = async (taskStatus: TaskStatus) => {
+  const response = await externalApiClient.post<TasksResponse>('/tasks/get-user-tasks-by-status', {
+    status: taskStatus,
+  });
 
   return response.data;
 };
