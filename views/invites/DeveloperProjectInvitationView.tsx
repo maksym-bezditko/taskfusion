@@ -25,7 +25,7 @@ export const DeveloperProjectInvitationView = (props: Props) => {
 
   const { data: invite, isLoading: isLoadingInvite } = useQuery({
     queryKey: [QueryKeys.DEV_INVITES + inviteId],
-    queryFn: () => getDeveloperInviteById(inviteId),
+    queryFn: () => getDeveloperInviteById(+inviteId),
     enabled: Boolean(inviteId),
   });
 
