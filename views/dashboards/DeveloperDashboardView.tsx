@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import moment from 'moment';
+import { useMemo } from 'react';
 
 import { ListView } from '@/components/common/ListView';
 import { Loader } from '@/components/common/Loader';
@@ -7,6 +7,7 @@ import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { ProfileResponse } from '@/types';
 import { QueryKeys } from '@/types/enums';
 import { getDeveloperProjects } from '@/utils/api/queries';
+import { mapDeveloperProjectsToListItems } from '@/utils/helpers';
 
 import styles from './DashboardView.module.scss';
 
@@ -19,6 +20,14 @@ export const DeveloperDashboardView = (props: Props) => {
 
   const { data, isLoading } = useQuery({ queryKey: [QueryKeys.PROJECTS + profile.id], queryFn: getDeveloperProjects });
 
+  const listItems = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    return mapDeveloperProjectsToListItems(data);
+  }, [data]);
+
   if (isLoading || !data) {
     return <Loader />;
   }
@@ -26,30 +35,15 @@ export const DeveloperDashboardView = (props: Props) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.titleWrapper}>
-        <h1>Client Dashboard</h1>
+        <h1>Developer Dashboard</h1>
       </div>
 
       <div className="contentWrapper">
         <ListView
           title="Projects"
           rightElement={data.length ? <TextWithIcon iconName="export" text="Export" isClickable /> : null}
-          listItems={data.map((project) => ({
-            title: project.title,
-            data: [
-              <TextWithIcon key={1} iconName="sunrise" text={moment(project.deadline).format('MM/DD/YYYY, h:mm a')} />,
-              <TextWithIcon
-                key={2}
-                iconName="sunset"
-                text={moment.utc(project.deadline).local().format('MM/DD/YYYY, h:mm a')}
-              />,
-              <TextWithIcon key={3} iconName="people" text={project.pmUser.name} />,
-            ],
-            right: project.id,
-            href: `projects/${project.id}`,
-          }))}
+          listItems={listItems}
         />
-
-        <ListView title="Payments" listItems={[]} />
       </div>
     </div>
   );
