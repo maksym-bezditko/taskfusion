@@ -20,7 +20,7 @@ export const Comment = (props: Props) => {
         <p className={styles.date}>{moment(date).format('MM/DD/YYYY, h:mm a')}</p>
       </div>
 
-      <p className={styles.text}>{text}</p>
+      <p className={styles.text}>{text || 'No text'}</p>
     </div>
   );
 };

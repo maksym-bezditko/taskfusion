@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 
-import { QueryKeys } from '@/types/enums';
 import { nextApiClient } from '@/utils/nextApiClient';
 import { queryClient } from '@/utils/queryClient';
 
@@ -14,9 +13,7 @@ export const LogoutButtonWrapper = () => {
   const handleLogout = async () => {
     await nextApiClient.post('/logout');
 
-    queryClient.removeQueries({
-      queryKey: [QueryKeys.USER_PROFILE],
-    });
+    queryClient.invalidateQueries();
     router.replace('/dashboard');
     router.refresh();
   };
