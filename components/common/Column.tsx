@@ -15,31 +15,47 @@ import { NoData } from './NoData';
 
 type Props = {
   title: string;
-  projectId: number;
   columns?: ColumnItemProps[];
-  right?: ReactNode;
   isLoading?: boolean;
-  isDraggable?: boolean;
-};
+} & (
+  | { isDraggable?: false }
+  | {
+      isDraggable: true;
+      projectId: number;
+      right?: ReactNode;
+    }
+);
 
 export const Column = (props: Props) => {
-  const { title, projectId, columns, right, isLoading, isDraggable } = props;
+  const { title, columns, isLoading, isDraggable } = props;
 
   const { mutateAsync } = useMutation({
     mutationFn: changeTaskStatus,
     onSuccess: () => {
+      if (!isDraggable) {
+        return;
+      }
+
       queryClient.invalidateQueries({
-        queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}`],
+        queryKey: [`${QueryKeys.PROJECTS}_${props.projectId}_${QueryKeys.TASKS}`],
       });
     },
   });
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    if (!isDraggable) {
+      return;
+    }
+
     event.preventDefault();
     event.stopPropagation();
   };
 
   const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    if (!isDraggable) {
+      return;
+    }
+
     event.preventDefault();
     event.stopPropagation();
 
@@ -55,7 +71,7 @@ export const Column = (props: Props) => {
         const [key] = query.queryKey as [string];
 
         return (
-          key.startsWith(`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}`) ||
+          key.startsWith(`${QueryKeys.PROJECTS}_${props.projectId}_${QueryKeys.TASKS}`) ||
           key === `${QueryKeys.ACTIONS}_${taskId}`
         );
       },
@@ -84,7 +100,8 @@ export const Column = (props: Props) => {
     <div className={classNames(styles.wrapper)} onDragOver={handleDragOver} onDrop={handleDrop}>
       <div className={styles.headerWrapper}>
         <p className={styles.title}>{title}</p>
-        {right}
+
+        {isDraggable && props.right}
       </div>
 
       {contentItems()}

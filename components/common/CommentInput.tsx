@@ -31,6 +31,10 @@ export const CommentInput = (props: Props) => {
 
   const { mutate: createCommentMutation } = useMutation({
     mutationFn: (values: CreateCommentFormValues) => {
+      if (!values.comment) {
+        throw new Error('Comment is required');
+      }
+
       if (!taskId) {
         throw new Error('Task ID is required');
       }
