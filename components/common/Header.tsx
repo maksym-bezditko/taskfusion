@@ -1,14 +1,12 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
 import DefaultAvatarImage from '@/components/assets/Avatar.png';
-import { QueryKeys } from '@/types/enums';
-import { getUserProfile } from '@/utils/api/queries';
+import { useMyProfile } from '@/hooks/useUserProfile';
 
 import { Bell } from '../svg/Bell';
 import { Letter } from '../svg/Letter';
@@ -23,11 +21,7 @@ export const Header = () => {
 
   const pathname = usePathname();
 
-  const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.USER_PROFILE],
-    queryFn: getUserProfile,
-    retry: false,
-  });
+  const { data, isLoading } = useMyProfile();
 
   const shouldShowHeader = !pathname?.includes('auth');
 

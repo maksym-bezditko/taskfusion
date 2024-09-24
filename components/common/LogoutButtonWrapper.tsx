@@ -13,7 +13,7 @@ export const LogoutButtonWrapper = () => {
   const handleLogout = async () => {
     await nextApiClient.post('/logout');
 
-    queryClient.invalidateQueries();
+    queryClient.resetQueries();
     router.replace('/dashboard');
     router.refresh();
   };
