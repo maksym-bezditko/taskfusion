@@ -1,4 +1,10 @@
-.wrapper {
+.createProjectWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3rem;
+}
+
+.taskColumnsWrapper {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 1.5rem;

@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/common/Button';
 
-import styles from './ErrorView.module.scss';
+import styles from './common.module.scss';
 
 type Props = {
   error: Error & { digest?: string };

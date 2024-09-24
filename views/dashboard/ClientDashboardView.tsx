@@ -1,23 +1,17 @@
-import { useQuery } from '@tanstack/react-query';
 import moment from 'moment-timezone';
+import Link from 'next/link';
+import { BiPlus } from 'react-icons/bi';
 
+import { Button } from '@/components/common/Button';
 import { ListView } from '@/components/common/ListView';
 import { Loader } from '@/components/common/Loader';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
-import { ProfileResponse } from '@/types';
-import { QueryKeys } from '@/types/enums';
-import { getPmProjects } from '@/utils/api/queries';
+import { useClientProjects } from '@/hooks/useClientProjects';
 
-import styles from './DashboardView.module.scss';
+import styles from './dashboard.module.scss';
 
-type Props = {
-  profile: ProfileResponse;
-};
-
-export const PmDashboardView = (props: Props) => {
-  const { profile } = props;
-
-  const { data, isLoading } = useQuery({ queryKey: [QueryKeys.PROJECTS + profile.id], queryFn: getPmProjects });
+export const ClientDashboardView = () => {
+  const { data, isLoading } = useClientProjects();
 
   if (isLoading || !data) {
     return <Loader />;
@@ -25,7 +19,13 @@ export const PmDashboardView = (props: Props) => {
 
   return (
     <div className={styles.wrapper}>
-      <h1>Project Manager Dashboard</h1>
+      <div className={styles.titleWrapper}>
+        <h1>Client Dashboard</h1>
+
+        <Link href="projects/create">
+          <Button text="Create new project" bgColor="orange" textColor="white" icon={<BiPlus />} />
+        </Link>
+      </div>
 
       <div className="contentWrapper">
         <ListView
@@ -43,13 +43,20 @@ export const PmDashboardView = (props: Props) => {
               <TextWithIcon
                 key={3}
                 iconName="people"
-                text={project.developerUsers.map((user) => user.name).join(', ')}
+                text={
+                  project.users
+                    .map((user) => user.name)
+                    .join(', ')
+                    .trim() || 'No participants'
+                }
               />,
             ],
             right: project.id,
             href: `projects/${project.id}`,
           }))}
         />
+
+        <ListView title="Payments" listItems={[]} />
       </div>
     </div>
   );

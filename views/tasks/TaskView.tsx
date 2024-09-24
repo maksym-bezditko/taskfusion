@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
 import { Button } from '@/components/common/Button';
@@ -13,13 +13,16 @@ import { NoData } from '@/components/common/NoData';
 import { Check } from '@/components/svg/Check';
 import { Freeze } from '@/components/svg/Freeze';
 import { Participant } from '@/components/svg/Participant';
+import { useTaskActions } from '@/hooks/useTaskActions';
+import { useTaskById } from '@/hooks/useTaskById';
+import { useTaskComments } from '@/hooks/useTaskComments';
+import { useMyProfile } from '@/hooks/useUserProfile';
 import { QueryKeys, TaskStatus } from '@/types/enums';
 import { assignTaskToUser, changeTaskStatus, unassignTaskFromUser } from '@/utils/api/mutations';
-import { getActionsByTaskId, getCommentsByTaskId, getTaskById, getUserProfile } from '@/utils/api/queries';
 import { mapActionsToColumns, mapTaskToDetails } from '@/utils/helpers';
 import { queryClient } from '@/utils/queryClient';
 
-import styles from './TaskView.module.scss';
+import styles from './tasks.module.scss';
 
 type Props = {
   taskId: string;
@@ -29,28 +32,12 @@ type Props = {
 export const TaskPage = (props: Props) => {
   const { taskId, projectId } = props;
 
-  const {
-    data: task,
-    isLoading: isTaskLoading,
-    isError,
-  } = useQuery({
-    queryKey: [`${QueryKeys.TASK}_${taskId}`],
-    queryFn: () => getTaskById(+taskId),
-  });
+  const { data: profile } = useMyProfile();
+  const { data: task, isLoading: isTaskLoading, isError } = useTaskById(taskId);
+  const { data: actions, isLoading: isLoadingActions } = useTaskActions(taskId);
+  const { data: comments, isLoading: isCommentsLoading } = useTaskComments(taskId);
 
-  const { data: profile } = useQuery({ queryKey: [QueryKeys.USER_PROFILE], queryFn: getUserProfile });
-
-  const { data: actions, isLoading: isLoadingActions } = useQuery({
-    queryKey: [`${QueryKeys.ACTIONS}_${taskId}`],
-    queryFn: () => getActionsByTaskId(+taskId),
-  });
-
-  const { data: comments, isLoading: isCommentsLoading } = useQuery({
-    queryKey: [`${QueryKeys.COMMENTS}_${taskId}`],
-    queryFn: () => getCommentsByTaskId(+taskId),
-  });
-
-  const invalidateTask = () => {
+  const invalidateTask = useCallback(() => {
     queryClient.invalidateQueries({
       queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}`],
     });
@@ -62,7 +49,7 @@ export const TaskPage = (props: Props) => {
     queryClient.invalidateQueries({
       queryKey: [`${QueryKeys.ACTIONS}_${taskId}`],
     });
-  };
+  }, [projectId, taskId]);
 
   const { mutateAsync: mutateTaskStatusAsync } = useMutation({
     mutationFn: changeTaskStatus,

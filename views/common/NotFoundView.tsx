@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/common/Button';
 
-import styles from './NotFoundView.module.scss';
+import styles from './common.module.scss';
 
 export const NotFoundPage = () => {
   return (

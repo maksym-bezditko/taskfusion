@@ -1,18 +1,19 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { notFound, useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 
 import { Button } from '@/components/common/Button';
 import { Loader } from '@/components/common/Loader';
 import { ProjectDetails } from '@/components/common/ProjectDetails';
+import { useDeveloperInviteById } from '@/hooks/useDeveloperInviteById';
+import { useMyProfile } from '@/hooks/useUserProfile';
 import { InviteStatus, QueryKeys } from '@/types/enums';
 import { acceptDeveloperInvite, rejectDeveloperInvite } from '@/utils/api/mutations';
-import { getDeveloperInviteById, getUserProfile } from '@/utils/api/queries';
 import { queryClient } from '@/utils/queryClient';
 
-import styles from './PmProjectInvitationView.module.scss';
+import styles from './invites.module.scss';
 
 type Props = {
   inviteId: string;
@@ -23,16 +24,8 @@ export const DeveloperProjectInvitationView = (props: Props) => {
 
   const router = useRouter();
 
-  const { data: invite, isLoading: isLoadingInvite } = useQuery({
-    queryKey: [QueryKeys.DEV_INVITES + inviteId],
-    queryFn: () => getDeveloperInviteById(+inviteId),
-    enabled: Boolean(inviteId),
-  });
-
-  const { data: userProfile, isLoading: isLoadingProfile } = useQuery({
-    queryKey: [QueryKeys.USER_PROFILE],
-    queryFn: getUserProfile,
-  });
+  const { data: invite, isLoading: isLoadingInvite } = useDeveloperInviteById(inviteId);
+  const { data: userProfile, isLoading: isLoadingProfile } = useMyProfile();
 
   const projectId = invite?.projectId?.toString() || '';
 

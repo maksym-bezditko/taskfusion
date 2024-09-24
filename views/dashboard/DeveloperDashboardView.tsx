@@ -1,24 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import { ListView } from '@/components/common/ListView';
 import { Loader } from '@/components/common/Loader';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
-import { ProfileResponse } from '@/types';
-import { QueryKeys } from '@/types/enums';
-import { getDeveloperProjects } from '@/utils/api/queries';
+import { useDeveloperProjects } from '@/hooks/useDeveloperProjects';
 import { mapDeveloperProjectsToListItems } from '@/utils/helpers';
 
-import styles from './DashboardView.module.scss';
+import styles from './dashboard.module.scss';
 
-type Props = {
-  profile: ProfileResponse;
-};
-
-export const DeveloperDashboardView = (props: Props) => {
-  const { profile } = props;
-
-  const { data, isLoading } = useQuery({ queryKey: [QueryKeys.PROJECTS + profile.id], queryFn: getDeveloperProjects });
+export const DeveloperDashboardView = () => {
+  const { data, isLoading } = useDeveloperProjects();
 
   const listItems = useMemo(() => {
     if (!data) {
