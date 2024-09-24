@@ -1,6 +1,5 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useMemo } from 'react';
 
@@ -11,12 +10,13 @@ import { ListView } from '@/components/common/ListView';
 import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { Plus } from '@/components/svg/Plus';
+import { useDeveloperProjects } from '@/hooks/useDeveloperProjects';
+import { useMyTasksByStatus } from '@/hooks/useUserTasksByStatus';
 import { ProfileResponse } from '@/types';
-import { QueryKeys, TaskStatus } from '@/types/enums';
-import { getDeveloperProjects, getUserTasksByStatus } from '@/utils/api/queries';
+import { TaskStatus } from '@/types/enums';
 import { mapDeveloperProjectsToListItems, mapTasksToColumns } from '@/utils/helpers';
 
-import styles from './ProfileView.module.scss';
+import styles from './profiles.module.scss';
 
 type Props = {
   profile: ProfileResponse;
@@ -25,17 +25,9 @@ type Props = {
 export const DeveloperProfileView = (props: Props) => {
   const { profile } = props;
 
-  const { data: projects } = useQuery({ queryKey: [QueryKeys.PROJECTS], queryFn: getDeveloperProjects });
-
-  const { data: inProgressTasks } = useQuery({
-    queryKey: [QueryKeys.USER_TASKS_BY_STATUS + profile.id + TaskStatus.IN_PROGRESS],
-    queryFn: () => getUserTasksByStatus(TaskStatus.IN_PROGRESS),
-  });
-
-  const { data: closedTasks } = useQuery({
-    queryKey: [QueryKeys.USER_TASKS_BY_STATUS + profile.id + TaskStatus.CLOSED],
-    queryFn: () => getUserTasksByStatus(TaskStatus.CLOSED),
-  });
+  const { data: projects } = useDeveloperProjects();
+  const { data: inProgressTasks } = useMyTasksByStatus(TaskStatus.IN_PROGRESS);
+  const { data: closedTasks } = useMyTasksByStatus(TaskStatus.CLOSED);
 
   const mappedProjects = useMemo(() => {
     if (!projects) {

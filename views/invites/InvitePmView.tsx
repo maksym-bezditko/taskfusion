@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -10,13 +10,13 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { Loader } from '@/components/common/Loader';
+import { useProjectById } from '@/hooks/useProjectById';
 import { QueryKeys } from '@/types/enums';
 import { createPmInvite } from '@/utils/api/mutations';
-import { getProjectById } from '@/utils/api/queries';
 import { queryClient } from '@/utils/queryClient';
 import { InvitePmFormValues, invitePmSchema } from '@/utils/schemas/invitePmSchema';
 
-import styles from './InvitePmView.module.scss';
+import styles from './invites.module.scss';
 
 type Props = {
   projectId: string;
@@ -38,10 +38,7 @@ export const InvitePmView = (props: Props) => {
 
   const [isInvitationSent, setIsInvitationSent] = useState(false);
 
-  const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.PROJECT + projectId],
-    queryFn: () => getProjectById(projectId),
-  });
+  const { data, isLoading } = useProjectById(projectId);
 
   const { mutate: validatePmEmail } = useMutation({
     mutationFn: (values: InvitePmFormValues) =>

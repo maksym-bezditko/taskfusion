@@ -1,9 +1,8 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { BiPlus } from 'react-icons/bi';
+import { BiMoney, BiPlus } from 'react-icons/bi';
 
 import { Button } from '@/components/common/Button';
 import { Column } from '@/components/common/Column';
@@ -11,12 +10,16 @@ import { Loader } from '@/components/common/Loader';
 import { ProjectDetails } from '@/components/common/ProjectDetails';
 import TaskSidebar from '@/components/common/TaskSidebar';
 import { Plus } from '@/components/svg/Plus';
+import { useProjectById } from '@/hooks/useProjectById';
+import { useProjectDevelopers } from '@/hooks/useProjectDevelopers';
+import { useProjectPmUser } from '@/hooks/useProjectPmUser';
+import { useProjectTasksByStatus } from '@/hooks/useProjectTasksByStatus';
+import { useMyProfile } from '@/hooks/useUserProfile';
 import useTaskSidebar from '@/store/useTaskSidebar';
-import { QueryKeys, TaskStatus, UserType } from '@/types/enums';
-import { getProjectById, getProjectPmUser, getTasksByStatus, getUserProfile } from '@/utils/api/queries';
+import { TaskStatus, UserType } from '@/types/enums';
 import { mapTasksToColumns } from '@/utils/helpers';
 
-import styles from './ProjectView.module.scss';
+import styles from './projects.module.scss';
 
 type Props = {
   projectId: string;
@@ -25,47 +28,19 @@ type Props = {
 export const ProjectView = (props: Props) => {
   const { projectId } = props;
 
-  const { setType } = useTaskSidebar();
+  const { setTaskSidebarState } = useTaskSidebar();
 
-  const { data: profile, isLoading: isLoadingProfile } = useQuery({
-    queryKey: [QueryKeys.USER_PROFILE],
-    queryFn: getUserProfile,
-  });
-
-  const {
-    data: project,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: [QueryKeys.PROJECT + projectId],
-    queryFn: () => getProjectById(projectId),
-  });
-
-  const { data: projectPmUser, isLoading: isLoadingProjectPm } = useQuery({
-    queryKey: [QueryKeys.PROJECT_PM_USER + projectId],
-    queryFn: () => getProjectPmUser(+projectId),
-    retry: false,
-  });
-
-  const { data: todoTasks, isLoading: isLoadingTodo } = useQuery({
-    queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.TO_DO}`],
-    queryFn: () => getTasksByStatus(+projectId, TaskStatus.TO_DO),
-  });
-
-  const { data: progressTasks, isLoading: isLoadingProgress } = useQuery({
-    queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.IN_PROGRESS}`],
-    queryFn: () => getTasksByStatus(+projectId, TaskStatus.IN_PROGRESS),
-  });
-
-  const { data: closedTasks, isLoading: isLoadingClosed } = useQuery({
-    queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.CLOSED}`],
-    queryFn: () => getTasksByStatus(+projectId, TaskStatus.CLOSED),
-  });
-
-  const { data: frozenTasks, isLoading: isLoadingFrozen } = useQuery({
-    queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${TaskStatus.FROZEN}`],
-    queryFn: () => getTasksByStatus(+projectId, TaskStatus.FROZEN),
-  });
+  const { data: profile, isLoading: isLoadingProfile } = useMyProfile();
+  const { data: project, isLoading: isLoadingProject, isError } = useProjectById(projectId);
+  const { data: projectDeveloperUsers } = useProjectDevelopers(projectId);
+  const { data: projectPmUser, isLoading: isLoadingProjectPm } = useProjectPmUser(projectId);
+  const { data: todoTasks, isLoading: isLoadingTodo } = useProjectTasksByStatus(projectId, TaskStatus.TO_DO);
+  const { data: progressTasks, isLoading: isLoadingProgress } = useProjectTasksByStatus(
+    projectId,
+    TaskStatus.IN_PROGRESS,
+  );
+  const { data: closedTasks, isLoading: isLoadingClosed } = useProjectTasksByStatus(projectId, TaskStatus.CLOSED);
+  const { data: frozenTasks, isLoading: isLoadingFrozen } = useProjectTasksByStatus(projectId, TaskStatus.FROZEN);
 
   const { todoTasksColumn, progressTasksColumn, frozenTasksColumn, closedTasksColumn } = useMemo(() => {
     return {
@@ -77,7 +52,7 @@ export const ProjectView = (props: Props) => {
   }, [todoTasks, progressTasks, closedTasks, frozenTasks]);
 
   if (
-    isLoading ||
+    isLoadingProject ||
     isError ||
     !project ||
     isLoadingProjectPm ||
@@ -101,9 +76,15 @@ export const ProjectView = (props: Props) => {
           </Link>
         )}
 
-        {profile?.userType === UserType.PM && (
+        {profile?.userType === UserType.PM && projectDeveloperUsers && projectDeveloperUsers.length < 3 && (
           <Link href={`/projects/${projectId}/invite-developer`}>
             <Button text="Invite Developer" bgColor="orange" textColor="white" icon={<BiPlus />} />
+          </Link>
+        )}
+
+        {profile?.userType === UserType.PM && (
+          <Link href={`/projects/${projectId}/request-payment`}>
+            <Button text="Request Payment" bgColor="green" textColor="black" icon={<BiMoney />} />
           </Link>
         )}
       </div>
@@ -111,7 +92,7 @@ export const ProjectView = (props: Props) => {
       <div className="contentWrapper">
         <ProjectDetails projectId={projectId} />
 
-        <div className={styles.wrapper}>
+        <div className={styles.taskColumnsWrapper}>
           <Column
             title={TaskStatus.TO_DO}
             projectId={+projectId}
@@ -119,7 +100,7 @@ export const ProjectView = (props: Props) => {
             right={
               <Plus
                 onClick={() => {
-                  setType(TaskStatus.TO_DO);
+                  setTaskSidebarState(TaskStatus.TO_DO);
                 }}
               />
             }
@@ -133,7 +114,7 @@ export const ProjectView = (props: Props) => {
             right={
               <Plus
                 onClick={() => {
-                  setType(TaskStatus.IN_PROGRESS);
+                  setTaskSidebarState(TaskStatus.IN_PROGRESS);
                 }}
               />
             }
@@ -147,7 +128,7 @@ export const ProjectView = (props: Props) => {
             right={
               <Plus
                 onClick={() => {
-                  setType(TaskStatus.CLOSED);
+                  setTaskSidebarState(TaskStatus.CLOSED);
                 }}
               />
             }
@@ -161,7 +142,7 @@ export const ProjectView = (props: Props) => {
             right={
               <Plus
                 onClick={() => {
-                  setType(TaskStatus.FROZEN);
+                  setTaskSidebarState(TaskStatus.FROZEN);
                 }}
               />
             }

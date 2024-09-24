@@ -1,6 +1,5 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useMemo } from 'react';
 
@@ -9,12 +8,11 @@ import { Details } from '@/components/common/Details';
 import { ListView } from '@/components/common/ListView';
 import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
+import { useClientProjects } from '@/hooks/useClientProjects';
 import { ProfileResponse } from '@/types';
-import { QueryKeys } from '@/types/enums';
-import { getClientProjects } from '@/utils/api/queries';
 import { mapClientProjectsToListItems } from '@/utils/helpers';
 
-import styles from './ProfileView.module.scss';
+import styles from './profiles.module.scss';
 
 type Props = {
   profile: ProfileResponse;
@@ -23,7 +21,7 @@ type Props = {
 export const ClientProfileView = (props: Props) => {
   const { profile } = props;
 
-  const { data: projects } = useQuery({ queryKey: [QueryKeys.PROJECTS], queryFn: getClientProjects });
+  const { data: projects } = useClientProjects();
 
   const mappedProjects = useMemo(() => {
     if (!projects) {
