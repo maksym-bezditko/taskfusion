@@ -129,3 +129,14 @@ export const acceptDeveloperInvite = async (data: { inviteId: number }) => {
 export const rejectDeveloperInvite = async (data: { inviteId: number }) => {
   return externalApiClient.post('/projects/invites/reject-developer-invite', data);
 };
+
+export const createPaymentRequest = async (data: {
+  usdAmount: number;
+  comment: string;
+  projectId: number;
+  clientUserId: number;
+  paymentPeriodStartDate: string;
+  paymentPeriodEndDate: string;
+}) => {
+  return externalApiClient.post('/payments/create-payment-request', data);
+};
