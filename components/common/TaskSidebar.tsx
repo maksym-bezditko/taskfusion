@@ -25,7 +25,7 @@ type Props = {
 const TaskSidebar = (props: Props) => {
   const { projectId } = props;
 
-  const { type, setType } = useTaskSidebar();
+  const { taskSidebarState, setTaskSidebarState } = useTaskSidebar();
 
   const {
     register,
@@ -53,7 +53,7 @@ const TaskSidebar = (props: Props) => {
         queryKey: [`${QueryKeys.PROJECTS}_${projectId}_${QueryKeys.TASKS}_${data.data.taskStatus}`],
       });
 
-      setType(null);
+      setTaskSidebarState(null);
     },
     onError: (error) => {
       setError('root', { message: error.message });
@@ -65,20 +65,20 @@ const TaskSidebar = (props: Props) => {
   };
 
   useEffect(() => {
-    if (!type) {
+    if (!taskSidebarState) {
       return;
     }
 
-    setValue('taskStatus', type);
-  }, [setValue, type]);
+    setValue('taskStatus', taskSidebarState);
+  }, [setValue, taskSidebarState]);
 
   return (
-    <div className={`${styles.sidebar} ${type ? styles.active : ''}`}>
+    <div className={`${styles.sidebar} ${taskSidebarState ? styles.active : ''}`}>
       <div className={styles.wrapper}>
         <div className={styles.titleWrapper}>
           <h2 className={styles.title}>Create Task</h2>
 
-          <button className={styles.closeButton} onClick={() => setType(null)}>
+          <button className={styles.closeButton} onClick={() => setTaskSidebarState(null)}>
             ×
           </button>
         </div>

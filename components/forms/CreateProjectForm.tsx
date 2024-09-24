@@ -1,13 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+import { useMyProfile } from '@/hooks/useUserProfile';
 import { QueryKeys } from '@/types/enums';
 import { createProject } from '@/utils/api/mutations';
-import { getUserProfile } from '@/utils/api/queries';
 import { CreateProjectFormValues, createProjectSchema } from '@/utils/schemas/createProjectSchema';
 
 import { Button } from '../common/Button';
@@ -27,7 +27,8 @@ export const CreateProjectForm = () => {
   });
 
   const router = useRouter();
-  const { data } = useQuery({ queryKey: [QueryKeys.USER_PROFILE], queryFn: getUserProfile });
+  const { data } = useMyProfile();
+
   const { mutate: createProjectMutation } = useMutation({
     mutationFn: (values: CreateProjectFormValues) => {
       if (!data?.client.id) {
@@ -62,7 +63,7 @@ export const CreateProjectForm = () => {
 
       {errors.description && <p className={styles.validationText}>{errors.description.message}</p>}
 
-      <DatePicker placeholder="Deadline" {...register('deadline')} />
+      <DatePicker placeholder="Deadline" isFuture {...register('deadline')} />
 
       {errors.deadline && <p className={styles.validationText}>{errors.deadline.message}</p>}
 
