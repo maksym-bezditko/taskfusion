@@ -17,7 +17,7 @@ import { TaskStatus } from '@/types/enums';
 
 import { externalApiClient } from '../externalApiClient';
 
-export const getUserProfile = async (): Promise<ProfileResponse> => {
+export const getMyProfile = async (): Promise<ProfileResponse> => {
   const response = await externalApiClient.get<ProfileResponse>('/users/profile');
 
   return response.data;
@@ -123,7 +123,7 @@ export const getDeveloperInviteById = async (id: number) => {
   return response.data;
 };
 
-export const getUserTasksByStatus = async (taskStatus: TaskStatus) => {
+export const getMyTasksByStatus = async (taskStatus: TaskStatus) => {
   const response = await externalApiClient.post<TasksResponse>('/tasks/get-user-tasks-by-status', {
     status: taskStatus,
   });

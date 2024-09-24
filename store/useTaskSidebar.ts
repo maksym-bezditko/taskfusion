@@ -2,16 +2,16 @@ import { create } from 'zustand';
 
 import { TaskStatus } from '@/types/enums';
 
-export type TaskSidebarType = TaskStatus | null;
+export type TaskSidebarState = TaskStatus | null;
 
 type TaskSidebarStore = {
-  type: TaskSidebarType;
-  setType: (type: TaskSidebarType) => void;
+  taskSidebarState: TaskSidebarState;
+  setTaskSidebarState: (type: TaskSidebarState) => void;
 };
 
 const useTaskSidebar = create<TaskSidebarStore>((set) => ({
-  type: null,
-  setType: (type) => set({ type }),
+  taskSidebarState: null,
+  setTaskSidebarState: (taskSidebarState) => set({ taskSidebarState }),
 }));
 
 export default useTaskSidebar;
