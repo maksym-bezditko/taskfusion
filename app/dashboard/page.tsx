@@ -1,28 +1,23 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-
 import { Loader } from '@/components/common/Loader';
-import { QueryKeys, UserType } from '@/types/enums';
-import { getUserProfile } from '@/utils/api/queries';
-import { ClientDashboardView } from '@/views/dashboards/ClientDashboardView';
-import { DeveloperDashboardView } from '@/views/dashboards/DeveloperDashboardView';
-import { PmDashboardView } from '@/views/dashboards/PmDashboardView';
+import { useMyProfile } from '@/hooks/useUserProfile';
+import { UserType } from '@/types/enums';
+import { ClientDashboardView } from '@/views/dashboard/ClientDashboardView';
+import { DeveloperDashboardView } from '@/views/dashboard/DeveloperDashboardView';
+import { PmDashboardView } from '@/views/dashboard/PmDashboardView';
 
 export default function Page() {
-  const { data, error, isLoading } = useQuery({
-    queryKey: [QueryKeys.USER_PROFILE],
-    queryFn: getUserProfile,
-  });
+  const { data, error, isLoading } = useMyProfile();
 
   const renderDashboard = () => {
     switch (data?.userType) {
       case UserType.CLIENT:
-        return <ClientDashboardView profile={data} />;
+        return <ClientDashboardView />;
       case UserType.DEVELOPER:
-        return <DeveloperDashboardView profile={data} />;
+        return <DeveloperDashboardView />;
       case UserType.PM:
-        return <PmDashboardView profile={data} />;
+        return <PmDashboardView />;
       default:
         return 'error';
     }

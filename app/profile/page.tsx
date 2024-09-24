@@ -1,19 +1,14 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-
 import { Loader } from '@/components/common/Loader';
-import { QueryKeys, UserType } from '@/types/enums';
-import { getUserProfile } from '@/utils/api/queries';
-import { ClientProfileView } from '@/views/profile/ClientProfileView';
-import { DeveloperProfileView } from '@/views/profile/DeveloperProfileView';
-import { PmProfileView } from '@/views/profile/PmProfileView';
+import { useMyProfile } from '@/hooks/useUserProfile';
+import { UserType } from '@/types/enums';
+import { ClientProfileView } from '@/views/profiles/ClientProfileView';
+import { DeveloperProfileView } from '@/views/profiles/DeveloperProfileView';
+import { PmProfileView } from '@/views/profiles/PmProfileView';
 
 export default function Page() {
-  const { data, error, isLoading } = useQuery({
-    queryKey: [QueryKeys.USER_PROFILE],
-    queryFn: getUserProfile,
-  });
+  const { data, error, isLoading } = useMyProfile();
 
   const renderProfile = () => {
     switch (data?.userType) {
