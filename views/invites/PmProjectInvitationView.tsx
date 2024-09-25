@@ -37,7 +37,7 @@ export const PmProjectInvitationView = (props: Props) => {
       });
 
       setTimeout(() => {
-        router.push('/dashboard');
+        router.replace('/dashboard');
 
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.PM_INVITES + inviteId],
@@ -54,7 +54,7 @@ export const PmProjectInvitationView = (props: Props) => {
       });
 
       setTimeout(() => {
-        router.push('/dashboard');
+        router.replace('/dashboard');
 
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.PM_INVITES + inviteId],
