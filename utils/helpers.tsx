@@ -6,7 +6,15 @@ import { Detail } from '@/components/common/Details';
 import { Props as ListItemProps } from '@/components/common/ListItem';
 import { PriorityBadge } from '@/components/common/PriorityBadge';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
-import { Action, ClientProjectResponse, DeveloperProjectResponse, PmProjectResponse, Task } from '@/types';
+import {
+  Action,
+  ClientProjectResponse,
+  DeveloperProjectResponse,
+  PaymentRequestsWithProjectResponse,
+  PaymentRequestWithProject,
+  PmProjectResponse,
+  Task,
+} from '@/types';
 
 export const mapTasksToColumns = (tasks: Task[] = []): ColumnItemProps[] => {
   return tasks.map((task) => ({
@@ -124,5 +132,26 @@ export const mapClientProjectsToListItems = (projects: ClientProjectResponse): L
     ],
     right: project.id,
     href: `projects/${project.id}`,
+  }));
+};
+
+export const mapPaymentRequestsToListItems = (requests: PaymentRequestWithProject[]): ListItemProps[] => {
+  return requests.map((request) => ({
+    title: `Payment Request for ${request.project?.title || 'unknown project'}`,
+    data: [
+      <TextWithIcon
+        key={1}
+        iconName="sunrise"
+        text={moment(request.paymentPeriodStartDate).format('MM/DD/YYYY, h:mm a')}
+      />,
+      <TextWithIcon
+        key={2}
+        iconName="sunset"
+        text={moment.utc(request.paymentPeriodEndDate).format('MM/DD/YYYY, h:mm a')}
+      />,
+      <TextWithIcon key={3} iconName="check" text={request.status} />,
+    ],
+    right: request.project?.id,
+    href: request.project ? `projects/${request.project.id}/payment-request/${request.id}` : undefined,
   }));
 };

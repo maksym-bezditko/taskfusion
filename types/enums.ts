@@ -17,6 +17,8 @@ export enum QueryKeys {
   COMMENTS = 'COMMENTS',
   PM_INVITES = 'PM_INVITES',
   DEV_INVITES = 'DEV_INVITES',
+  PAYMENT_REQUESTS = 'PAYMENT_REQUESTS',
+  PAYMENT_REQUEST = 'PAYMENT_REQUEST',
 }
 
 export enum TaskStatus {
@@ -33,6 +35,12 @@ export enum TaskPriority {
 }
 
 export enum InviteStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+}
+
+export enum PaymentRequestStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
   REJECTED = 'REJECTED',

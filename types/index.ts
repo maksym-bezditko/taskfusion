@@ -1,4 +1,4 @@
-import { InviteStatus, TaskPriority, TaskStatus, UserType } from './enums';
+import { InviteStatus, PaymentRequestStatus, TaskPriority, TaskStatus, UserType } from './enums';
 
 export type Nullable<T> = T | null;
 
@@ -181,3 +181,29 @@ export type DeveloperInvite = {
 };
 
 export type DeveloperInviteResponse = DeveloperInvite;
+
+export type PaymentRequest = {
+  id: number;
+  projectId: number;
+  clientUserId: number;
+  comment: string;
+  usdAmount: number;
+  paymentPeriodStartDate: string;
+  paymentPeriodEndDate: string;
+  status: PaymentRequestStatus;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PaymentRequestWithProject = PaymentRequest & {
+  project: Project | null;
+};
+
+export type PaymentRequestWithProjectResponse = {
+  paymentRequest: PaymentRequestWithProject;
+};
+export type PaymentRequestsWithProjectResponse = PaymentRequestWithProject[];
+
+export type CheckoutSessionResponse = {
+  url: string;
+};
