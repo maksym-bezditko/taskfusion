@@ -6,10 +6,12 @@ import { Sunrise } from '@/components/svg/Sunrise';
 import { Sunset } from '@/components/svg/Sunset';
 import { UploadCircle } from '@/components/svg/UploadCircle';
 
+import { Check } from '../svg/Check';
+
 import styles from './TextWithIcon.module.scss';
 
 type Props = {
-  iconName: 'sunset' | 'sunrise' | 'people' | 'export' | 'upload';
+  iconName: 'sunset' | 'sunrise' | 'people' | 'export' | 'upload' | 'check';
   text: string;
   isClickable?: boolean;
 };
@@ -30,6 +32,9 @@ const mapNameToIcon = (name: Props['iconName']) => {
 
     case 'upload':
       return <UploadCircle />;
+
+    case 'check':
+      return <Check color="black" />;
   }
 };
 
