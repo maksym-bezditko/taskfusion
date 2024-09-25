@@ -6,14 +6,17 @@ import { Button } from '@/components/common/Button';
 import { ListView } from '@/components/common/ListView';
 import { Loader } from '@/components/common/Loader';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
+import { useClientPaymentRequests } from '@/hooks/useClientPaymentRequests';
 import { useClientProjects } from '@/hooks/useClientProjects';
+import { mapPaymentRequestsToListItems } from '@/utils/helpers';
 
 import styles from './dashboard.module.scss';
 
 export const ClientDashboardView = () => {
-  const { data, isLoading } = useClientProjects();
+  const { data: projects, isLoading: isLoadingProjects } = useClientProjects();
+  const { data: paymentRequests, isLoading: isLoadingPaymentRequests } = useClientPaymentRequests();
 
-  if (isLoading || !data) {
+  if (isLoadingProjects || !projects || isLoadingPaymentRequests || !paymentRequests) {
     return <Loader />;
   }
 
@@ -30,8 +33,8 @@ export const ClientDashboardView = () => {
       <div className="contentWrapper">
         <ListView
           title="Projects"
-          rightElement={data.length ? <TextWithIcon iconName="export" text="Export" isClickable /> : null}
-          listItems={data.map((project) => ({
+          rightElement={projects.length ? <TextWithIcon iconName="export" text="Export" isClickable /> : null}
+          listItems={projects.map((project) => ({
             title: project.title,
             data: [
               <TextWithIcon key={1} iconName="sunrise" text={moment(project.deadline).format('MM/DD/YYYY, h:mm a')} />,
@@ -56,7 +59,7 @@ export const ClientDashboardView = () => {
           }))}
         />
 
-        <ListView title="Payments" listItems={[]} />
+        <ListView title="Payments" listItems={mapPaymentRequestsToListItems(paymentRequests)} />
       </div>
     </div>
   );

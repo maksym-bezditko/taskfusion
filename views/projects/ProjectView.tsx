@@ -70,23 +70,25 @@ export const ProjectView = (props: Props) => {
       <div className={styles.titleWrapper}>
         <h1>{project.title}</h1>
 
-        {!projectPmUser && profile?.userType === UserType.CLIENT && (
-          <Link href={`/projects/${projectId}/invite-pm`}>
-            <Button text="Invite PM" bgColor="orange" textColor="white" icon={<BiPlus />} />
-          </Link>
-        )}
+        <div className={styles.buttonsWrapper}>
+          {profile?.userType === UserType.PM && (
+            <Link href={`/projects/${projectId}/request-payment`}>
+              <Button text="Request Payment" bgColor="green" textColor="white" icon={<BiMoney />} />
+            </Link>
+          )}
 
-        {profile?.userType === UserType.PM && projectDeveloperUsers && projectDeveloperUsers.length < 3 && (
-          <Link href={`/projects/${projectId}/invite-developer`}>
-            <Button text="Invite Developer" bgColor="orange" textColor="white" icon={<BiPlus />} />
-          </Link>
-        )}
+          {!projectPmUser && profile?.userType === UserType.CLIENT && (
+            <Link href={`/projects/${projectId}/invite-pm`}>
+              <Button text="Invite PM" bgColor="orange" textColor="white" icon={<BiPlus />} />
+            </Link>
+          )}
 
-        {profile?.userType === UserType.PM && (
-          <Link href={`/projects/${projectId}/request-payment`}>
-            <Button text="Request Payment" bgColor="green" textColor="black" icon={<BiMoney />} />
-          </Link>
-        )}
+          {profile?.userType === UserType.PM && projectDeveloperUsers && projectDeveloperUsers.length < 3 && (
+            <Link href={`/projects/${projectId}/invite-developer`}>
+              <Button text="Invite Developer" bgColor="orange" textColor="white" icon={<BiPlus />} />
+            </Link>
+          )}
+        </div>
       </div>
 
       <div className="contentWrapper">
