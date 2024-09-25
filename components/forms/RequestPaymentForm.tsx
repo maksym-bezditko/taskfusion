@@ -93,7 +93,7 @@ export const RequestPaymentForm = () => {
 
       <div className={styles.buttonWrapper}>
         {isRequestSent ? (
-          <p className={styles.requestText}>Requst sent!</p>
+          <p className={styles.requestText}>Request sent!</p>
         ) : (
           <Button
             text="Request payment"
