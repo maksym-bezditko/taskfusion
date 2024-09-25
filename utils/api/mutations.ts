@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { LoginRequest } from '@/app/api/login/route';
 import { SignupRequest } from '@/app/api/signup/route';
-import { JwtTokensResponse, TaskResponse, UserIdResponse } from '@/types';
+import { CheckoutSessionResponse, JwtTokensResponse, TaskResponse, UserIdResponse } from '@/types';
 import { TaskStatus, UserType } from '@/types/enums';
 import { CreateProjectFormValues } from '@/utils/schemas/createProjectSchema';
 
@@ -139,4 +139,17 @@ export const createPaymentRequest = async (data: {
   paymentPeriodEndDate: string;
 }) => {
   return externalApiClient.post('/payments/create-payment-request', data);
+};
+
+export const rejectPaymentRequest = async (data: { paymentRequestId: string }) => {
+  return externalApiClient.post('/payments/reject-payment-request', {
+    paymentRequestId: +data.paymentRequestId,
+  });
+};
+
+export const createCheckoutSession = async (data: { usdAmount: number; projectId: string }) => {
+  return externalApiClient.post<CheckoutSessionResponse>('/payments/create-checkout-session', {
+    usdAmount: data.usdAmount,
+    projectId: +data.projectId,
+  });
 };

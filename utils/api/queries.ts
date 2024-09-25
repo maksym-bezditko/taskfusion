@@ -4,6 +4,8 @@ import {
   CommentsResponse,
   DeveloperInviteResponse,
   DeveloperProjectResponse,
+  PaymentRequestsWithProjectResponse,
+  PaymentRequestWithProjectResponse,
   PmInviteResponse,
   PmProjectResponse,
   ProfileResponse,
@@ -106,7 +108,7 @@ export const checkDeveloperEmail = async (email: string) => {
   return response.data;
 };
 
-export const getPmInviteById = async (id: string) => {
+export const getPmInviteById = async (id: number) => {
   const response = await externalApiClient.post<PmInviteResponse>('/projects/invites/get-pm-invite-by-id', { id });
 
   return response.data;
@@ -129,4 +131,20 @@ export const getMyTasksByStatus = async (taskStatus: TaskStatus) => {
   });
 
   return response.data;
+};
+
+export const getClientPaymentRequests = async () => {
+  const response = await externalApiClient.get<PaymentRequestsWithProjectResponse>(
+    '/payments/get-client-payment-requests',
+  );
+
+  return response.data;
+};
+
+export const getPaymentRequestById = async (paymentRequestId: number) => {
+  const response = await externalApiClient.get<PaymentRequestWithProjectResponse>(
+    `/payments/get-payment-request-by-id/${paymentRequestId}`,
+  );
+
+  return response.data.paymentRequest;
 };
