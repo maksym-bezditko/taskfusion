@@ -17,6 +17,7 @@ export const UploadCircle = () => (
       />
       <path d="M10 13.3333V6.66666" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </g>
+
     <defs>
       <clipPath id="clip0_1_314">
         <rect width="20" height="20" fill="white" />

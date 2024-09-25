@@ -11,13 +11,20 @@ export type Detail = {
 type Props = {
   details: Detail[] | string;
   isTwoColumns?: boolean;
+  stringDetailsHeading?: string;
 };
 
 export const Details = (props: Props) => {
-  const { details, isTwoColumns } = props;
+  const { details, isTwoColumns, stringDetailsHeading } = props;
 
   if (typeof details === 'string') {
-    return <div className={classNames(styles.details, styles.stringDetails)}>{details}</div>;
+    return (
+      <div className={classNames(styles.details, styles.stringDetails)}>
+        {stringDetailsHeading && <p className={styles.heading}>{stringDetailsHeading}:</p>}
+
+        {details}
+      </div>
+    );
   }
 
   return (
