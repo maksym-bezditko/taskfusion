@@ -147,9 +147,14 @@ export const rejectPaymentRequest = async (data: { paymentRequestId: string }) =
   });
 };
 
-export const createCheckoutSession = async (data: { usdAmount: number; projectId: string }) => {
+export const createCheckoutSession = async (data: {
+  usdAmount: number;
+  projectId: string;
+  paymentRequestId: string;
+}) => {
   return externalApiClient.post<CheckoutSessionResponse>('/payments/create-checkout-session', {
     usdAmount: data.usdAmount,
     projectId: +data.projectId,
+    paymentRequestId: +data.paymentRequestId,
   });
 };

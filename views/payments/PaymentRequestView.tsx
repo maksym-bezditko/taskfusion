@@ -48,7 +48,7 @@ export const PaymentRequestView = (props: Props) => {
   const { mutate: mutateCreateCheckoutSession } = useMutation({
     mutationFn: createCheckoutSession,
     onSuccess: ({ data }) => {
-      window.open(data.url);
+      window.location.href = data.url;
     },
   });
 
@@ -89,6 +89,7 @@ export const PaymentRequestView = (props: Props) => {
               onClick={() =>
                 mutateCreateCheckoutSession({
                   projectId: paymentRequest.projectId.toString(),
+                  paymentRequestId: paymentRequest.id.toString(),
                   usdAmount: paymentRequest.usdAmount,
                 })
               }
