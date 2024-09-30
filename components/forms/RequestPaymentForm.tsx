@@ -43,7 +43,7 @@ export const RequestPaymentForm = () => {
       }
 
       return createPaymentRequest({
-        clientUserId: +project.clientId,
+        clientUserId: +project.clientUserId,
         projectId: +projectId,
         usdAmount: +values.usdAmount,
         comment: values.comment,
