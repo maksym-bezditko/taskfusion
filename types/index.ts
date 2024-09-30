@@ -56,8 +56,7 @@ export type Project = {
   title: string;
   description: string;
   deadline: Date;
-  pmId: number | null;
-  clientId: number;
+  clientUserId: number;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -207,3 +206,14 @@ export type PaymentRequestsWithProjectResponse = PaymentRequestWithProject[];
 export type CheckoutSessionResponse = {
   url: string;
 };
+
+export type Notification = {
+  id: number;
+  title: string;
+  redirectUrl: string;
+  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type NotificationsResponse = Notification[];

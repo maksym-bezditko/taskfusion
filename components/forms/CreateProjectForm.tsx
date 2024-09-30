@@ -31,13 +31,13 @@ export const CreateProjectForm = () => {
 
   const { mutate: createProjectMutation } = useMutation({
     mutationFn: (values: CreateProjectFormValues) => {
-      if (!data?.client.id) {
+      if (!data?.id) {
         throw new Error('You are not a client');
       }
 
       return createProject({
         ...values,
-        clientId: data.client.id,
+        clientUserId: data.id,
       });
     },
     mutationKey: [QueryKeys.PROJECTS + data?.id],
