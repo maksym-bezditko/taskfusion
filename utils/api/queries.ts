@@ -4,6 +4,7 @@ import {
   CommentsResponse,
   DeveloperInviteResponse,
   DeveloperProjectResponse,
+  NotificationsResponse,
   PaymentRequestsWithProjectResponse,
   PaymentRequestWithProjectResponse,
   PmInviteResponse,
@@ -147,4 +148,10 @@ export const getPaymentRequestById = async (paymentRequestId: number) => {
   );
 
   return response.data.paymentRequest;
+};
+
+export const getUserNotitifications = async () => {
+  const response = await externalApiClient.get<NotificationsResponse>('/notifications');
+
+  return response.data;
 };

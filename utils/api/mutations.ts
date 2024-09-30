@@ -60,15 +60,14 @@ export const refreshTokens = async (refreshToken: string) => {
   );
 };
 
-export const createProject = async (data: CreateProjectFormValues & { clientId: number }) => {
-  const { title, description, deadline, clientId } = data;
+export const createProject = async (data: CreateProjectFormValues & { clientUserId: number }) => {
+  const { title, description, deadline, clientUserId } = data;
 
   return externalApiClient.post('/projects/create-project', {
     title,
     description,
     deadline,
-    clientId,
-    pmId: null,
+    clientUserId,
   });
 };
 
