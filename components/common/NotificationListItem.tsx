@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import Link from 'next/link';
 
 import { Notification } from '@/types';
@@ -13,7 +14,7 @@ type NotificationListItemProps = {
 
 const NotificationListItem = ({ notification, setIsOpen }: NotificationListItemProps) => {
   return (
-    <div className={styles.listItemWrapper}>
+    <div className={classNames(styles.listItemWrapper, { [styles.listItemWrapperRead]: notification.isRead })}>
       <h3 className={styles.listItemTitle}>{notification.title}</h3>
 
       <Link href={notification.redirectUrl} className={styles.listItemLink} onClick={() => setIsOpen(false)}>

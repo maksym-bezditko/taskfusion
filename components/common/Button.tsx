@@ -2,7 +2,6 @@
 
 import classNames from 'classnames';
 import { ReactNode } from 'react';
-import { IoIosArrowDown } from 'react-icons/io';
 
 import styles from './Button.module.scss';
 
@@ -21,7 +20,6 @@ type Props = {
 export const Button = (props: Props) => {
   const {
     text,
-    isModalButton,
     icon,
     width,
     bgColor = 'gray',
@@ -45,7 +43,6 @@ export const Button = (props: Props) => {
       disabled={disabled}
     >
       {icon} <span>{text}</span>
-      {isModalButton && <IoIosArrowDown />}
     </button>
   );
 };

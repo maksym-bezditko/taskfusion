@@ -13,8 +13,11 @@ import {
   ProjectDeveloperUsersResponse,
   ProjectPmUserResponse,
   ProjectResponse,
+  ProjectUsersResponse,
   TaskResponse,
   TasksResponse,
+  ValidateAccessToProjectResponse,
+  ValidateAccessToTaskResponse,
 } from '@/types';
 import { TaskStatus } from '@/types/enums';
 
@@ -75,6 +78,14 @@ export const getProjectDeveloperUsers = async (projectId: number): Promise<Proje
       projectId,
     },
   );
+
+  return response.data;
+};
+
+export const getProjectUsers = async (projectId: number): Promise<ProjectUsersResponse> => {
+  const response = await externalApiClient.post<ProjectUsersResponse>('/projects/get-project-users', {
+    projectId,
+  });
 
   return response.data;
 };
@@ -152,6 +163,22 @@ export const getPaymentRequestById = async (paymentRequestId: number) => {
 
 export const getUserNotitifications = async () => {
   const response = await externalApiClient.get<NotificationsResponse>('/notifications');
+
+  return response.data;
+};
+
+export const validateAccessToProject = async (projectId: number) => {
+  const response = await externalApiClient.get<ValidateAccessToProjectResponse>(
+    `/projects/validate-access-to-project/${projectId}`,
+  );
+
+  return response.data;
+};
+
+export const validateAccessToTask = async (taskId: number) => {
+  const response = await externalApiClient.get<ValidateAccessToTaskResponse>(
+    `/tasks/validate-access-to-task/${taskId}`,
+  );
 
   return response.data;
 };

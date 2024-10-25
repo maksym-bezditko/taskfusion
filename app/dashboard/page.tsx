@@ -19,7 +19,7 @@ export default function Page() {
       case UserType.PM:
         return <PmDashboardView />;
       default:
-        return 'error';
+        throw new Error('Invalid user type');
     }
   };
 
@@ -28,7 +28,7 @@ export default function Page() {
   }
 
   if (error || !data) {
-    return 'error';
+    throw new Error('Error fetching user profile');
   }
 
   return renderDashboard();
