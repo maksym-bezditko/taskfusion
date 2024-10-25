@@ -22,12 +22,20 @@ export async function middleware(request: NextRequest) {
 
   const isLoggedIn = await getIsLoggedIn();
 
+  if (pathname === '/') {
+    if (isLoggedIn) {
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
+
+    return NextResponse.redirect(new URL('/auth/login', request.url));
+  }
+
   if (matchesRoute(pathname, LOGGED_IN_ONLY_ROUTES) && !isLoggedIn) {
     return NextResponse.redirect(new URL('/auth/login', request.url));
   }
 
   if (matchesRoute(pathname, LOGGED_OUT_ONLY_ROUTES) && isLoggedIn) {
-    return NextResponse.redirect(new URL('/', request.url));
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   if (matchesRoute(pathname, CLIENT_ONLY_ROUTES)) {

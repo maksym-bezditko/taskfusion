@@ -15,6 +15,7 @@ import { useProjectDevelopers } from '@/hooks/useProjectDevelopers';
 import { useProjectPmUser } from '@/hooks/useProjectPmUser';
 import { useProjectTasksByStatus } from '@/hooks/useProjectTasksByStatus';
 import { useMyProfile } from '@/hooks/useUserProfile';
+import { useValidateAccessToProject } from '@/hooks/useValidateAccessToProject';
 import useTaskSidebar from '@/store/useTaskSidebar';
 import { TaskStatus, UserType } from '@/types/enums';
 import { mapTasksToColumns } from '@/utils/helpers';
@@ -29,6 +30,8 @@ export const ProjectView = (props: Props) => {
   const { projectId } = props;
 
   const { setTaskSidebarState } = useTaskSidebar();
+
+  const { data: validate, isLoading: isLoadingValidate } = useValidateAccessToProject(projectId);
 
   const { data: profile, isLoading: isLoadingProfile } = useMyProfile();
   const { data: project, isLoading: isLoadingProject, isError } = useProjectById(projectId);
@@ -60,9 +63,18 @@ export const ProjectView = (props: Props) => {
     isLoadingProgress ||
     isLoadingClosed ||
     isLoadingFrozen ||
-    isLoadingProfile
+    isLoadingProfile ||
+    isLoadingValidate
   ) {
     return <Loader />;
+  }
+
+  if (!validate?.allowed) {
+    return (
+      <div className={styles.wrapper}>
+        <h2 className={styles.text}>You are not allowed to access this project.</h2>;
+      </div>
+    );
   }
 
   return (

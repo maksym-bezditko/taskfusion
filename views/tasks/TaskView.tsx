@@ -1,24 +1,26 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import { Button } from '@/components/common/Button';
+import { ButtonWithModal } from '@/components/common/ButtonWithModal';
 import { Column } from '@/components/common/Column';
 import { Comment } from '@/components/common/Comment';
 import { CommentInput } from '@/components/common/CommentInput';
 import { Details } from '@/components/common/Details';
 import { Loader } from '@/components/common/Loader';
 import { NoData } from '@/components/common/NoData';
+import { Select } from '@/components/common/Select';
 import { Check } from '@/components/svg/Check';
-import { Freeze } from '@/components/svg/Freeze';
 import { Participant } from '@/components/svg/Participant';
+import { useProjectUsers } from '@/hooks/useProjectUsers';
 import { useTaskActions } from '@/hooks/useTaskActions';
 import { useTaskById } from '@/hooks/useTaskById';
 import { useTaskComments } from '@/hooks/useTaskComments';
-import { useMyProfile } from '@/hooks/useUserProfile';
-import { QueryKeys, TaskStatus } from '@/types/enums';
-import { assignTaskToUser, changeTaskStatus, unassignTaskFromUser } from '@/utils/api/mutations';
+import { useValidateAccessToTask } from '@/hooks/useValidateAccessToTask';
+import { QueryKeys, TaskPriority, TaskStatus } from '@/types/enums';
+import { assignTaskToUser, changeTaskPriority, changeTaskStatus, unassignTaskFromUser } from '@/utils/api/mutations';
 import { mapActionsToColumns, mapTaskToDetails } from '@/utils/helpers';
 import { queryClient } from '@/utils/queryClient';
 
@@ -32,10 +34,14 @@ type Props = {
 export const TaskPage = (props: Props) => {
   const { taskId, projectId } = props;
 
-  const { data: profile } = useMyProfile();
+  const [newTaskPriority, setNewTaskPriority] = useState<TaskPriority>(TaskPriority.LOW);
+
+  const { data: validate, isLoading: isLoadingValidate } = useValidateAccessToTask(taskId);
+
   const { data: task, isLoading: isTaskLoading, isError } = useTaskById(taskId);
   const { data: actions, isLoading: isLoadingActions } = useTaskActions(taskId);
   const { data: comments, isLoading: isCommentsLoading } = useTaskComments(taskId);
+  const { data: projectDeveloperUsers } = useProjectUsers(projectId);
 
   const invalidateTask = useCallback(() => {
     queryClient.invalidateQueries({
@@ -56,6 +62,11 @@ export const TaskPage = (props: Props) => {
     onSuccess: invalidateTask,
   });
 
+  const { mutateAsync: mutateTaskPriorityAsync } = useMutation({
+    mutationFn: changeTaskPriority,
+    onSuccess: invalidateTask,
+  });
+
   const { mutateAsync: mutateAssignTaskAsync } = useMutation({
     mutationFn: assignTaskToUser,
     onSuccess: invalidateTask,
@@ -65,8 +76,6 @@ export const TaskPage = (props: Props) => {
     mutationFn: unassignTaskFromUser,
     onSuccess: invalidateTask,
   });
-
-  const amIParticipant = task?.users.some((user) => user.id === profile?.id);
 
   const commentsContent = useCallback(() => {
     if (isCommentsLoading) {
@@ -82,32 +91,17 @@ export const TaskPage = (props: Props) => {
     ));
   }, [comments, isCommentsLoading]);
 
-  const handleFreezeTask = () => {
-    mutateTaskStatusAsync({
-      taskId: +taskId,
-      taskStatus: TaskStatus.FROZEN,
-    });
-  };
-
-  const handleBecomeParticipant = () => {
-    if (!profile) {
-      return;
-    }
-
+  const assignUserToTask = (userId: number) => {
     mutateAssignTaskAsync({
       taskId: +taskId,
-      userId: profile.id,
+      userId,
     });
   };
 
-  const handleLeaveTask = () => {
-    if (!profile) {
-      return;
-    }
-
+  const unassignUserFromTask = (userId: number) => {
     mutateUnassignTaskAsync({
       taskId: +taskId,
-      userId: profile.id,
+      userId,
     });
   };
 
@@ -118,8 +112,16 @@ export const TaskPage = (props: Props) => {
     });
   };
 
-  if (isTaskLoading || !task || isError) {
+  if (isTaskLoading || !task || isError || isLoadingValidate) {
     return <Loader />;
+  }
+
+  if (!validate?.allowed) {
+    return (
+      <div className={styles.wrapper}>
+        <h2 className={styles.text}>You are not allowed to access this task.</h2>;
+      </div>
+    );
   }
 
   return (
@@ -145,20 +147,51 @@ export const TaskPage = (props: Props) => {
         <div className={styles.taskDetailsSection}>
           <Details details={mapTaskToDetails(task)} />
 
-          <Button text="Change the priority" isModalButton width="100%" isFontBold={false} />
-
-          <Button text="Change the task type" isModalButton width="100%" isFontBold={false} />
-
-          {task.taskStatus !== TaskStatus.FROZEN && (
-            <Button
-              text="Freeze the task"
-              bgColor="blue"
-              textColor="black"
-              width="100%"
-              icon={<Freeze />}
-              onClick={handleFreezeTask}
+          <ButtonWithModal title="Change the priority">
+            <Select
+              options={Object.values(TaskPriority).map((priority) => ({ value: priority, label: priority }))}
+              defaultValue={task.taskPriority}
+              onChange={(e) => setNewTaskPriority(e.target.value as TaskPriority)}
+              value={newTaskPriority}
             />
-          )}
+
+            <Button
+              text="Save"
+              bgColor="green"
+              textColor="white"
+              width="100%"
+              icon={<Check />}
+              onClick={() => mutateTaskPriorityAsync({ taskId: +taskId, taskPriority: newTaskPriority })}
+            />
+          </ButtonWithModal>
+
+          <ButtonWithModal title="Manage participants">
+            {projectDeveloperUsers?.length ? (
+              projectDeveloperUsers.map((user) => {
+                const isParticipant = task.users.find((u) => u.id === user.id);
+
+                return (
+                  <Button
+                    key={user.id}
+                    text={isParticipant ? `Unassign ${user.name}` : `Assign ${user.name}`}
+                    bgColor={isParticipant ? 'red' : 'green'}
+                    textColor="white"
+                    width="100%"
+                    icon={<Participant />}
+                    onClick={() => {
+                      if (isParticipant) {
+                        return unassignUserFromTask(user.id);
+                      }
+
+                      return assignUserToTask(user.id);
+                    }}
+                  />
+                );
+              })
+            ) : (
+              <NoData />
+            )}
+          </ButtonWithModal>
 
           {task.taskStatus !== TaskStatus.CLOSED && (
             <Button
@@ -168,28 +201,6 @@ export const TaskPage = (props: Props) => {
               width="100%"
               icon={<Check />}
               onClick={handleCloseTask}
-            />
-          )}
-
-          {!amIParticipant && !isTaskLoading && (
-            <Button
-              text="Become a participant"
-              bgColor="green"
-              textColor="white"
-              width="100%"
-              icon={<Participant />}
-              onClick={handleBecomeParticipant}
-            />
-          )}
-
-          {amIParticipant && !isTaskLoading && (
-            <Button
-              text="Leave the task"
-              bgColor="gray"
-              textColor="black"
-              width="100%"
-              icon={<Participant color="black" />}
-              onClick={handleLeaveTask}
             />
           )}
         </div>

@@ -51,6 +51,10 @@ export const setTokens = async (accessToken: string, refreshToken: string) => {
   cookies().set('refresh_token', refreshToken, { maxAge: DEFAULT_AGE, httpOnly: true, sameSite: 'strict' });
 };
 
+export const setTestCookie = async (test: string) => {
+  cookies().set('test', test, { maxAge: 60 * 60 * 24 * 30, httpOnly: true, sameSite: 'strict' });
+};
+
 export const getCookies = async (name: string) => {
   return cookies().get(name)?.value;
 };

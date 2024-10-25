@@ -7,17 +7,12 @@ import { useMemo } from 'react';
 import DefaultAvatarImage from '@/components/assets/Avatar.png';
 import { useMyProfile } from '@/hooks/useUserProfile';
 
-import { Loader } from './Loader';
 import styles from './ProfileContent.module.scss';
 
 export const ProfileContent = () => {
-  const { data, isLoading } = useMyProfile();
+  const { data } = useMyProfile();
 
   const profileContent = useMemo(() => {
-    if (isLoading) {
-      return <Loader isSmall />;
-    }
-
     if (!data) {
       return null;
     }
@@ -31,7 +26,7 @@ export const ProfileContent = () => {
         </div>
       </Link>
     );
-  }, [data, isLoading]);
+  }, [data]);
 
   return <div className={styles.profileContainerWrapper}>{profileContent}</div>;
 };

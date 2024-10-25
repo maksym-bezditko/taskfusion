@@ -1,3 +1,16 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-top: 2rem;
+	row-gap: 3rem;
+	height: 100%;
+}
+
+.text {
+  text-align: center;
+}
+
 .createProjectWrapper {
   display: flex;
   flex-direction: column;

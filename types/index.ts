@@ -99,6 +99,8 @@ export type ProjectPmUserResponse = Nullable<PasswordlessUser>;
 
 export type ProjectDeveloperUsersResponse = PasswordlessUser[];
 
+export type ProjectUsersResponse = PasswordlessUser[];
+
 export type PasswordlessUser = {
   id: number;
   email: string;
@@ -211,9 +213,18 @@ export type Notification = {
   id: number;
   title: string;
   redirectUrl: string;
+  isRead: string;
   userId: number;
   createdAt: Date;
   updatedAt: Date;
 };
 
 export type NotificationsResponse = Notification[];
+
+export type ValidateAccessToProjectResponse = {
+  allowed: boolean;
+};
+
+export type ValidateAccessToTaskResponse = {
+  allowed: boolean;
+};

@@ -10,7 +10,6 @@ import {
   Action,
   ClientProjectResponse,
   DeveloperProjectResponse,
-  PaymentRequestsWithProjectResponse,
   PaymentRequestWithProject,
   PmProjectResponse,
   Task,
@@ -154,4 +153,15 @@ export const mapPaymentRequestsToListItems = (requests: PaymentRequestWithProjec
     right: request.project?.id,
     href: request.project ? `projects/${request.project.id}/payment-request/${request.id}` : undefined,
   }));
+};
+
+export const mapPathnameToLocationArray = (pathname: string): string[] => {
+  return pathname
+    .split('/')
+    .filter((item) => item.length)
+    .map((item) => capitalizeFirstLetter(item.replace('/', '')));
+};
+
+export const capitalizeFirstLetter = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 };

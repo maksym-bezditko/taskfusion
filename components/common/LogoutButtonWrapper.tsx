@@ -14,7 +14,7 @@ export const LogoutButtonWrapper = () => {
     await nextApiClient.post('/logout');
 
     queryClient.resetQueries();
-    router.replace('/dashboard');
+    router.replace('/auth/login');
     router.refresh();
   };
 

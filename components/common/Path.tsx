@@ -2,6 +2,8 @@
 
 import { usePathname } from 'next/navigation';
 
+import { mapPathnameToLocationArray } from '@/utils/helpers';
+
 import styles from './Path.module.scss';
 
 export const Path = () => {
@@ -13,9 +15,5 @@ export const Path = () => {
     return null;
   }
 
-  return (
-    <p className={styles.path}>
-      Dashboard <span>{'>'}</span> Clients <span>{'>'}</span>
-    </p>
-  );
+  return <p className={styles.path}>{mapPathnameToLocationArray(pathname).join(' > ')}</p>;
 };

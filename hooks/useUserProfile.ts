@@ -7,5 +7,6 @@ export const useMyProfile = () => {
   return useQuery({
     queryKey: [QueryKeys.USER_PROFILE],
     queryFn: getMyProfile,
+    retry: false,
   });
 };

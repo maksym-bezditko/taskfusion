@@ -3,7 +3,7 @@ import axios from 'axios';
 import { LoginRequest } from '@/app/api/login/route';
 import { SignupRequest } from '@/app/api/signup/route';
 import { CheckoutSessionResponse, JwtTokensResponse, TaskResponse, UserIdResponse } from '@/types';
-import { TaskStatus, UserType } from '@/types/enums';
+import { TaskPriority, TaskStatus, UserType } from '@/types/enums';
 import { CreateProjectFormValues } from '@/utils/schemas/createProjectSchema';
 
 import { externalApiClient } from '../externalApiClient';
@@ -97,6 +97,10 @@ export const changeTaskStatus = async (data: { taskId: number; taskStatus: TaskS
   return externalApiClient.post('/tasks/change-task-status', data);
 };
 
+export const changeTaskPriority = async (data: { taskId: number; taskPriority: TaskPriority }) => {
+  return externalApiClient.post('/tasks/change-task-priority', data);
+};
+
 export const assignTaskToUser = async (data: { taskId: number; userId: number }) => {
   return externalApiClient.post('/tasks/assign-task-to-user', data);
 };
@@ -156,4 +160,8 @@ export const createCheckoutSession = async (data: {
     projectId: +data.projectId,
     paymentRequestId: +data.paymentRequestId,
   });
+};
+
+export const readMyNotifications = async () => {
+  return externalApiClient.post('/notifications/read-my-notifications');
 };

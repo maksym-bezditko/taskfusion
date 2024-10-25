@@ -8,8 +8,12 @@
   border-radius: 17px;
   height: 4.125rem;
   padding: 1.5rem;
-  background-color: $list-item-grey;
+  background-color: $blue;
   width: 100%;
+}
+
+.listItemWrapperRead {
+  background-color: $list-item-grey;
 }
 
 .listItemTitle {
