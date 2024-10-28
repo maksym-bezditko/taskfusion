@@ -1,18 +1,13 @@
 import moment from 'moment-timezone';
 
 import { ListView } from '@/components/common/ListView';
-import { Loader } from '@/components/common/Loader';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
-import { usePmProjects } from '@/hooks/usePmProjects';
+import { getPmProjects } from '@/utils/api/queries';
 
 import styles from './dashboard.module.scss';
 
-export const PmDashboardView = () => {
-  const { data, isLoading } = usePmProjects();
-
-  if (isLoading || !data) {
-    return <Loader />;
-  }
+export const PmDashboardView = async () => {
+  const data = await getPmProjects();
 
   return (
     <div className={styles.wrapper}>

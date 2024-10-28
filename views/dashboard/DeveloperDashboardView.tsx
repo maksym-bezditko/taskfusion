@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
 
 import { ListView } from '@/components/common/ListView';
-import { Loader } from '@/components/common/Loader';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
-import { useDeveloperProjects } from '@/hooks/useDeveloperProjects';
+import { getDeveloperProjects } from '@/utils/api/queries';
 import { mapDeveloperProjectsToListItems } from '@/utils/helpers';
 
 import styles from './dashboard.module.scss';
 
-export const DeveloperDashboardView = () => {
-  const { data, isLoading } = useDeveloperProjects();
+export const DeveloperDashboardView = async () => {
+  const data = await getDeveloperProjects();
 
   const listItems = useMemo(() => {
     if (!data) {
@@ -18,10 +17,6 @@ export const DeveloperDashboardView = () => {
 
     return mapDeveloperProjectsToListItems(data);
   }, [data]);
-
-  if (isLoading || !data) {
-    return <Loader />;
-  }
 
   return (
     <div className={styles.wrapper}>

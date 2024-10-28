@@ -1,14 +1,11 @@
-'use client';
-
-import { Loader } from '@/components/common/Loader';
-import { useMyProfile } from '@/hooks/useUserProfile';
 import { UserType } from '@/types/enums';
+import { getMyProfile } from '@/utils/api/queries';
 import { ClientProfileView } from '@/views/profiles/ClientProfileView';
 import { DeveloperProfileView } from '@/views/profiles/DeveloperProfileView';
 import { PmProfileView } from '@/views/profiles/PmProfileView';
 
-export default function Page() {
-  const { data, error, isLoading } = useMyProfile();
+export default async function Page() {
+  const data = await getMyProfile();
 
   const renderProfile = () => {
     switch (data?.userType) {
@@ -22,14 +19,6 @@ export default function Page() {
         return 'error';
     }
   };
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (error || !data) {
-    return 'error';
-  }
 
   return renderProfile();
 }

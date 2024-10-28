@@ -1,7 +1,4 @@
-'use client';
-
 import Image from 'next/image';
-import { useMemo } from 'react';
 
 import DefaultAvatar from '@/components/assets/Avatar.png';
 import { Column } from '@/components/common/Column';
@@ -10,10 +7,9 @@ import { ListView } from '@/components/common/ListView';
 import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { Plus } from '@/components/svg/Plus';
-import { useDeveloperProjects } from '@/hooks/useDeveloperProjects';
-import { useMyTasksByStatus } from '@/hooks/useUserTasksByStatus';
 import { ProfileResponse } from '@/types';
 import { TaskStatus } from '@/types/enums';
+import { getDeveloperProjects, getMyTasksByStatus } from '@/utils/api/queries';
 import { mapDeveloperProjectsToListItems, mapTasksToColumns } from '@/utils/helpers';
 
 import styles from './profiles.module.scss';
@@ -22,36 +18,12 @@ type Props = {
   profile: ProfileResponse;
 };
 
-export const DeveloperProfileView = (props: Props) => {
+export const DeveloperProfileView = async (props: Props) => {
   const { profile } = props;
 
-  const { data: projects } = useDeveloperProjects();
-  const { data: inProgressTasks } = useMyTasksByStatus(TaskStatus.IN_PROGRESS);
-  const { data: closedTasks } = useMyTasksByStatus(TaskStatus.CLOSED);
-
-  const mappedProjects = useMemo(() => {
-    if (!projects) {
-      return [];
-    }
-
-    return mapDeveloperProjectsToListItems(projects);
-  }, [projects]);
-
-  const mappedInProgressTasks = useMemo(() => {
-    if (!inProgressTasks) {
-      return [];
-    }
-
-    return mapTasksToColumns(inProgressTasks);
-  }, [inProgressTasks]);
-
-  const mappedClosedTasks = useMemo(() => {
-    if (!closedTasks) {
-      return [];
-    }
-
-    return mapTasksToColumns(closedTasks);
-  }, [closedTasks]);
+  const projects = await getDeveloperProjects();
+  const inProgressTasks = await getMyTasksByStatus(TaskStatus.IN_PROGRESS);
+  const closedTasks = await getMyTasksByStatus(TaskStatus.CLOSED);
 
   const DETAILS = [
     {
@@ -87,13 +59,13 @@ export const DeveloperProfileView = (props: Props) => {
           <ListView
             title="Projects"
             rightElement={<TextWithIcon iconName="export" text="Export" isClickable />}
-            listItems={mappedProjects}
+            listItems={mapDeveloperProjectsToListItems(projects)}
           />
 
           <div className={styles.tasksWrapper}>
-            <Column title="In progress" columns={mappedInProgressTasks} right={<Plus />} />
+            <Column title="In progress" columns={mapTasksToColumns(inProgressTasks)} right={<Plus />} />
 
-            <Column title="Closed" columns={mappedClosedTasks} right={<Plus />} />
+            <Column title="Closed" columns={mapTasksToColumns(closedTasks)} right={<Plus />} />
           </div>
         </div>
       </div>
