@@ -1,15 +1,12 @@
-'use client';
-
 import Image from 'next/image';
-import { useMemo } from 'react';
 
 import DefaultAvatar from '@/components/assets/Avatar.png';
 import { Details } from '@/components/common/Details';
 import { ListView } from '@/components/common/ListView';
 import { LogoutButtonWrapper } from '@/components/common/LogoutButtonWrapper';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
-import { useClientProjects } from '@/hooks/useClientProjects';
 import { ProfileResponse } from '@/types';
+import { getClientProjects } from '@/utils/api/queries';
 import { mapClientProjectsToListItems } from '@/utils/helpers';
 
 import styles from './profiles.module.scss';
@@ -18,18 +15,10 @@ type Props = {
   profile: ProfileResponse;
 };
 
-export const ClientProfileView = (props: Props) => {
+export const ClientProfileView = async (props: Props) => {
   const { profile } = props;
 
-  const { data: projects } = useClientProjects();
-
-  const mappedProjects = useMemo(() => {
-    if (!projects) {
-      return [];
-    }
-
-    return mapClientProjectsToListItems(projects);
-  }, [projects]);
+  const projects = await getClientProjects();
 
   const DETAILS = [
     {
@@ -64,7 +53,7 @@ export const ClientProfileView = (props: Props) => {
         <ListView
           title="Projects"
           rightElement={<TextWithIcon iconName="export" text="Export" isClickable />}
-          listItems={mappedProjects}
+          listItems={mapClientProjectsToListItems(projects)}
         />
       </div>
 

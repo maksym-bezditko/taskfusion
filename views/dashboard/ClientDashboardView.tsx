@@ -4,21 +4,15 @@ import { BiPlus } from 'react-icons/bi';
 
 import { Button } from '@/components/common/Button';
 import { ListView } from '@/components/common/ListView';
-import { Loader } from '@/components/common/Loader';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
-import { useClientPaymentRequests } from '@/hooks/useClientPaymentRequests';
-import { useClientProjects } from '@/hooks/useClientProjects';
+import { getClientPaymentRequests, getClientProjects } from '@/utils/api/queries';
 import { mapPaymentRequestsToListItems } from '@/utils/helpers';
 
 import styles from './dashboard.module.scss';
 
-export const ClientDashboardView = () => {
-  const { data: projects, isLoading: isLoadingProjects } = useClientProjects();
-  const { data: paymentRequests, isLoading: isLoadingPaymentRequests } = useClientPaymentRequests();
-
-  if (isLoadingProjects || !projects || isLoadingPaymentRequests || !paymentRequests) {
-    return <Loader />;
-  }
+export const ClientDashboardView = async () => {
+  const projects = await getClientProjects();
+  const paymentRequests = await getClientPaymentRequests();
 
   return (
     <div className={styles.wrapper}>

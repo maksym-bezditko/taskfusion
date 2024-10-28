@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import React from 'react';
 
 import '@/styles/normalize.scss';
@@ -11,7 +12,9 @@ import { Logo } from '@/components/svg/Logo';
 
 import styles from './MainLayout.module.scss';
 
-export const MainLayout = ({ children }: { children: React.ReactNode }) => {
+export const MainLayout = async ({ children }: { children: React.ReactNode }) => {
+  const isLoggedIn = JSON.parse(headers().get('x-logged-in') || 'false') as boolean;
+
   return (
     <Providers>
       <div className={styles.container}>
@@ -23,13 +26,15 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
           <div className={styles.menuContent}>
             <MenuNavigation />
 
-            <div className={styles.notificationProfileWrapper}>
-              <div className={styles.bellAndLetter}>
-                <NotificationBell />
-              </div>
+            {isLoggedIn && (
+              <div className={styles.notificationProfileWrapper}>
+                <div className={styles.bellAndLetter}>
+                  <NotificationBell />
+                </div>
 
-              <ProfileContent />
-            </div>
+                <ProfileContent />
+              </div>
+            )}
           </div>
         </aside>
 

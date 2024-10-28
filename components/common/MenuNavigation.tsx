@@ -3,9 +3,11 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
 
 import { useMyProfile } from '@/hooks/useUserProfile';
 
+import { Loader } from './Loader';
 import styles from './MenuNavigation.module.scss';
 
 export const MenuNavigation = () => {
@@ -13,13 +15,13 @@ export const MenuNavigation = () => {
 
   const pathname = usePathname();
 
-  if (isLoading) {
-    return null;
-  }
+  const content = useMemo(() => {
+    if (isLoading) {
+      return <Loader isSmall />;
+    }
 
-  return (
-    <nav className={styles.nav}>
-      {data ? (
+    if (data) {
+      return (
         <>
           <Link
             className={classNames(styles.listItem, {
@@ -39,27 +41,31 @@ export const MenuNavigation = () => {
             Profile
           </Link>
         </>
-      ) : (
-        <>
-          <Link
-            className={classNames(styles.listItem, {
-              [styles.active]: pathname.includes('login'),
-            })}
-            href="/auth/login"
-          >
-            Log in
-          </Link>
+      );
+    }
 
-          <Link
-            className={classNames(styles.listItem, {
-              [styles.active]: pathname.includes('signup'),
-            })}
-            href="/auth/signup"
-          >
-            Sign up
-          </Link>
-        </>
-      )}
-    </nav>
-  );
+    return (
+      <>
+        <Link
+          className={classNames(styles.listItem, {
+            [styles.active]: pathname.includes('login'),
+          })}
+          href="/auth/login"
+        >
+          Log in
+        </Link>
+
+        <Link
+          className={classNames(styles.listItem, {
+            [styles.active]: pathname.includes('signup'),
+          })}
+          href="/auth/signup"
+        >
+          Sign up
+        </Link>
+      </>
+    );
+  }, [data, isLoading, pathname]);
+
+  return <nav className={styles.nav}>{content}</nav>;
 };
