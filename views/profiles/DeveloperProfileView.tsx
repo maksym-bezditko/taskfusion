@@ -63,8 +63,8 @@ export const DeveloperProfileView = (props: Props) => {
       value: profile.email,
     },
     {
-      title: 'Telegram ID',
-      value: profile.telegramId || 'Not set',
+      title: 'ID',
+      value: profile.id || 'Not set',
     },
   ];
 

@@ -1,6 +1,5 @@
-import moment from 'moment';
-
 import { usePaymentRequestById } from '@/hooks/usePaymentRequestById';
+import { formatDate } from '@/utils/helpers';
 
 import { Details } from './Details';
 import { Loader } from './Loader';
@@ -22,11 +21,11 @@ export const PaymentRequestDetails = (props: Props) => {
   const DETAILS = [
     {
       title: 'Start date',
-      value: moment(paymentRequest.paymentPeriodStartDate).format('MM/DD/YYYY, h:mm a'),
+      value: formatDate(paymentRequest.paymentPeriodStartDate),
     },
     {
       title: 'End date',
-      value: moment(paymentRequest.paymentPeriodEndDate).format('MM/DD/YYYY, h:mm a'),
+      value: formatDate(paymentRequest.paymentPeriodEndDate),
     },
     {
       title: 'Status',
@@ -38,7 +37,7 @@ export const PaymentRequestDetails = (props: Props) => {
     },
     {
       title: 'Created at',
-      value: moment(paymentRequest.createdAt).format('MM/DD/YYYY, h:mm a'),
+      value: formatDate(paymentRequest.createdAt),
     },
   ];
 

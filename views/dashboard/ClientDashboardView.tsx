@@ -1,4 +1,3 @@
-import moment from 'moment-timezone';
 import Link from 'next/link';
 import { BiPlus } from 'react-icons/bi';
 
@@ -8,7 +7,7 @@ import { Loader } from '@/components/common/Loader';
 import { TextWithIcon } from '@/components/common/TextWithIcon';
 import { useClientPaymentRequests } from '@/hooks/useClientPaymentRequests';
 import { useClientProjects } from '@/hooks/useClientProjects';
-import { mapPaymentRequestsToListItems } from '@/utils/helpers';
+import { formatDate, mapPaymentRequestsToListItems } from '@/utils/helpers';
 
 import styles from './dashboard.module.scss';
 
@@ -37,12 +36,8 @@ export const ClientDashboardView = () => {
           listItems={projects.map((project) => ({
             title: project.title,
             data: [
-              <TextWithIcon key={1} iconName="sunrise" text={moment(project.deadline).format('MM/DD/YYYY, h:mm a')} />,
-              <TextWithIcon
-                key={2}
-                iconName="sunset"
-                text={moment.utc(project.deadline).local().format('MM/DD/YYYY, h:mm a')}
-              />,
+              <TextWithIcon key={1} iconName="sunrise" text={formatDate(project.createdAt)} />,
+              <TextWithIcon key={2} iconName="sunset" text={formatDate(project.deadline)} />,
               <TextWithIcon
                 key={3}
                 iconName="people"

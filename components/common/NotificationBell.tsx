@@ -28,7 +28,7 @@ export const NotificationBell = () => {
   return (
     <div className={styles.bellContainer}>
       <div className={styles.bell} onClick={handleBellClick}>
-        <Bell isActive={data?.every((notification) => !notification.isRead)} />
+        <Bell isActive={!data?.every((notification) => notification.isRead)} />
       </div>
 
       {isOpen && (
