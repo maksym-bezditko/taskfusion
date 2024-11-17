@@ -10,14 +10,6 @@ export const signupSchema = z
     position: z.enum([UserType.CLIENT, UserType.DEVELOPER, UserType.PM], {
       message: 'Position is required',
     }),
-    telegramId: z.string().refine(
-      (v) => {
-        const n = Number(v);
-
-        return !isNaN(n) && v?.length > 0;
-      },
-      { message: 'Invalid number' },
-    ),
     password: z.string().min(6, 'Password must be at least 6 characters long'),
     confirmPassword: z.string().min(6, 'Password must be at least 6 characters long'),
   })
