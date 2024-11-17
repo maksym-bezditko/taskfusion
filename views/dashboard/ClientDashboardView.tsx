@@ -58,8 +58,6 @@ export const ClientDashboardView = () => {
             href: `projects/${project.id}`,
           }))}
         />
-
-        <ListView title="Payments" listItems={mapPaymentRequestsToListItems(paymentRequests)} />
       </div>
     </div>
   );

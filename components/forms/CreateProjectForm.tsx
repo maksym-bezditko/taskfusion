@@ -55,14 +55,17 @@ export const CreateProjectForm = () => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <p className={styles.fieldDescription}>Title</p>
       <Input placeholder="Title" {...register('title')} />
 
       {errors.title && <p className={styles.validationText}>{errors.title.message}</p>}
 
+      <p className={styles.fieldDescription}>Description</p>
       <Input placeholder="Description" multiline {...register('description')} />
 
       {errors.description && <p className={styles.validationText}>{errors.description.message}</p>}
 
+      <p className={styles.fieldDescription}>Deadline</p>
       <DatePicker placeholder="Deadline" isFuture {...register('deadline')} />
 
       {errors.deadline && <p className={styles.validationText}>{errors.deadline.message}</p>}
