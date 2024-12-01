@@ -83,6 +83,12 @@ export const ProjectView = (props: Props) => {
         <h1>{project.title}</h1>
 
         <div className={styles.buttonsWrapper}>
+          {profile?.userType === UserType.PM && projectPmUser && projectPmUser.id === profile?.id && (
+            <Link href={`/projects/${projectId}/request-payment`}>
+              <Button text="Request Payment" bgColor="green" textColor="white" icon={<BiMoney />} />
+            </Link>
+          )}
+
           {!projectPmUser && profile?.userType === UserType.CLIENT && (
             <Link href={`/projects/${projectId}/invite-pm`}>
               <Button text="Invite PM" bgColor="orange" textColor="white" icon={<BiPlus />} />

@@ -69,9 +69,11 @@ export const RequestPaymentForm = () => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <p className={styles.fieldDescription}>Amount</p>
       <Input placeholder="Amount in USD" type="number" {...register('usdAmount')} />
       {errors.usdAmount && <p className={styles.validationText}>{errors.usdAmount.message}</p>}
 
+      <p className={styles.fieldDescription}>Start Date</p>
       <DatePicker
         placeholder="Payment period start date"
         {...register('startDate')}
@@ -79,6 +81,7 @@ export const RequestPaymentForm = () => {
       />
       {errors.startDate && <p className={styles.validationText}>{errors.startDate.message}</p>}
 
+      <p className={styles.fieldDescription}>End Date</p>
       <DatePicker
         placeholder="Payment period end date"
         {...register('endDate')}
@@ -86,6 +89,7 @@ export const RequestPaymentForm = () => {
       />
       {errors.endDate && <p className={styles.validationText}>{errors.endDate.message}</p>}
 
+      <p className={styles.fieldDescription}>Comment</p>
       <Input placeholder="Comment..." multiline {...register('comment')} />
       {errors.comment && <p className={styles.validationText}>{errors.comment.message}</p>}
 

@@ -11,6 +11,7 @@ import { useClientProjects } from '@/hooks/useClientProjects';
 import { mapPaymentRequestsToListItems } from '@/utils/helpers';
 
 import styles from './dashboard.module.scss';
+import { PaymentRequestStatus } from '@/types/enums';
 
 export const ClientDashboardView = () => {
   const { data: projects, isLoading: isLoadingProjects } = useClientProjects();
@@ -57,6 +58,13 @@ export const ClientDashboardView = () => {
             right: project.id,
             href: `projects/${project.id}`,
           }))}
+        />
+
+        <ListView
+          title="Payments"
+          listItems={mapPaymentRequestsToListItems(
+            paymentRequests.filter((paymentRequest) => paymentRequest.status === PaymentRequestStatus.PENDING),
+          )}
         />
       </div>
     </div>
